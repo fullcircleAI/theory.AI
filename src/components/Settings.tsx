@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Navigation } from './Navigation';
-import { useLanguage } from '../contexts/LanguageContext';
 import './Settings.css';
 
 interface FAQ {
@@ -34,8 +33,6 @@ const faqs: FAQ[] = [
 
 export const Settings: React.FC = () => {
   const { t } = useTranslation();
-  const languageContext = useLanguage();
-  const { t_nested } = languageContext || { t_nested: (key: string) => key };
   const [activePage, setActivePage] = useState<'main' | 'account' | 'language' | 'privacy' | 'terms' | 'faq' | 'support'>('main');
   const [isEditing, setIsEditing] = useState(false);
   const [editUsername, setEditUsername] = useState('AI Learner');
@@ -162,7 +159,7 @@ export const Settings: React.FC = () => {
         <button className="settings-back-btn" onClick={handleBackToMain}>
           ←
         </button>
-        <h2 className="settings-subpage-title">{t_nested('settings.account')}</h2>
+        <h2 className="settings-subpage-title">{t('settings.account')}</h2>
       </div>
 
       <div className="settings-subpage-content">
