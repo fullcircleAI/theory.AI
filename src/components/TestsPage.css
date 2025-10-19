@@ -420,11 +420,11 @@ body .tests-page,
 
 /* Mascot as button for tests page */
 .tests-page-ai-tutor .floating-ai-btn-mascot {
-  width: 80px;
-  height: 80px;
+  width: 100px; /* Increased from 80px */
+  height: 100px; /* Increased from 80px */
   border-radius: 50%;
   background: transparent;
-  border: 3px solid #002868;
+  border: none; /* Removed border to match dashboard */
   cursor: pointer;
   display: flex;
   align-items: center;

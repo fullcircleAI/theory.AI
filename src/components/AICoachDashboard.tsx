@@ -168,17 +168,6 @@ export const AICoachDashboard: React.FC = () => {
                        }}></div>
                 </div>
               </div>
-              <div className="summary-stat">
-                <div className="stat-number">{aiCoach.getMockExamAverage()}%</div>
-                <div className="stat-label">Mock Exam Score</div>
-                <div className="progress-bar-bg">
-                  <div className="progress-bar-fill" 
-                       style={{ 
-                         width: `${aiCoach.getMockExamAverage()}%`,
-                         backgroundColor: aiCoach.getMockExamAverage() >= 70 ? '#10b981' : '#f59e0b'
-                       }}></div>
-                </div>
-              </div>
             </div>
           </div>
 
