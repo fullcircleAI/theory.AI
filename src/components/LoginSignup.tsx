@@ -8,7 +8,7 @@ interface LoginSignupProps {
 
 export const LoginSignup: React.FC<LoginSignupProps> = ({ onComplete }) => {
   const { t } = useTranslation();
-  const [isLogin, setIsLogin] = useState(false);
+  // const [isLogin, setIsLogin] = useState(false); // Removed unused variable
   const [showSignup, setShowSignup] = useState(false);
   const [formData, setFormData] = useState({
     email: '',
@@ -60,7 +60,7 @@ export const LoginSignup: React.FC<LoginSignupProps> = ({ onComplete }) => {
 
   const handleGetStarted = () => {
     setShowSignup(true);
-    setIsLogin(false);
+    // setIsLogin(false); // Removed unused variable
   };
 
   // Bot-it style: Show initial page with sign-in form and 3 buttons

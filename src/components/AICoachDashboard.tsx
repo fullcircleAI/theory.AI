@@ -33,7 +33,7 @@ export const AICoachDashboard: React.FC = () => {
 
   const [aiInsights, setAiInsights] = useState<AIInsight[]>([]);
   const [showAITutor, setShowAITutor] = useState(false);
-  const [unlockProgress, setUnlockProgress] = useState(aiCoach.getUnlockProgress());
+  // const [unlockProgress, setUnlockProgress] = useState(aiCoach.getUnlockProgress()); // Removed unused variable
 
   useEffect(() => {
     // Load REAL data from AI Coach (including mock exams)
@@ -50,7 +50,7 @@ export const AICoachDashboard: React.FC = () => {
 
     setUserProgress(realData);
     setAiInsights(realInsights);
-    setUnlockProgress(aiCoach.getUnlockProgress());
+    // setUnlockProgress(aiCoach.getUnlockProgress()); // Removed unused variable
   }, []);
 
   const handleRefresh = async () => {
@@ -61,11 +61,11 @@ export const AICoachDashboard: React.FC = () => {
     window.location.reload();
   };
 
-  const getScoreColor = (score: number) => {
-    if (score < 30) return 'red';
-    if (score < 70) return 'orange';
-    return 'green';
-  };
+  // const getScoreColor = (score: number) => { // Removed unused function
+  //   if (score < 30) return 'red';
+  //   if (score < 70) return 'orange';
+  //   return 'green';
+  // };
 
   // Calculate Exam Readiness Confidence Level (Practice Tests + Mock Exams)
   const getExamReadiness = () => {
