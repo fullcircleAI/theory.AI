@@ -34,7 +34,8 @@ const faqs: FAQ[] = [
 
 export const Settings: React.FC = () => {
   const { t } = useTranslation();
-  const { t_nested } = useLanguage();
+  const languageContext = useLanguage();
+  const { t_nested } = languageContext || { t_nested: (key: string) => key };
   const [activePage, setActivePage] = useState<'main' | 'account' | 'language' | 'privacy' | 'terms' | 'faq' | 'support'>('main');
   const [isEditing, setIsEditing] = useState(false);
   const [editUsername, setEditUsername] = useState('AI Learner');

@@ -94,6 +94,29 @@ export const MockExamSelection: React.FC = () => {
           </div>
 
           <div className="tests-content">
+            {/* Mock Exam Performance Summary */}
+            {unlockProgress.canUnlock && (
+              <div className="mock-exam-performance-summary">
+                <div className="performance-header">
+                  <h3>📊 Your Mock Exam Performance</h3>
+                  <p>Track your progress across all mock exams</p>
+                </div>
+                <div className="performance-stats">
+                  <div className="performance-stat">
+                    <div className="stat-number">{aiCoach.getMockExamAverage()}%</div>
+                    <div className="stat-label">Average Score</div>
+                  </div>
+                  <div className="performance-stat">
+                    <div className="stat-number">{aiCoach.getMockExamCount()}</div>
+                    <div className="stat-label">Exams Completed</div>
+                  </div>
+                  <div className="performance-stat">
+                    <div className="stat-number">{aiCoach.getMockExamPassRate()}%</div>
+                    <div className="stat-label">Pass Rate</div>
+                  </div>
+                </div>
+              </div>
+            )}
 
             <div className="tests-grid">
               {mockExams.map((exam) => {

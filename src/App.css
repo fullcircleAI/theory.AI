@@ -206,6 +206,12 @@ input, textarea, [contenteditable="true"] {
     overflow: hidden !important;
   }
   
+  /* Practice test page - single scroll */
+  .main-content.practice-test-page {
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+  }
+  
   /* Settings page: overflow hidden at main-content level, scrolling handled by subpage */
   .main-content.settings-page {
     overflow: hidden !important;

@@ -168,68 +168,20 @@ export const AICoachDashboard: React.FC = () => {
                        }}></div>
                 </div>
               </div>
+              <div className="summary-stat">
+                <div className="stat-number">{aiCoach.getMockExamAverage()}%</div>
+                <div className="stat-label">Mock Exam Score</div>
+                <div className="progress-bar-bg">
+                  <div className="progress-bar-fill" 
+                       style={{ 
+                         width: `${aiCoach.getMockExamAverage()}%`,
+                         backgroundColor: aiCoach.getMockExamAverage() >= 70 ? '#10b981' : '#f59e0b'
+                       }}></div>
+                </div>
+              </div>
             </div>
           </div>
 
-          {/* Mock Exam Unlock Progress */}
-          {!unlockProgress.canUnlock && (
-            <div className="unlock-progress-section">
-              <div className="section-header">
-                <h3>🔒 Mock Exams Locked</h3>
-                <p>Complete practice tests to unlock mock exams</p>
-              </div>
-              <div className="unlock-progress-grid">
-                <div className="unlock-progress-item">
-                  <div className="progress-icon">📚</div>
-                  <div className="progress-content">
-                    <div className="progress-label">Tests Completed</div>
-                    <div className="progress-value">
-                      {unlockProgress.completedTests}/{unlockProgress.requiredTests}
-                    </div>
-                    <div className={`progress-status ${unlockProgress.completedTests >= unlockProgress.requiredTests ? 'met' : 'pending'}`}>
-                      {unlockProgress.completedTests >= unlockProgress.requiredTests ? '✅' : '⏳'}
-                    </div>
-                  </div>
-                </div>
-                <div className="unlock-progress-item">
-                  <div className="progress-icon">📊</div>
-                  <div className="progress-content">
-                    <div className="progress-label">Average Score</div>
-                    <div className="progress-value">
-                      {unlockProgress.averageScore}% / {unlockProgress.requiredAverage}%
-                    </div>
-                    <div className={`progress-status ${unlockProgress.averageScore >= unlockProgress.requiredAverage ? 'met' : 'pending'}`}>
-                      {unlockProgress.averageScore >= unlockProgress.requiredAverage ? '✅' : '⏳'}
-                    </div>
-                  </div>
-                </div>
-                <div className="unlock-progress-item">
-                  <div className="progress-icon">🎯</div>
-                  <div className="progress-content">
-                    <div className="progress-label">Lowest Test</div>
-                    <div className="progress-value">
-                      {unlockProgress.minTestScore}% / {unlockProgress.requiredMinScore}%
-                    </div>
-                    <div className={`progress-status ${unlockProgress.minTestScore >= unlockProgress.requiredMinScore ? 'met' : 'pending'}`}>
-                      {unlockProgress.minTestScore >= unlockProgress.requiredMinScore ? '✅' : '⏳'}
-                    </div>
-                  </div>
-                </div>
-                <div className="unlock-progress-item">
-                  <div className="progress-icon">⏰</div>
-                  <div className="progress-content">
-                    <div className="progress-label">Study Time</div>
-                    <div className="progress-value">
-                      {unlockProgress.studyTime}h / {unlockProgress.requiredStudyTime}h
-                    </div>
-                    <div className={`progress-status ${unlockProgress.studyTime >= unlockProgress.requiredStudyTime ? 'met' : 'pending'}`}>
-                      {unlockProgress.studyTime >= unlockProgress.requiredStudyTime ? '✅' : '⏳'}
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          )}
 
           {/* AI Insights Summary */}
           <div className="ai-insights-summary">

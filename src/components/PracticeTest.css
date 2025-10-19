@@ -1704,9 +1704,9 @@ body.practice-page .practice-test {
 }
 
 .practice-test-ai-tutor .floating-mascot-full {
-  width: 90%;
-  height: 90%;
-  object-fit: contain;
+  width: 100%; /* Full button size */
+  height: 100%; /* Full button size */
+  object-fit: cover;
   border-radius: 50%;
 }
 

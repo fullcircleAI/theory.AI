@@ -21,6 +21,57 @@
   padding-bottom: 1rem;
 }
 
+/* Mock Exam Performance Summary */
+.mock-exam-performance-summary {
+  background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+  border-radius: 12px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  border: 1px solid #e2e8f0;
+}
+
+.performance-header {
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+.performance-header h3 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #1e293b;
+  margin: 0 0 0.25rem 0;
+}
+
+.performance-header p {
+  font-size: 0.85rem;
+  color: #64748b;
+  margin: 0;
+}
+
+.performance-stats {
+  display: flex;
+  justify-content: space-around;
+  gap: 1rem;
+}
+
+.performance-stat {
+  text-align: center;
+  flex: 1;
+}
+
+.performance-stat .stat-number {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #1e293b;
+  margin-bottom: 0.25rem;
+}
+
+.performance-stat .stat-label {
+  font-size: 0.75rem;
+  color: #64748b;
+  font-weight: 500;
+}
+
 /* Mock Exam Requirement Note */
 .mock-exam-requirement-note {
   display: flex;

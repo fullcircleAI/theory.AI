@@ -267,17 +267,28 @@ export const TestsPage: React.FC = () => {
 
             {/* Tests Grid */}
             <div className="tests-grid">
-              {practiceTests.map((test) => (
-                <div 
-                  key={test.id}
-                  className="test-card"
-                  onClick={() => handleTestClick(test.id)}
-                >
-                  <div className="test-content">
-                    <h3 className="test-name">{test.name}</h3>
+              {practiceTests.map((test) => {
+                const testScore = aiCoach.getTestScore(test.id);
+                return (
+                  <div 
+                    key={test.id}
+                    className="test-card"
+                    onClick={() => handleTestClick(test.id)}
+                  >
+                    <div className="test-content">
+                      <h3 className="test-name">{test.name}</h3>
+                      {testScore && (
+                        <div className="test-score">
+                          <span className="score-label">Last Score:</span>
+                          <span className={`score-value ${testScore >= 70 ? 'passed' : 'failed'}`}>
+                            {testScore}%
+                          </span>
+                        </div>
+                      )}
+                    </div>
                   </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
 
             {/* Floating AI Tutor Button - Tests Page */}

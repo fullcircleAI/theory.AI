@@ -131,7 +131,7 @@
   height: 80px;
   border-radius: 50%;
   background: transparent;
-  border: 3px solid #002868;
+  border: none;
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -146,7 +146,6 @@
 .floating-ai-btn-mascot:hover {
   transform: scale(1.1);
   box-shadow: 0 8px 20px rgba(0, 40, 104, 0.4);
-  border-color: #1e40af;
 }
 
 .floating-ai-btn-mascot:active {
@@ -154,9 +153,9 @@
 }
 
 .floating-mascot-full {
-  width: 90%;
-  height: 90%;
-  object-fit: contain;
+  width: 100%; /* Full button size */
+  height: 100%; /* Full button size */
+  object-fit: cover;
   border-radius: 50%;
 }
 
