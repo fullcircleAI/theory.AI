@@ -1,16 +1,17 @@
 /* Mock Exam Selection uses Tests Page styling */
 
-/* Make mock exam dashboard unscrollable */
+/* Make mock exam dashboard scrollable on mobile */
 .mock-exam-page .tests-page {
-  height: 100vh;
-  overflow: hidden;
+  height: auto;
+  min-height: 100vh;
+  overflow: visible;
   display: flex;
   flex-direction: column;
 }
 
 .mock-exam-page .tests-content {
   flex: 1;
-  overflow: hidden;
+  overflow: visible;
   display: flex;
   flex-direction: column;
 }
@@ -262,6 +263,21 @@
 
 /* Mobile */
 @media (max-width: 768px) {
+  .mock-exam-page .tests-page {
+    height: auto !important;
+    min-height: 100vh !important;
+    overflow: visible !important;
+  }
+  
+  .mock-exam-page .tests-content {
+    overflow: visible !important;
+  }
+  
+  .mock-exam-page .tests-grid {
+    overflow: visible !important;
+    flex: none !important;
+  }
+  
   .mock-exam-requirement-note {
     padding: 0.75rem;
     margin-top: 0.75rem;

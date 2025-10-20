@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { Navigation } from './Navigation';
-import AITutor from './AITutor';
 import { aiCoach } from '../services/aiCoach';
 import './TestsPage.css';
 
@@ -26,7 +25,6 @@ export const TestsPage: React.FC = () => {
     name: 'Traffic Rules & Signs',
     reason: 'Perfect starting point'
   });
-  const [showAITutor, setShowAITutor] = useState(false);
 
   useEffect(() => {
     const recommendation = aiCoach.getTopRecommendation();
@@ -291,35 +289,9 @@ export const TestsPage: React.FC = () => {
               })}
             </div>
 
-            {/* Floating AI Tutor Button - Tests Page */}
-            <div className="floating-ai-tutor tests-page-ai-tutor">
-              <button 
-                className="floating-ai-btn-mascot"
-                onClick={() => setShowAITutor(true)}
-                title="Ask AI Tutor"
-              >
-                <img src="/images/mascot.png" alt="AI Tutor" className="floating-mascot-full" />
-              </button>
-            </div>
           </div>
         </div>
       </main>
-
-      {/* AI Tutor Modal */}
-      {showAITutor && (
-        <AITutor
-          userProgress={{
-            averageScore: aiCoach.getPracticeAverage(),
-            totalQuestions: 0,
-            correctAnswers: 0,
-            studyTime: aiCoach.getStudyTime(),
-            weakAreas: [],
-            strongAreas: []
-          }}
-          currentTest="tests-page"
-          onClose={() => setShowAITutor(false)}
-        />
-      )}
     </div>
   );
 };

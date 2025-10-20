@@ -83,7 +83,7 @@
 .floating-mascot-full {
   width: 100%; /* Full button size */
   height: 100%; /* Full button size */
-  object-fit: cover;
+  object-fit: contain; /* Changed from cover to contain to show full mascot */
   border-radius: 50%;
 }
 
