@@ -89,6 +89,9 @@ class CloudSaveService {
         test_history: JSON.stringify(this.getAllProgress(currentUser.id)?.testHistory || []),
         study_time: this.getAllProgress(currentUser.id)?.studyTime || 0,
         average_score: this.getAllProgress(currentUser.id)?.averageScore || 0,
+        // Add more detailed data
+        total_tests: this.getAllProgress(currentUser.id)?.testHistory?.length || 0,
+        mock_exam_results: JSON.stringify(this.getAllProgress(currentUser.id)?.mockExamResults || []),
         last_sync: new Date().toISOString()
       };
 
