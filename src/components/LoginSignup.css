@@ -388,9 +388,18 @@
 }
 
 .google-icon {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #4285F4;
+  font-family: 'Roboto', -apple-system, BlinkMacSystemFont, sans-serif;
+  display: inline-block;
   width: 20px;
   height: 20px;
-  margin-right: 0.5rem;
+  line-height: 20px;
+  text-align: center;
+  border-radius: 2px;
+  background: white;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
 }
 
 /* Password toggle functionality */
