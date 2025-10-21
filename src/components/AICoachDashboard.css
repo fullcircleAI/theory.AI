@@ -316,6 +316,11 @@
 
 /* Center exam readiness on web - same width as study timer */
 @media (min-width: 1025px) {
+  .summary-stats {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  
   .summary-stat:first-child {
     text-align: center;
     width: 100%;
