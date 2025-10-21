@@ -20,7 +20,7 @@ class SupabaseAuthService {
   // Sign in with Google
   async signInWithGoogle(): Promise<SupabaseUser | null> {
     try {
-      const { data, error } = await supabase.auth.signInWithOAuth({
+      const { error } = await supabase.auth.signInWithOAuth({
         provider: 'google',
         options: {
           redirectTo: `${window.location.origin}/auth/callback`
@@ -44,7 +44,7 @@ class SupabaseAuthService {
   // Sign in with Apple
   async signInWithApple(): Promise<SupabaseUser | null> {
     try {
-      const { data, error } = await supabase.auth.signInWithOAuth({
+      const { error } = await supabase.auth.signInWithOAuth({
         provider: 'apple',
         options: {
           redirectTo: `${window.location.origin}/auth/callback`
@@ -66,7 +66,7 @@ class SupabaseAuthService {
   // Sign in with Facebook
   async signInWithFacebook(): Promise<SupabaseUser | null> {
     try {
-      const { data, error } = await supabase.auth.signInWithOAuth({
+      const { error } = await supabase.auth.signInWithOAuth({
         provider: 'facebook',
         options: {
           redirectTo: `${window.location.origin}/auth/callback`

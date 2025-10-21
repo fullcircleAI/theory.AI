@@ -91,9 +91,9 @@ function AppContent() {
     return <LanguageSelection />;
   }
 
-  // Then show login/signup (if not authenticated)
+  // Then show user authentication (if not authenticated)
   if (showLogin) {
-    return <LoginSignup onComplete={handleLoginComplete} />;
+    return <UserAuth onUserChange={handleUserChange} />;
   }
 
   // Finally show the main app

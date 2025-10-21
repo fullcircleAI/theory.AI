@@ -58,9 +58,19 @@ const UserAuth: React.FC<UserAuthProps> = ({ onUserChange }) => {
   const handleGoogleSignIn = async () => {
     setLoading(true);
     try {
-      const user = await supabaseAuth.signInWithGoogle();
-      if (user) {
-        console.log('✅ Google sign-in successful:', user);
+      const supabaseUser = await supabaseAuth.signInWithGoogle();
+      if (supabaseUser) {
+        console.log('✅ Google sign-in successful:', supabaseUser);
+        
+        // Convert SupabaseUser to User format
+        const user: User = {
+          id: supabaseUser.id,
+          email: supabaseUser.email,
+          name: supabaseUser.name,
+          createdAt: new Date().toISOString(),
+          isGuest: false
+        };
+        
         onUserChange(user);
         setMessage('✅ Google sign-in successful! Your progress will be saved.');
       } else {
