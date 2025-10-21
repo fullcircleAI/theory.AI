@@ -314,6 +314,27 @@
   font-weight: 600;
 }
 
+/* Center exam readiness on web */
+@media (min-width: 1025px) {
+  .summary-stat:first-child {
+    text-align: center;
+    max-width: 300px;
+    margin: 0 auto;
+  }
+  
+  .summary-stat:first-child .stat-number {
+    text-align: center;
+  }
+  
+  .summary-stat:first-child .stat-label {
+    text-align: center;
+  }
+  
+  .summary-stat:first-child .progress-bar-bg {
+    margin: 0 auto;
+  }
+}
+
 .status-emoji {
   font-size: 0.6rem;
 }

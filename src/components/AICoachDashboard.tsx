@@ -117,11 +117,6 @@ export const AICoachDashboard: React.FC = () => {
     return { status: 'Needs Practice', color: '#ef4444', emoji: '🔴' };
   };
 
-  const getReadinessMessage = (confidence: number) => {
-    if (confidence >= 80) return 'Strong progress';
-    if (confidence >= 60) return 'Good progress';
-    return 'Needs practice';
-  };
 
   const formatTime = (hours: number) => {
     const wholeHours = Math.floor(hours);
