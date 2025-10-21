@@ -223,7 +223,7 @@ class AICoachService {
 
     // Add context-aware reasoning
     const contextReason = this.getContextualReason(topWeak, testScores);
-    
+
     return {
       testId: topWeak.testId,
       testName,
@@ -272,7 +272,7 @@ class AICoachService {
     return `Review ${testName} to maintain your ${score}% score`;
   }
 
-  // Get AI Insights for dashboard
+  // Get AI Insights for dashboard - ALWAYS 3 boxes (RED, YELLOW, GREEN)
   getAIInsights(): AIInsight[] {
     const testScores = this.getTestScores();
     const recommendation = this.getTopRecommendation();
@@ -280,74 +280,114 @@ class AICoachService {
 
     const insights: AIInsight[] = [];
 
-    // 1. Top recommendation (ALWAYS RED for visibility)
+    // 1. RED BOX - Top recommendation (ALWAYS)
     insights.push({
       type: 'recommendation',
       message: recommendation.testName,
-      priority: 'red', // Always red for maximum visibility and action
+      priority: 'red',
       testId: recommendation.testId,
       explanation: recommendation.reason
     });
 
-    // 2. Find a mistake area (AMBER)
-    const mistakeArea = allTestIds.find(testId => {
-      const score = testScores[testId];
-      return score && score.average >= 60 && score.average < 75 && testId !== recommendation.testId;
+    // 2. YELLOW BOX - Second priority (ALWAYS)
+    const secondPriority = this.getSecondPriority(testScores, recommendation.testId);
+    insights.push({
+      type: 'mistake',
+      message: secondPriority.testName,
+      priority: 'amber',
+      testId: secondPriority.testId,
+      explanation: secondPriority.explanation
     });
 
-    if (mistakeArea) {
-      const score = testScores[mistakeArea];
+    // 3. GREEN BOX - Strength/maintenance (ALWAYS)
+    const strengthArea = this.getStrengthArea(testScores);
       insights.push({
-        type: 'mistake',
-        message: TEST_METADATA[mistakeArea].name,
-        priority: 'amber',
-        testId: mistakeArea,
-        explanation: `${score.average}% - needs improvement`
-      });
-    } else {
-      // Fallback: Show second weakest
-      const weakAreas = Object.keys(testScores)
-        .filter(id => id !== recommendation.testId)
-        .sort((a, b) => testScores[a].average - testScores[b].average);
-      
-      if (weakAreas.length > 0) {
-        const secondWeak = weakAreas[0];
-        insights.push({
-          type: 'mistake',
-          message: TEST_METADATA[secondWeak].name,
-          priority: 'amber',
-          testId: secondWeak,
-          explanation: `${testScores[secondWeak].average}% - needs practice`
-        });
-      }
-    }
-
-    // 3. Find a strength area (GREEN)
-    const strengthArea = allTestIds.find(testId => {
-      const score = testScores[testId];
-      return score && score.average >= 85;
+      type: 'strength',
+      message: strengthArea.testName,
+      priority: 'green',
+      testId: strengthArea.testId,
+      explanation: strengthArea.explanation
     });
 
-    if (strengthArea) {
-      const score = testScores[strengthArea];
-      insights.push({
-        type: 'strength',
-        message: TEST_METADATA[strengthArea].name,
-        priority: 'green',
-        testId: strengthArea,
-        explanation: `${score.average}% - good progress`
-      });
-    } else {
-      // No strengths yet - encourage
-      insights.push({
-        type: 'strength',
-        message: 'Keep Practicing',
-        priority: 'green',
-        explanation: 'You\'re building skills'
-      });
+    return insights; // Always return exactly 3
+  }
+
+  // Get second priority for YELLOW box
+  private getSecondPriority(testScores: any, excludeTestId: string): { testName: string; testId: string; explanation: string } {
+    const allTestIds = Object.keys(TEST_METADATA);
+    
+    // Find second weakest area (not the top recommendation)
+    const availableTests = allTestIds.filter(id => id !== excludeTestId);
+    
+    if (availableTests.length === 0) {
+      return {
+        testName: 'Practice More',
+        testId: 'traffic-rules-signs',
+        explanation: 'Continue building your foundation'
+      };
     }
 
-    return insights.slice(0, 3); // Return top 3
+    // Sort by score (lowest first)
+    const sortedTests = availableTests
+      .map(testId => ({
+        testId,
+        score: testScores[testId]?.average || 0
+      }))
+      .sort((a, b) => a.score - b.score);
+
+    const secondWeak = sortedTests[0];
+    const testName = TEST_METADATA[secondWeak.testId].name;
+    
+    let explanation = '';
+    if (secondWeak.score === 0) {
+      explanation = 'Not practiced yet - good next step';
+    } else if (secondWeak.score < 60) {
+      explanation = `${secondWeak.score}% - needs improvement`;
+    } else if (secondWeak.score < 80) {
+      explanation = `${secondWeak.score}% - almost ready`;
+    } else {
+      explanation = `${secondWeak.score}% - maintain skills`;
+    }
+
+    return {
+      testName,
+      testId: secondWeak.testId,
+      explanation
+    };
+  }
+
+  // Get strength area for GREEN box
+  private getStrengthArea(testScores: any): { testName: string; testId: string; explanation: string } {
+    const allTestIds = Object.keys(TEST_METADATA);
+    
+    // Find best performing area
+    const bestTest = allTestIds
+      .map(testId => ({
+        testId,
+        score: testScores[testId]?.average || 0
+      }))
+      .sort((a, b) => b.score - a.score)[0];
+
+    const testName = TEST_METADATA[bestTest.testId].name;
+    
+    let explanation = '';
+    if (bestTest.score >= 90) {
+      explanation = `${bestTest.score}% - excellent mastery`;
+    } else if (bestTest.score >= 80) {
+      explanation = `${bestTest.score}% - strong performance`;
+    } else if (bestTest.score >= 70) {
+      explanation = `${bestTest.score}% - good progress`;
+    } else if (bestTest.score > 0) {
+      explanation = `${bestTest.score}% - building skills`;
+    } else {
+      explanation = 'Ready to start learning';
+    }
+
+    return {
+      testName,
+      testId: bestTest.testId,
+      explanation
+    };
   }
 
   // Calculate overall practice average (for dashboard)
