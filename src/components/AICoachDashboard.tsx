@@ -118,9 +118,9 @@ export const AICoachDashboard: React.FC = () => {
   };
 
   const getReadinessMessage = (confidence: number) => {
-    if (confidence >= 80) return 'Strong exam readiness indicators';
-    if (confidence >= 60) return 'Good progress toward exam readiness';
-    return 'Needs practice for exam confidence';
+    if (confidence >= 80) return 'Strong progress';
+    if (confidence >= 60) return 'Good progress';
+    return 'Needs practice';
   };
 
   const formatTime = (hours: number) => {
