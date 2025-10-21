@@ -6,7 +6,7 @@ import { userAuth } from './userAuth';
 
 // Your Supabase project details
 const supabaseUrl = 'https://cwwqvrcfsaahytkxqdck.supabase.co';
-const supabaseKey = 'your-anon-key-here'; // Get this from your Supabase dashboard
+const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImN3d3F2cmNmc2FhaHl0a3hxZGNrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjA5NDkwMzcsImV4cCI6MjA3NjUyNTAzN30.NVGa5rSEMJ9ZGMLZtISHh2h9soQvBzGkNrcnESHg-Ec';
 
 // Create Supabase client
 const supabase = createClient(supabaseUrl, supabaseKey);

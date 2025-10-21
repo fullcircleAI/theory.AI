@@ -77,6 +77,7 @@ function AppContent() {
     if (user) {
       setShowLogin(false);
       console.log('✅ User authenticated:', user.name);
+      console.log('👤 Current user:', currentUser?.name || 'None');
     }
   };
 
