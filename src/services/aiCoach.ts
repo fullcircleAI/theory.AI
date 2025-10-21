@@ -497,12 +497,23 @@ class AICoachService {
     return this.getMockExamResults().length;
   }
 
-  // Get mock exam pass rate
+  // Get mock exam pass rate (accounting for different pass marks)
   getMockExamPassRate(): number {
     const mockExamResults = this.getMockExamResults();
     if (mockExamResults.length === 0) return 0;
     
-    const passedExams = mockExamResults.filter(result => result.percentage >= 70).length;
+    // Different pass marks for different exam levels
+    const examPassMarks: Record<string, number> = {
+      'mock-exam-1': 88, // Beginner
+      'mock-exam-2': 92, // Intermediate  
+      'mock-exam-3': 96  // Advanced
+    };
+    
+    const passedExams = mockExamResults.filter(result => {
+      const passMark = examPassMarks[result.testId] || 70; // Default to 70% if unknown
+      return result.percentage >= passMark;
+    }).length;
+    
     return Math.round((passedExams / mockExamResults.length) * 100);
   }
 

@@ -118,17 +118,17 @@ export const AICoachDashboard: React.FC = () => {
   //   return 'green';
   // };
 
-  // Calculate Exam Readiness - Simple Formula You Can Explain
+  // Calculate Exam Readiness - Enhanced with Mock Exam Pass Mark Awareness
   const getExamReadiness = () => {
-    const averageScore = userProgress.averageScore; // Your test scores
+    const averageScore = userProgress.averageScore; // Your test scores (practice + mock exams)
     const studyTime = userProgress.studyTime; // Hours studied
     const totalQuestions = userProgress.totalQuestions; // Questions answered
     
-    // SMART FORMULA: Score + Study Time (Diminishing Returns) + Practice Volume
-    // 1. Your average score (0-100%)
+    // ENHANCED FORMULA: Score + Study Time + Practice Volume + Mock Exam Bonus
+    // 1. Your average score (0-100%) - includes mock exams with different pass marks
     // 2. Study time bonus: +1% per hour (first 15 hours), then +0.5% per hour (max +20%)
     // 3. Practice bonus: +1% per 50 questions (max +10%)
-    // Example: 70% score + 8 hours + 100 questions = 70% + 8% + 2% = 80%
+    // 4. Mock exam bonus: +5% per passed mock exam (accounts for different pass marks)
     
     // Diminishing returns for study time (realistic learning curve)
     let studyBonus = 0;
@@ -140,12 +140,35 @@ export const AICoachDashboard: React.FC = () => {
     studyBonus = Math.min(20, studyBonus); // Cap at +20%
     
     const practiceBonus = Math.min(10, Math.floor(totalQuestions / 50)); // +1% per 50 questions, max +10%
-    const readiness = Math.min(100, averageScore + studyBonus + practiceBonus);
+    
+    // Mock exam bonus (accounts for different pass marks)
+    const mockExamBonus = Math.min(15, aiCoach.getMockExamPassRate() * 0.15); // +5% per passed mock exam
+    
+    const readiness = Math.min(100, averageScore + studyBonus + practiceBonus + mockExamBonus);
     
     return Math.round(readiness);
   };
 
   const getReadinessStatus = (confidence: number) => {
+    // CRITICAL: You can't be "Ready" until you pass ALL 3 mock exams
+    const mockExamResults = aiCoach.getMockExamResults();
+    const totalMockExams = 3; // Total available mock exams
+    const passedMockExams = mockExamResults.filter(result => {
+      const examPassMarks: Record<string, number> = {
+        'mock-exam-1': 88, // Beginner
+        'mock-exam-2': 92, // Intermediate  
+        'mock-exam-3': 96  // Advanced
+      };
+      const passMark = examPassMarks[result.testId] || 70;
+      return result.percentage >= passMark;
+    }).length;
+    
+    // Must pass ALL 3 mock exams to be "Ready"
+    if (passedMockExams < totalMockExams) {
+      return { status: 'Needs Practice', color: '#ef4444', emoji: '🔴' };
+    }
+    
+    // Only then check confidence score
     if (confidence >= 80) return { status: 'Ready', color: '#10b981', emoji: '🟢' };
     if (confidence >= 60) return { status: 'On Track', color: '#f59e0b', emoji: '🟡' };
     return { status: 'Needs Practice', color: '#ef4444', emoji: '🔴' };
