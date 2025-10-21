@@ -1,14 +1,15 @@
 // Cloud Save Service - Free tier using Supabase
 // No credit card required, free for up to 50,000 users
 
-// import { createClient } from '@supabase/supabase-js';
+import { createClient } from '@supabase/supabase-js';
+import { userAuth } from './userAuth';
 
-// Free Supabase project (no credit card required)
-// const supabaseUrl = 'https://your-project.supabase.co';
-// const supabaseKey = 'your-anon-key';
+// Your Supabase project details
+const supabaseUrl = 'https://cwwqvrcfsaahytkxqdck.supabase.co';
+const supabaseKey = 'your-anon-key-here'; // Get this from your Supabase dashboard
 
-// For now, we'll use a simple localStorage + sync approach
-// This can be easily upgraded to real cloud storage later
+// Create Supabase client
+const supabase = createClient(supabaseUrl, supabaseKey);
 
 export interface UserProgress {
   userId: string;
@@ -77,11 +78,33 @@ class CloudSaveService {
     }
   }
 
-  // Sync to cloud (placeholder for now)
+  // Sync to cloud using Supabase
   private async syncToCloud(): Promise<void> {
-    // This would connect to Supabase or Firebase
-    // For now, we'll just log that sync would happen
-    console.log('☁️ Would sync to cloud (when implemented)');
+    try {
+      const currentUser = userAuth.getCurrentUser();
+      if (!currentUser) return;
+
+      const progressData = {
+        user_id: currentUser.id,
+        test_history: JSON.stringify(this.getAllProgress(currentUser.id)?.testHistory || []),
+        study_time: this.getAllProgress(currentUser.id)?.studyTime || 0,
+        average_score: this.getAllProgress(currentUser.id)?.averageScore || 0,
+        last_sync: new Date().toISOString()
+      };
+
+      // Upsert (insert or update) user progress
+      const { error } = await supabase
+        .from('user_progress')
+        .upsert(progressData, { onConflict: 'user_id' });
+
+      if (error) {
+        console.error('❌ Supabase sync error:', error);
+      } else {
+        console.log('☁️ Progress synced to Supabase successfully');
+      }
+    } catch (error) {
+      console.error('❌ Cloud sync error:', error);
+    }
   }
 
   // Check if user has saved progress

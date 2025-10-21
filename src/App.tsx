@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { SplashScreen } from './components/SplashScreen';
-import { LoginSignup } from './components/LoginSignup';
+// import { LoginSignup } from './components/LoginSignup'; // Replaced with UserAuth
 import { LanguageSelection } from './components/LanguageSelection';
 import { InstallPrompt } from './components/InstallPrompt';
 import { OfflineIndicator } from './components/OfflineIndicator';
@@ -68,9 +68,9 @@ function AppContent() {
     setShowSplash(false);
   };
 
-  const handleLoginComplete = () => {
-    setShowLogin(false);
-  };
+  // const handleLoginComplete = () => {
+  //   setShowLogin(false);
+  // }; // Replaced with handleUserChange
 
   const handleUserChange = (user: User | null) => {
     setCurrentUser(user);
