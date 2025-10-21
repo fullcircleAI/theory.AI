@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { SplashScreen } from './components/SplashScreen';
-// import { LoginSignup } from './components/LoginSignup'; // Replaced with UserAuth
 import { LanguageSelection } from './components/LanguageSelection';
 import { InstallPrompt } from './components/InstallPrompt';
 import { OfflineIndicator } from './components/OfflineIndicator';
