@@ -335,11 +335,12 @@ export const PracticeTest: React.FC = () => {
                 {isCritical && (
                   <>
                     <button className="practice-nav-btn primary" onClick={() => {
-                      setCurrentQuestion(0);
+                      setCurrentQuestionIndex(0);
                       setSelectedAnswer('');
                       setIsAnswered(false);
-                      setShowResult(false);
+                      setShowExplanation(false);
                       setScore(0);
+                      setTestComplete(false);
                     }}>
                       Retry Test
                     </button>
@@ -353,11 +354,12 @@ export const PracticeTest: React.FC = () => {
                 {needsWork && (
                   <>
                     <button className="practice-nav-btn primary" onClick={() => {
-                      setCurrentQuestion(0);
+                      setCurrentQuestionIndex(0);
                       setSelectedAnswer('');
                       setIsAnswered(false);
-                      setShowResult(false);
+                      setShowExplanation(false);
                       setScore(0);
+                      setTestComplete(false);
                     }}>
                       Retry Test (Recommended)
                     </button>
@@ -381,11 +383,12 @@ export const PracticeTest: React.FC = () => {
                       Next: {nextTest.name}
                     </button>
                     <button className="practice-nav-btn" onClick={() => {
-                      setCurrentQuestion(0);
+                      setCurrentQuestionIndex(0);
                       setSelectedAnswer('');
                       setIsAnswered(false);
-                      setShowResult(false);
+                      setShowExplanation(false);
                       setScore(0);
+                      setTestComplete(false);
                     }}>
                       Retry Test
                     </button>
