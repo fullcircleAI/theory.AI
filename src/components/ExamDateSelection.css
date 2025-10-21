@@ -1,7 +1,7 @@
 /* Exam Date Selection Styles */
 .exam-date-selection {
   min-height: 100vh;
-  background: linear-gradient(135deg, #1a3e7a 0%, #3b82f6 100%);
+  background: linear-gradient(135deg, #1A3E7A 0%, #002868 100%);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -81,7 +81,7 @@
 
 .date-input:focus {
   outline: none;
-  border-color: #1a3e7a;
+  border-color: #1A3E7A;
   box-shadow: 0 0 0 3px rgba(26, 62, 122, 0.1);
 }
 
@@ -97,10 +97,10 @@
 .skip-button {
   flex: 1;
   padding: 0.75rem 1rem;
-  border: 2px solid #1a3e7a;
+  border: 2px solid #1A3E7A;
   border-radius: 12px;
   background: white;
-  color: #1a3e7a;
+  color: #1A3E7A;
   font-size: 0.95rem;
   font-weight: 600;
   cursor: pointer;
@@ -108,7 +108,7 @@
 }
 
 .skip-button:hover:not(:disabled) {
-  background: #1a3e7a;
+  background: #1A3E7A;
   color: white;
 }
 
@@ -122,7 +122,7 @@
   padding: 0.75rem 1rem;
   border: none;
   border-radius: 12px;
-  background: linear-gradient(135deg, #1a3e7a, #3b82f6);
+  background: linear-gradient(135deg, #1A3E7A, #002868);
   color: white;
   font-size: 0.95rem;
   font-weight: 600;
