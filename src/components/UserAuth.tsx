@@ -176,10 +176,6 @@ export const UserAuth: React.FC<UserAuthProps> = ({ onUserChange }) => {
             </button>
           </form>
 
-          {/* Divider */}
-          <div className="divider">
-            <span className="divider-text">{t('auth.orContinueWith', 'or continue with')}</span>
-          </div>
 
           {/* Social Media Buttons */}
           <div className="social-buttons">
@@ -314,10 +310,6 @@ export const UserAuth: React.FC<UserAuthProps> = ({ onUserChange }) => {
           </button>
         </form>
 
-        {/* Divider */}
-        <div className="divider">
-          <span className="divider-text">{t('auth.orContinueWith', 'or continue with')}</span>
-        </div>
 
         {/* Social Media Buttons */}
         <div className="social-buttons">
