@@ -390,7 +390,7 @@
 .google-icon {
   font-size: 1.1rem;
   font-weight: 500;
-  color: #757575;
+  color: white;
   font-family: 'Roboto', -apple-system, BlinkMacSystemFont, sans-serif;
   display: inline-block;
   width: 20px;
@@ -398,8 +398,8 @@
   line-height: 20px;
   text-align: center;
   border-radius: 4px;
-  background: white;
-  border: 1px solid #e0e0e0;
+  background: #ea4335;
+  border: none;
 }
 
 /* Password toggle functionality */
