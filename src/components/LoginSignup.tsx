@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { supabaseAuth } from '../services/supabaseAuth';
 import './LoginSignup.css';
 
 interface LoginSignupProps {
@@ -49,6 +50,26 @@ export const LoginSignup: React.FC<LoginSignupProps> = ({ onComplete }) => {
     }
     setIsLoading(false);
     onComplete();
+  };
+
+  const handleGoogleSignIn = async () => {
+    setIsLoading(true);
+    try {
+      const user = await supabaseAuth.signInWithGoogle();
+      if (user) {
+        console.log('✅ Google sign-in successful:', user);
+        localStorage.setItem('userAuthenticated', 'true');
+        localStorage.setItem('username', user.name || 'Google User');
+        localStorage.setItem('userEmail', user.email);
+        onComplete();
+      } else {
+        alert('Google sign-in failed. Please try again.');
+      }
+    } catch (error) {
+      console.error('Google sign-in error:', error);
+      alert('Google sign-in failed. Please try again.');
+    }
+    setIsLoading(false);
   };
 
 
@@ -142,7 +163,7 @@ export const LoginSignup: React.FC<LoginSignupProps> = ({ onComplete }) => {
               <span className="social-icon-text">f</span>
             </button>
             
-            <button className="social-button google" onClick={() => alert('Google login coming soon!')}>
+            <button className="social-button google" onClick={handleGoogleSignIn}>
               <span className="social-icon-text">G</span>
             </button>
             
