@@ -92,79 +92,26 @@ const UserAuth: React.FC<UserAuthProps> = ({ onUserChange }) => {
   return (
     <div className="login-signup-container">
       <div className="login-signup-content">
+        {/* Header with mascot */}
         <div className="auth-header">
-          <h2>Save Your Progress</h2>
-          <p className="auth-description">
-            Create a free account to save your progress across devices, just like Duolingo!
+          <div className="auth-mascot">
+            <img src="/images/mascot.png" alt="Mascot" className="mascot-image" />
+          </div>
+          <h1 className="auth-title">
+            Welcome to Theory Coach AI
+          </h1>
+          <p className="auth-subtitle">
+            Your personal driving theory tutor
           </p>
-        </div>
-
-        <div className="auth-tabs">
-          <button 
-            className={`tab ${isLogin ? 'active' : ''}`}
-            onClick={() => setIsLogin(true)}
-          >
-            Sign In
-          </button>
-          <button 
-            className={`tab ${!isLogin ? 'active' : ''}`}
-            onClick={() => setIsLogin(false)}
-          >
-            Sign Up
-          </button>
-        </div>
-
-        {isLogin ? (
-          <form onSubmit={handleSignIn} className="auth-form">
-            <div className="form-group">
-              <label>Email</label>
-              <input
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-                placeholder="your@email.com"
-              />
-            </div>
-            <button type="submit" disabled={loading} className="auth-btn">
-              {loading ? 'Signing In...' : 'Sign In'}
-            </button>
-          </form>
-        ) : (
-          <form onSubmit={handleSignUp} className="auth-form">
-            <div className="form-group">
-              <label>Name</label>
-              <input
-                type="text"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                required
-                placeholder="Your Name"
-              />
-            </div>
-            <div className="form-group">
-              <label>Email</label>
-              <input
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-                placeholder="your@email.com"
-              />
-            </div>
-            <button type="submit" disabled={loading} className="auth-btn">
-              {loading ? 'Creating Account...' : 'Create Account'}
-            </button>
-          </form>
-        )}
-
-        <div className="auth-divider">
-          <span>or</span>
         </div>
 
         {/* Google Sign-In Button */}
         <button onClick={handleGoogleSignIn} className="social-button google" disabled={loading}>
-          <span className="social-icon-text">G</span>
+          <img 
+            src="https://developers.google.com/identity/images/g-logo.png" 
+            alt="Google" 
+            className="google-icon"
+          />
           {loading ? 'Signing in...' : 'Continue with Google'}
         </button>
 
@@ -181,16 +128,6 @@ const UserAuth: React.FC<UserAuthProps> = ({ onUserChange }) => {
             {message}
           </div>
         )}
-
-        <div className="auth-benefits">
-          <h3>Free Account Benefits:</h3>
-          <ul>
-            <li>✅ Save progress across devices</li>
-            <li>✅ Track your learning journey</li>
-            <li>✅ No credit card required</li>
-            <li>✅ Works offline</li>
-          </ul>
-        </div>
       </div>
     </div>
   );
