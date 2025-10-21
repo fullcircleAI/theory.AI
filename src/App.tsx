@@ -85,14 +85,14 @@ function AppContent() {
     return <SplashScreen onFinish={handleSplashFinish} />;
   }
 
-  // Then language selection (if no language chosen)
-  if (!currentLanguage) {
-    return <LanguageSelection />;
-  }
-
   // Then show user authentication (if not authenticated)
   if (showLogin) {
     return <UserAuth onUserChange={handleUserChange} />;
+  }
+
+  // Then language selection (if no language chosen)
+  if (!currentLanguage) {
+    return <LanguageSelection />;
   }
 
   // Finally show the main app
