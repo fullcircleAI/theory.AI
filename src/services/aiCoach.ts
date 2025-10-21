@@ -59,9 +59,11 @@ const BEGINNER_PATH = ['traffic-rules-signs', 'priority-rules', 'hazard-percepti
 class AICoachService {
   // Save test result
   saveTestResult(result: TestResult): void {
+    console.log('💾 Saving test result:', result);
     const history = this.getTestHistory();
     history.push(result);
     localStorage.setItem('testHistory', JSON.stringify(history));
+    console.log('💾 Test history after save:', history);
     
     // Clear ignore count when user completes a recommended test
     const currentRec = this.getTopRecommendation();
@@ -73,7 +75,9 @@ class AICoachService {
   // Get all test history
   getTestHistory(): TestResult[] {
     const history = localStorage.getItem('testHistory');
-    return history ? JSON.parse(history) : [];
+    const parsed = history ? JSON.parse(history) : [];
+    console.log('📚 Getting test history:', parsed);
+    return parsed;
   }
 
   // Calculate average score per test
