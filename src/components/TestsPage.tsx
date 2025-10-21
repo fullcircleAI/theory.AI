@@ -277,7 +277,6 @@ export const TestsPage: React.FC = () => {
                       <h3 className="test-name">{test.name}</h3>
                       {testScore && (
                         <div className="test-score">
-                          <span className="score-label">Last Score:</span>
                           <span className={`score-value ${testScore >= 70 ? 'passed' : 'failed'}`}>
                             {testScore}%
                           </span>
