@@ -424,6 +424,21 @@
   letter-spacing: 0;
 }
 
+/* Main page buttons */
+.main-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.main-buttons .auth-button {
+  width: 100%;
+  min-height: 48px;
+  font-size: 16px;
+  font-weight: 600;
+}
+
 /* Password toggle functionality */
 .password-group {
   position: relative;

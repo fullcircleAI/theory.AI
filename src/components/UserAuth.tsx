@@ -10,7 +10,7 @@ interface UserAuthProps {
 
 export const UserAuth: React.FC<UserAuthProps> = ({ onUserChange }) => {
   const { t } = useTranslation();
-  const [showSignup, setShowSignup] = useState(false);
+  const [currentPage, setCurrentPage] = useState<'main' | 'login' | 'signup'>('main');
   const [formData, setFormData] = useState({
     email: '',
     password: '',
@@ -98,11 +98,19 @@ export const UserAuth: React.FC<UserAuthProps> = ({ onUserChange }) => {
   };
 
   const handleGetStarted = () => {
-    setShowSignup(true);
+    setCurrentPage('signup');
   };
 
-  // Bot-it style: Show initial page with sign-in form and 3 buttons
-  if (!showSignup) {
+  const handleLogin = () => {
+    setCurrentPage('login');
+  };
+
+  const handleBackToMain = () => {
+    setCurrentPage('main');
+  };
+
+  // Main page with 3 buttons
+  if (currentPage === 'main') {
     return (
       <div className="login-signup-container">
         <div className="login-signup-content">
@@ -119,7 +127,59 @@ export const UserAuth: React.FC<UserAuthProps> = ({ onUserChange }) => {
             </p>
           </div>
 
-          {/* Sign In Form */}
+          {/* Three main buttons */}
+          <div className="auth-buttons main-buttons">
+            <button 
+              type="button"
+              className="auth-button primary"
+              onClick={handleLogin}
+            >
+              Log In
+            </button>
+
+            <button 
+              type="button"
+              className="auth-button secondary"
+              onClick={handleGetStarted}
+            >
+              Get Started
+            </button>
+
+            <button 
+              type="button"
+              className="auth-button guest"
+              onClick={handleGuestMode}
+            >
+              Continue as Guest
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // Login page
+  if (currentPage === 'login') {
+    return (
+      <div className="login-signup-container">
+        <div className="login-signup-content">
+          {/* Header with back button */}
+          <div className="auth-header">
+            <div className="title-with-back">
+              <button 
+                className="back-button-inline"
+                onClick={handleBackToMain}
+              >
+                <span className="back-arrow">←</span>
+                <span className="back-text">Back</span>
+              </button>
+              <h1 className="auth-title">
+                Log In
+              </h1>
+            </div>
+          </div>
+
+          {/* Login Form */}
           <form className="auth-form" onSubmit={handleSubmit}>
             <div className="input-group">
               <input
@@ -176,8 +236,7 @@ export const UserAuth: React.FC<UserAuthProps> = ({ onUserChange }) => {
             </button>
           </form>
 
-
-          {/* Social Media Buttons */}
+          {/* Google Sign-In Button */}
           <div className="social-buttons">
             <button className="social-button google" onClick={handleGoogleSignIn}>
               <svg className="google-logo" width="18" height="18" viewBox="0 0 24 24">
@@ -189,31 +248,12 @@ export const UserAuth: React.FC<UserAuthProps> = ({ onUserChange }) => {
               <span className="google-text">Sign in with Google</span>
             </button>
           </div>
-
-          {/* Get Started and Guest buttons */}
-          <div className="auth-buttons">
-            <button 
-              type="button"
-              className="auth-button secondary"
-              onClick={handleGetStarted}
-            >
-              Get Started
-            </button>
-
-            <button 
-              type="button"
-              className="auth-button guest"
-              onClick={handleGuestMode}
-            >
-              Continue as Guest
-            </button>
-          </div>
         </div>
       </div>
     );
   }
 
-  // Bot-it style: Show signup form with social media
+  // Signup page
   return (
     <div className="login-signup-container">
       <div className="login-signup-content">
@@ -222,13 +262,13 @@ export const UserAuth: React.FC<UserAuthProps> = ({ onUserChange }) => {
           <div className="title-with-back">
             <button 
               className="back-button-inline"
-              onClick={() => setShowSignup(false)}
+              onClick={handleBackToMain}
             >
               <span className="back-arrow">←</span>
               <span className="back-text">Back</span>
             </button>
             <h1 className="auth-title">
-              Sign Up
+              Get Started
             </h1>
           </div>
         </div>
@@ -305,13 +345,12 @@ export const UserAuth: React.FC<UserAuthProps> = ({ onUserChange }) => {
             {isLoading ? (
               <div className="loading-spinner"></div>
             ) : (
-              t('auth.createAccount', 'Create Account')
+              'Create Account'
             )}
           </button>
         </form>
 
-
-        {/* Social Media Buttons */}
+        {/* Google Sign-In Button */}
         <div className="social-buttons">
           <button className="social-button google" onClick={handleGoogleSignIn}>
             <svg className="google-logo" width="18" height="18" viewBox="0 0 24 24">
