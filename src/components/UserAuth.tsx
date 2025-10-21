@@ -32,7 +32,7 @@ export const UserAuth: React.FC<UserAuthProps> = ({ onUserChange }) => {
     e.preventDefault();
     
     // Validate password confirmation for signup
-    if (showSignup && formData.password !== formData.confirmPassword) {
+    if (currentPage === 'signup' && formData.password !== formData.confirmPassword) {
       alert('Passwords do not match. Please try again.');
       return;
     }
@@ -45,7 +45,7 @@ export const UserAuth: React.FC<UserAuthProps> = ({ onUserChange }) => {
     // For demo purposes, just proceed to next step
     // In real app, you'd validate credentials here
     localStorage.setItem('userAuthenticated', 'true');
-    if (showSignup) {
+    if (currentPage === 'signup') {
       localStorage.setItem('username', formData.name || 'AI Learner');
       localStorage.setItem('userEmail', formData.email);
     } else {
