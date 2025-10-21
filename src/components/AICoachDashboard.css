@@ -802,14 +802,13 @@
 }
 
 .digital-watch-display {
-  background: #f8fafc;
+  background: #000;
   border-radius: 8px;
   padding: 0.8rem;
   display: flex;
   align-items: center;
   gap: 1rem;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  border: 1px solid #e5e7eb;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
 }
 
 .time-section {
@@ -823,13 +822,10 @@
 .time-value {
   font-size: 1rem;
   font-weight: 700;
-  color: white;
-  background: #10b981;
-  padding: 0.3rem 0.6rem;
-  border-radius: 6px;
+  color: #10b981;
   font-family: 'Courier New', monospace;
   letter-spacing: 1px;
-  text-shadow: none;
+  text-shadow: 0 0 4px rgba(16, 185, 129, 0.5);
 }
 
 .time-label {
@@ -838,7 +834,6 @@
   text-align: center;
   line-height: 1.1;
   font-family: 'Courier New', monospace;
-  margin-top: 0.2rem;
 }
 
 .progress-section {
