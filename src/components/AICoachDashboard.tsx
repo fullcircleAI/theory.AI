@@ -181,7 +181,7 @@ export const AICoachDashboard: React.FC = () => {
                     <div className="progress-bar-fill" 
                          style={{ 
                            width: `${Math.min((userProgress.studyTime / 24) * 100, 100)}%`,
-                           backgroundColor: userProgress.studyTime >= 24 ? '#10b981' : '#f59e0b'
+                           backgroundColor: '#10b981'
                          }}></div>
                   </div>
                   <div className="progress-clock-right">
