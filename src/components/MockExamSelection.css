@@ -7,6 +7,7 @@
   overflow: visible;
   display: flex;
   flex-direction: column;
+  max-height: none;
 }
 
 .mock-exam-page .tests-content {
@@ -14,12 +15,16 @@
   overflow: visible;
   display: flex;
   flex-direction: column;
+  height: auto;
+  max-height: none;
 }
 
 .mock-exam-page .tests-grid {
   flex: 1;
-  overflow-y: auto;
+  overflow: visible;
   padding-bottom: 1rem;
+  height: auto;
+  max-height: none;
 }
 
 /* Mock Exam Performance Summary */
@@ -267,15 +272,20 @@
     height: auto !important;
     min-height: 100vh !important;
     overflow: visible !important;
+    max-height: none !important;
   }
   
   .mock-exam-page .tests-content {
     overflow: visible !important;
+    height: auto !important;
+    max-height: none !important;
   }
   
   .mock-exam-page .tests-grid {
     overflow: visible !important;
     flex: none !important;
+    height: auto !important;
+    max-height: none !important;
   }
   
   .mock-exam-requirement-note {
@@ -290,6 +300,21 @@
 
   .requirement-text {
     font-size: 0.85rem;
+  }
+  
+  /* Ensure mock exam page is fully scrollable */
+  .mock-exam-page {
+    height: auto !important;
+    min-height: 100vh !important;
+    overflow: visible !important;
+    max-height: none !important;
+  }
+  
+  .mock-exam-page .main-content {
+    height: auto !important;
+    min-height: 100vh !important;
+    overflow: visible !important;
+    max-height: none !important;
   }
 
   .unlock-progress-banner {
