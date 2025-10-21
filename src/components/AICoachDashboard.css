@@ -314,12 +314,13 @@
   font-weight: 600;
 }
 
-/* Center exam readiness on web */
+/* Center exam readiness on web - same width as study timer */
 @media (min-width: 1025px) {
   .summary-stat:first-child {
     text-align: center;
-    max-width: 300px;
-    margin: 0 auto;
+    width: 100%;
+    max-width: none;
+    margin: 0;
   }
   
   .summary-stat:first-child .stat-number {
