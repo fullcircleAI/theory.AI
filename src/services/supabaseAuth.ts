@@ -32,7 +32,9 @@ class SupabaseAuthService {
         return null;
       }
 
-      return data.user as SupabaseUser;
+      // OAuth redirects to Google, user will be redirected back
+      // The actual user data comes from the auth state change
+      return null; // Will be handled by onAuthStateChange
     } catch (error) {
       console.error('Google sign-in error:', error);
       return null;
@@ -54,7 +56,7 @@ class SupabaseAuthService {
         return null;
       }
 
-      return data.user as SupabaseUser;
+      return null; // Will be handled by onAuthStateChange
     } catch (error) {
       console.error('Apple sign-in error:', error);
       return null;
@@ -76,7 +78,7 @@ class SupabaseAuthService {
         return null;
       }
 
-      return data.user as SupabaseUser;
+      return null; // Will be handled by onAuthStateChange
     } catch (error) {
       console.error('Facebook sign-in error:', error);
       return null;
@@ -89,15 +91,35 @@ class SupabaseAuthService {
   }
 
   // Get current user
-  getCurrentUser(): SupabaseUser | null {
-    const { data: { user } } = supabase.auth.getUser();
-    return user as SupabaseUser;
+  async getCurrentUser(): Promise<SupabaseUser | null> {
+    const { data: { user } } = await supabase.auth.getUser();
+    if (user) {
+      return {
+        id: user.id,
+        email: user.email || '',
+        name: user.user_metadata?.full_name || user.user_metadata?.name || 'User',
+        avatar_url: user.user_metadata?.avatar_url,
+        provider: 'google' // Default, could be determined from user metadata
+      };
+    }
+    return null;
   }
 
   // Listen for auth changes
   onAuthStateChange(callback: (user: SupabaseUser | null) => void) {
-    return supabase.auth.onAuthStateChange((event, session) => {
-      callback(session?.user as SupabaseUser || null);
+    return supabase.auth.onAuthStateChange(async (event, session) => {
+      if (session?.user) {
+        const user: SupabaseUser = {
+          id: session.user.id,
+          email: session.user.email || '',
+          name: session.user.user_metadata?.full_name || session.user.user_metadata?.name || 'User',
+          avatar_url: session.user.user_metadata?.avatar_url,
+          provider: 'google' // Default, could be determined from user metadata
+        };
+        callback(user);
+      } else {
+        callback(null);
+      }
     });
   }
 }
