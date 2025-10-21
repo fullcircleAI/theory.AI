@@ -166,9 +166,6 @@ export const AICoachDashboard: React.FC = () => {
                   <span className="status-emoji">{getReadinessStatus(getExamReadiness()).emoji}</span>
                   <span className="status-text">{getReadinessStatus(getExamReadiness()).status}</span>
                 </div>
-                <div className="readiness-message">
-                  {getReadinessMessage(getExamReadiness())}
-                </div>
               </div>
               <div className="summary-stat combined-progress">
                 <div className="digital-watch-container">
