@@ -347,7 +347,7 @@
 
 .status-text {
   color: var(--text-secondary);
-  text-transform: uppercase;
+  text-transform: none;
   letter-spacing: 0.5px;
 }
 
