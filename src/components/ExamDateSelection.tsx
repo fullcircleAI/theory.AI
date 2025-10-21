@@ -13,16 +13,57 @@ export const ExamDateSelection: React.FC<ExamDateSelectionProps> = ({ onComplete
   const [selectedDate, setSelectedDate] = useState<string>('');
   const [isLoading, setIsLoading] = useState(false);
 
-  // Calculate min and max dates (1-7 days from today)
+  // Calculate min and max dates (1-7 weekdays from today, excluding weekends)
   const today = new Date();
   const minDate = new Date(today);
   minDate.setDate(today.getDate() + 1); // Tomorrow
   
+  // Find next 7 weekdays (excluding weekends)
   const maxDate = new Date(today);
-  maxDate.setDate(today.getDate() + 7); // 7 days from today
+  let weekdaysAdded = 0;
+  let currentDate = new Date(today);
+  currentDate.setDate(currentDate.getDate() + 1); // Start from tomorrow
+  
+  while (weekdaysAdded < 7) {
+    const dayOfWeek = currentDate.getDay();
+    // Monday = 1, Tuesday = 2, Wednesday = 3, Thursday = 4, Friday = 5
+    if (dayOfWeek >= 1 && dayOfWeek <= 5) {
+      weekdaysAdded++;
+      if (weekdaysAdded === 7) {
+        maxDate.setTime(currentDate.getTime());
+      }
+    }
+    currentDate.setDate(currentDate.getDate() + 1);
+  }
 
   const formatDateForInput = (date: Date) => {
     return date.toISOString().split('T')[0];
+  };
+
+  // Check if a date is a weekday (Monday-Friday)
+  const isWeekday = (date: Date) => {
+    const dayOfWeek = date.getDay();
+    return dayOfWeek >= 1 && dayOfWeek <= 5; // Monday = 1, Friday = 5
+  };
+
+  // Handle date selection with weekday validation
+  const handleDateChange = (dateString: string) => {
+    if (!dateString) {
+      setSelectedDate('');
+      return;
+    }
+    
+    const selectedDateObj = new Date(dateString);
+    if (isWeekday(selectedDateObj)) {
+      setSelectedDate(dateString);
+    } else {
+      // If weekend is selected, find next weekday
+      const nextWeekday = new Date(selectedDateObj);
+      while (!isWeekday(nextWeekday)) {
+        nextWeekday.setDate(nextWeekday.getDate() + 1);
+      }
+      setSelectedDate(formatDateForInput(nextWeekday));
+    }
   };
 
   const handleContinue = async () => {
@@ -68,11 +109,6 @@ export const ExamDateSelection: React.FC<ExamDateSelectionProps> = ({ onComplete
   return (
     <div className="exam-date-selection">
       <div className="exam-date-container">
-        {/* Mascot */}
-        <div className="mascot-container">
-          <img src="/images/mascot.png" alt="Mascot" className="mascot-image" />
-        </div>
-
         {/* Title */}
         <h1 className="exam-date-title">
           {t('examDate.title', 'When\'s Your Exam?')}
@@ -82,6 +118,13 @@ export const ExamDateSelection: React.FC<ExamDateSelectionProps> = ({ onComplete
         <p className="exam-date-subtitle">
           {t('examDate.subtitle', 'Get a personalized study plan based on your exam date')}
         </p>
+        
+        {/* Weekday notice */}
+        <div className="weekday-notice">
+          <p className="weekday-text">
+            {t('examDate.weekdayNotice', 'Select a weekday (Monday-Friday) within the next 7 business days')}
+          </p>
+        </div>
 
         {/* Date Selection */}
         <div className="date-selection-container">
@@ -92,7 +135,7 @@ export const ExamDateSelection: React.FC<ExamDateSelectionProps> = ({ onComplete
             id="exam-date"
             type="date"
             value={selectedDate}
-            onChange={(e) => setSelectedDate(e.target.value)}
+            onChange={(e) => handleDateChange(e.target.value)}
             min={formatDateForInput(minDate)}
             max={formatDateForInput(maxDate)}
             className="date-input"
@@ -116,7 +159,7 @@ export const ExamDateSelection: React.FC<ExamDateSelectionProps> = ({ onComplete
         {selectedDate && (
           <div className="motivational-message">
             <p>
-              {t('examDate.motivational', 'You can master driving theory in 24 hours of study!')}
+              {t('examDate.motivational', 'You can learn driving theory in 24 hours of study!')}
             </p>
           </div>
         )}
