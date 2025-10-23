@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { useTranslation } from 'react-i18next';
+// import { useTranslation } from 'react-i18next'; // Not used since we use real exam questions directly
 import { Navigation } from './Navigation';
 import { lightHaptic, impactHaptic } from '../utils/haptics';
 import './MockExam.css';
 import * as questionData from '../question_data';
+import { getRandomRealExamQuestions } from '../question_data/realExamQuestions';
 
 interface Question {
   id: string;
@@ -21,19 +22,22 @@ interface MockExamConfig {
   questions: number;
   timeLimit: number; // in minutes
   passRate: number; // percentage
-  difficulty: 'beginner' | 'intermediate' | 'advanced';
+  difficulty: 'exam1' | 'exam2' | 'exam3';
 }
 
 export const MockExam: React.FC = () => {
   const { examId } = useParams<{ examId: string }>();
   const navigate = useNavigate();
-  const { t, i18n } = useTranslation();
+  // Translation removed since we're using real exam questions directly
 
-  // Mock exam configurations - ONLY pass mark differs
+  // Mock exam configurations - Official exam format
   const examConfigs: Record<string, MockExamConfig> = {
-    'beginner': { questions: 50, timeLimit: 30, passRate: 88, difficulty: 'beginner' }, // 44/50
-    'intermediate': { questions: 50, timeLimit: 30, passRate: 92, difficulty: 'intermediate' }, // 46/50
-    'advanced': { questions: 50, timeLimit: 30, passRate: 96, difficulty: 'advanced' } // 48/50
+    'exam1': { questions: 25, timeLimit: 30, passRate: 52, difficulty: 'exam1' }, // 13/25 (52%)
+    'exam2': { questions: 25, timeLimit: 30, passRate: 52, difficulty: 'exam2' }, // 13/25 (52%)
+    'exam3': { questions: 25, timeLimit: 30, passRate: 52, difficulty: 'exam3' }, // 13/25 (52%)
+    'mock-exam1': { questions: 25, timeLimit: 30, passRate: 52, difficulty: 'exam1' }, // 13/25 (52%)
+    'mock-exam2': { questions: 25, timeLimit: 30, passRate: 52, difficulty: 'exam2' }, // 13/25 (52%)
+    'mock-exam3': { questions: 25, timeLimit: 30, passRate: 52, difficulty: 'exam3' } // 13/25 (52%)
   };
 
   const [questions, setQuestions] = useState<Question[]>([]);
@@ -88,97 +92,29 @@ export const MockExam: React.FC = () => {
     }
 
     // Create formatted exam with proper question distribution
-    const formattedQuestions = createFormattedExam(config.difficulty);
+    const formattedQuestions = createFormattedExam();
     setQuestions(formattedQuestions);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [examId, navigate]);
 
-  // Create formatted exam - 50 questions: 25 Traffic Rules, 15 Hazard Perception, 10 Insight
-  const createFormattedExam = (_difficulty: 'beginner' | 'intermediate' | 'advanced'): Question[] => {
-    // Get all questions from TypeScript files
-    const trafficRulesQuestions = [
-      ...questionData.trafficLightsSignalsQuestions,
-      ...questionData.priorityRulesQuestions,
-      ...questionData.speedLimitQuestions,
-      ...questionData.roadMarkingsQuestions,
-      ...questionData.expandedPriorityRulesQuestions,
-      ...questionData.motorwayRulesQuestions,
-      ...questionData.parkingRulesQuestions,
-      ...questionData.environmentalZonesQuestions,
-      ...questionData.technologySafetyQuestions,
-      ...questionData.alcoholDrugsQuestions,
-      ...questionData.fatigueRestQuestions,
-      ...questionData.emergencyProceduresQuestions,
-      ...questionData.bicycleInteractionsQuestions,
-      ...questionData.roundaboutRulesQuestions,
-      ...questionData.tramInteractionsQuestions,
-      ...questionData.pedestrianCrossingsQuestions,
-      ...questionData.constructionZonesQuestions,
-      ...questionData.weatherConditionsQuestions,
-      ...questionData.vehicleCategoriesQuestions,
-      ...questionData.vehicleDocumentationQuestions,
-      ...questionData.mandatorySignQuestions,
-      ...questionData.warningSignsQuestions,
-      ...questionData.prohibitorySignsQuestions,
-      ...questionData.prohibitorySigns2Questions,
-      ...questionData.roadInformationQuestions,
-      ...questionData.signIdentificationQuestions,
-      ...questionData.mandatorySigns2Questions
-    ];
-
-    const hazardPerceptionList = [...questionData.hazardPerceptionQuestions];
-    const trafficInsightList = [...questionData.insightPracticeQuestions];
-
-    // Apply translations if not English
-    const translateQuestions = (questions: Question[], testKey: string): Question[] => {
-      if (i18n.language === 'en') return questions;
+  // Create formatted exam - 25 questions: 15 real exam + 10 image questions
+  const createFormattedExam = (): Question[] => {
+    // Use the optimized function that already provides 15 real + 10 image questions
+    try {
+      const exam = getRandomRealExamQuestions(25);
       
-      return questions.map((q, index) => {
-        const qKey = `q${index + 1}`;
-        const baseKey = `questions.${testKey}.${qKey}`;
-        
-        // Check if translation exists
-        const hasTranslation = i18n.exists(`${baseKey}.text`);
-        
-        if (hasTranslation) {
-          return {
-            ...q,
-            text: t(`${baseKey}.text`),
-            options: q.options.map((opt, optIndex) => ({
-              ...opt,
-              text: t(`${baseKey}.o${optIndex + 1}`)
-            })),
-            explanation: t(`${baseKey}.explanation`)
-          };
-        }
-        return q; // Fall back to English
+      console.log(`Mock exam ${examId} using optimized questions:`, { 
+        total: exam.length,
+        realExamQuestions: exam.filter(q => !q.imageUrl).length,
+        imageQuestions: exam.filter(q => q.imageUrl).length
       });
-    };
-
-
-    // Apply translations to each category
-    const translatedTrafficRules = translateQuestions(trafficRulesQuestions, 'trafficLights'); // Use first test key as fallback
-    const translatedHazardPerception = translateQuestions(hazardPerceptionList, 'hazardPerception');
-    const translatedTrafficInsight = translateQuestions(trafficInsightList, 'insightPractice');
-
-    // Shuffle each category
-    const shuffledTrafficRules = [...translatedTrafficRules].sort(() => Math.random() - 0.5);
-    const shuffledHazardPerception = [...translatedHazardPerception].sort(() => Math.random() - 0.5);
-    const shuffledTrafficInsight = [...translatedTrafficInsight].sort(() => Math.random() - 0.5);
-
-    // Select questions: 25 + 15 + 10 = 50
-    const selectedTrafficRules = shuffledTrafficRules.slice(0, 25);
-    const selectedHazardPerception = shuffledHazardPerception.slice(0, 15);
-    const selectedTrafficInsight = shuffledTrafficInsight.slice(0, 10);
-
-    // Combine and shuffle final exam
-    const exam = [
-      ...selectedTrafficRules,
-      ...selectedHazardPerception,
-      ...selectedTrafficInsight
-    ].sort(() => Math.random() - 0.5);
-
-    return exam;
+      
+      return exam;
+    } catch (error) {
+      console.error('Error loading exam questions:', error);
+      // Fallback to generic questions if real exam questions fail
+      return questionData.trafficLightsSignalsQuestions.slice(0, 25);
+    }
   };
 
   // Timer countdown
@@ -216,6 +152,20 @@ export const MockExam: React.FC = () => {
     const correctAnswers = Object.values(answers).filter((answer, index) =>
       answer === questions[index]?.correctAnswerId
     ).length;
+    
+    // Debug logging for scoring verification
+    console.log('=== MOCK EXAM SCORING DEBUG ===');
+    console.log('Total questions:', questions.length);
+    console.log('User answers:', answers);
+    console.log('Correct answers:', questions.map(q => q.correctAnswerId));
+    console.log('Correct count:', correctAnswers);
+    
+    // Detailed answer comparison
+    Object.entries(answers).forEach(([questionIndex, userAnswer]) => {
+      const question = questions[parseInt(questionIndex)];
+      const isCorrect = userAnswer === question?.correctAnswerId;
+      console.log(`Q${parseInt(questionIndex) + 1}: User=${userAnswer}, Correct=${question?.correctAnswerId}, ${isCorrect ? '✓' : '✗'}`);
+    });
     
     // Navigate to results page with data
     if (examConfig && examId) {
@@ -304,7 +254,7 @@ export const MockExam: React.FC = () => {
               <div className="rules-list">
                 <div className="rule-item">
                   <span className="rule-number">1.</span>
-                  <span className="rule-text">You must answer all 50 questions within 30 minutes</span>
+                  <span className="rule-text">You must answer all 25 questions within 30 minutes</span>
                 </div>
                 <div className="rule-item">
                   <span className="rule-number">2.</span>
@@ -327,7 +277,6 @@ export const MockExam: React.FC = () => {
                   <span className="rule-text">The timer will continue even if you close or refresh the page</span>
                 </div>
               </div>
-              <p className="rules-footer">Good luck with your examination.</p>
             </div>
 
             <button className="start-exam-btn" onClick={startExam}>
@@ -354,7 +303,7 @@ export const MockExam: React.FC = () => {
               <span className="practice-question-number">
                 Question {currentQuestionIndex + 1} of {questions.length}
               </span>
-              <span className="exam-timer" style={{ color: timeLeft < 300 ? '#ef4444' : '#10b981' }}>
+              <span className="practice-timer" style={{ color: timeLeft < 300 ? '#ef4444' : '#10b981' }}>
                 ⏱ {formatTime(timeLeft)}
               </span>
             </div>
@@ -384,17 +333,23 @@ export const MockExam: React.FC = () => {
               const isSelected = selectedAnswer === option.id;
 
               return (
-                <button
+                <label
                   key={option.id}
-                  className={`practice-option-btn ${isSelected ? 'selected' : ''}`}
-                  onClick={() => handleAnswer(option.id)}
-                  disabled={isAnswered}
+                  className={`practice-option-label ${isSelected ? 'selected' : ''}`}
                 >
-                  <span className="option-letter">
+                  <input
+                    type="radio"
+                    name="answer"
+                    value={option.id}
+                    checked={isSelected}
+                    onChange={() => handleAnswer(option.id)}
+                    disabled={isAnswered}
+                  />
+                  <span className="practice-option-letter">
                     {String.fromCharCode(65 + index)}
                   </span>
-                  <span className="option-text">{option.text}</span>
-                </button>
+                  <span className="practice-option-text">{option.text}</span>
+                </label>
               );
             })}
           </div>

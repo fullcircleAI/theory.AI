@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { freeAIService, AITutorResponse } from '../services/freeAIService';
+import { realAIService, AITutorResponse } from '../services/realAIService';
 import { aiCoach } from '../services/aiCoach';
 import './AITutor.css';
 
@@ -21,7 +21,7 @@ interface ChatMessage {
 }
 
 const AITutor: React.FC<AITutorProps> = ({ userProgress, currentTest, onClose }) => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [inputMessage, setInputMessage] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -29,12 +29,12 @@ const AITutor: React.FC<AITutorProps> = ({ userProgress, currentTest, onClose })
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
-  // Welcome message
+  // Welcome message - Short and focused
   useEffect(() => {
     const welcomeMessage: ChatMessage = {
       id: 'welcome',
       type: 'ai',
-      message: t('aiTutor.welcome', 'Hi! I\'m your AI driving theory tutor. Ask me anything about Dutch driving rules, practice tests, or how to improve your scores!'),
+      message: t('aiTutor.welcome', 'Hi! I can help with Dutch driving theory, exam costs, traffic rules, and your progress. What would you like to know?'),
       timestamp: new Date(),
       tone: 'encouraging'
     };
@@ -52,21 +52,22 @@ const AITutor: React.FC<AITutorProps> = ({ userProgress, currentTest, onClose })
   }, []);
 
   const handleSendMessage = async () => {
+    console.log('Send button clicked!', { inputMessage, isLoading });
     if (!inputMessage.trim() || isLoading) return;
 
-    // Limit to 3 questions max
-    const userMessages = messages.filter(msg => msg.type === 'user');
-    if (userMessages.length >= 3) {
-      const limitMessage: ChatMessage = {
-        id: Date.now().toString(),
-        type: 'ai',
-        message: 'I can only answer 3 questions per session. Please close and reopen the chat to ask more questions.',
-        timestamp: new Date(),
-        tone: 'supportive'
-      };
-      setMessages(prev => [...prev, limitMessage]);
-      return;
-    }
+    // Remove the 3-question limit for better user experience
+    // const userMessages = messages.filter(msg => msg.type === 'user');
+    // if (userMessages.length >= 3) {
+    //   const limitMessage: ChatMessage = {
+    //     id: Date.now().toString(),
+    //     type: 'ai',
+    //     message: 'I can only answer 3 questions per session. Please close and reopen the chat to ask more questions.',
+    //     timestamp: new Date(),
+    //     tone: 'supportive'
+    //   };
+    //   setMessages(prev => [...prev, limitMessage]);
+    //   return;
+    // }
 
     const userMessage: ChatMessage = {
       id: Date.now().toString(),
@@ -85,10 +86,11 @@ const AITutor: React.FC<AITutorProps> = ({ userProgress, currentTest, onClose })
       const context = {
         userProgress,
         currentTest,
-        recentMessages: messages.slice(-3)
+        recentMessages: messages.slice(-3),
+        language: i18n.language || 'en' // Pass current language
       };
 
-      const aiResponse: AITutorResponse = await freeAIService.getTutorResponse(
+      const aiResponse: AITutorResponse = await realAIService.getTutorResponse(
         userMessage.message,
         context
       );
@@ -147,23 +149,26 @@ const AITutor: React.FC<AITutorProps> = ({ userProgress, currentTest, onClose })
     
     const questions = [];
     
-    // Question 1: Based on performance level
-    if (averageScore < 60) {
-      questions.push("What should I focus on first?");
+    // Question 1: Based on performance level with personalized messaging
+    if (averageScore < 30) {
+      questions.push("I'm just starting - what should I focus on first?");
+    } else if (averageScore < 60) {
+      questions.push(`I'm at ${Math.round(averageScore)}% - how can I improve faster?`);
     } else if (averageScore < 80) {
-      questions.push("How can I reach 80%+ scores?");
+      questions.push(`I'm at ${Math.round(averageScore)}% - am I ready for mock exams?`);
     } else {
-      questions.push("Am I ready for mock exams?");
+      questions.push("I'm doing well - what should I focus on next?");
     }
     
     // Question 2: Based on current context and AI insights
     if (testContext && testContext !== 'dashboard') {
-      questions.push(`How can I improve in ${testContext.replace('-', ' ')}?`);
+      const topicName = testContext.replace('-', ' ').replace(/\b\w/g, l => l.toUpperCase());
+      questions.push(`How can I master ${topicName}?`);
     } else if (aiInsights.length > 0) {
       const topWeakness = aiInsights[0]?.message || 'weak areas';
-      questions.push(`Why is ${topWeakness} difficult?`);
+      questions.push(`Why is ${topWeakness} so challenging?`);
     } else {
-      questions.push("What should I study next?");
+      questions.push("What's the best way to study for the CBR exam?");
     }
     
     return questions.slice(0, 2); // Only show 2 questions
@@ -273,12 +278,16 @@ const AITutor: React.FC<AITutorProps> = ({ userProgress, currentTest, onClose })
             disabled={!inputMessage.trim() || isLoading}
             className="ai-tutor-send"
             title={isLoading ? 'Sending...' : 'Send message'}
+            style={{
+              opacity: (!inputMessage.trim() || isLoading) ? 0.6 : 1,
+              cursor: (!inputMessage.trim() || isLoading) ? 'not-allowed' : 'pointer'
+            }}
           >
             {isLoading ? (
               <div className="loading-spinner"></div>
             ) : (
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M7 11L12 6L17 11M12 18V7" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 19l9-7-9-7v4H3v6h9v4z" fill="white" stroke="none"/>
               </svg>
             )}
           </button>

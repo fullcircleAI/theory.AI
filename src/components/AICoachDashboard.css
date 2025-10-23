@@ -10,6 +10,155 @@
   box-sizing: border-box;
 }
 
+/* Enhanced Smart Study Plan Insights */
+.smart-insight {
+  background: rgba(16, 185, 129, 0.1);
+  border: 1px solid rgba(16, 185, 129, 0.2);
+  border-radius: 8px;
+  padding: 0.75rem;
+  margin-top: 0.5rem;
+  font-size: 0.8rem;
+}
+
+.smart-focus-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+  color: #10b981;
+}
+
+.focus-icon {
+  font-size: 1rem;
+}
+
+.focus-title {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.focus-details {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.25rem;
+}
+
+.focus-time {
+  background: #10b981;
+  color: white;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  font-size: 0.7rem;
+  font-weight: 600;
+}
+
+.focus-score {
+  font-size: 0.7rem;
+  color: #6b7280;
+  font-style: italic;
+}
+
+.smart-weakness {
+  background: rgba(239, 68, 68, 0.1);
+  border: 1px solid rgba(239, 68, 68, 0.2);
+  border-radius: 8px;
+  padding: 0.75rem;
+  margin-top: 0.5rem;
+  font-size: 0.8rem;
+}
+
+.weakness-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+  color: #ef4444;
+}
+
+.weakness-icon {
+  font-size: 1rem;
+}
+
+.weakness-title {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.weakness-details {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.25rem;
+}
+
+.weakness-score {
+  background: #ef4444;
+  color: white;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  font-size: 0.7rem;
+  font-weight: 600;
+}
+
+.weakness-tip {
+  font-size: 0.7rem;
+  color: #6b7280;
+  font-style: italic;
+}
+
+.smart-confidence {
+  background: rgba(16, 185, 129, 0.1);
+  border: 1px solid rgba(16, 185, 129, 0.2);
+  border-radius: 8px;
+  padding: 0.75rem;
+  margin-top: 0.5rem;
+  font-size: 0.8rem;
+}
+
+.confidence-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+  color: #10b981;
+}
+
+.confidence-icon {
+  font-size: 1rem;
+}
+
+.confidence-title {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.confidence-message {
+  font-size: 0.8rem;
+  color: #1f2937;
+  margin-bottom: 0.25rem;
+  font-weight: 500;
+}
+
+.confidence-message-small {
+  font-size: 0.75rem;
+  color: #1f2937;
+  margin-bottom: 0.25rem;
+  font-weight: 500;
+}
+
+.days-remaining {
+  font-size: 0.7rem;
+  color: #6b7280;
+  font-style: italic;
+}
+
 /* Mock Exam Unlock Progress Section - REMOVED */
 
 /* Floating AI Tutor Button - WhatsApp Style */
@@ -117,7 +266,7 @@
   }
 }
 
-/* Mobile first - make it work on mobile */
+/* Enhanced Mobile Responsiveness - iOS/Android Optimized */
 @media (max-width: 768px) {
   .dashboard {
     height: auto !important;
@@ -125,6 +274,11 @@
     overflow: visible !important;
     padding-bottom: 2rem !important;
     min-height: calc(100vh - 100px);
+    /* iOS safe area support */
+    padding-top: max(env(safe-area-inset-top), 0px);
+    padding-bottom: max(env(safe-area-inset-bottom), 0px);
+    padding-left: max(env(safe-area-inset-left), 0px);
+    padding-right: max(env(safe-area-inset-right), 0px);
   }
   
   .ai-insights-summary {
@@ -138,10 +292,23 @@
     flex: none !important;
   }
   
-  /* Mobile floating button positioning */
+  /* Enhanced mobile floating button positioning */
   .floating-ai-tutor {
     bottom: 80px; /* Above mobile footer */
     right: 16px;
+    /* iOS safe area support */
+    bottom: max(80px, env(safe-area-inset-bottom) + 20px);
+    right: max(16px, env(safe-area-inset-right) + 16px);
+  }
+  
+  /* iOS specific floating button */
+  .ios-floating {
+    bottom: max(80px, env(safe-area-inset-bottom) + 20px);
+  }
+  
+  /* Android specific floating button */
+  .android-floating {
+    bottom: max(80px, env(safe-area-inset-bottom) + 20px);
   }
   
   .floating-ai-btn {
@@ -153,6 +320,158 @@
     width: 24px;
     height: 24px;
     object-fit: contain;
+  }
+  
+  /* Enhanced mobile touch interactions */
+  .insight-card {
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0.1);
+    /* Enhanced touch feedback */
+    transition: transform 0.1s ease;
+  }
+  
+  .insight-card:active {
+    transform: scale(0.98);
+  }
+  
+  .start-practice-btn {
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: rgba(26, 62, 122, 0.2);
+    min-height: 44px; /* iOS touch target minimum */
+    /* Enhanced touch feedback */
+    transition: transform 0.1s ease;
+  }
+  
+  .start-practice-btn:active {
+    transform: scale(0.95);
+  }
+  
+  /* Mobile-specific haptic feedback simulation */
+  .haptic-light:active {
+    transform: scale(0.98);
+  }
+  
+  .haptic-medium:active {
+    transform: scale(0.95);
+  }
+  
+  .haptic-heavy:active {
+    transform: scale(0.92);
+  }
+  
+  /* Enhanced mobile achievement notifications */
+  .achievement-notification {
+    top: 10px;
+    right: 10px;
+    left: 10px;
+    animation: slideInDown 0.5s ease-out;
+    /* iOS safe area support */
+    top: max(10px, env(safe-area-inset-top) + 10px);
+    left: max(10px, env(safe-area-inset-left) + 10px);
+    right: max(10px, env(safe-area-inset-right) + 10px);
+  }
+  
+  /* iOS specific achievement notification */
+  .ios-achievement {
+    top: max(10px, env(safe-area-inset-top) + 10px);
+  }
+  
+  /* Android specific achievement notification */
+  .android-achievement {
+    top: max(10px, env(safe-area-inset-top) + 10px);
+  }
+  
+  .achievement-content {
+    min-width: auto;
+    padding: 0.75rem;
+  }
+  
+  .achievement-icon {
+    width: 40px;
+    height: 40px;
+    font-size: 1.25rem;
+  }
+  
+  .achievement-text h4 {
+    font-size: 0.9rem;
+  }
+  
+  .achievement-text p {
+    font-size: 0.8rem;
+  }
+  
+  /* Enhanced mobile progress bars */
+  .progress-bar-fill {
+    transition: all 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  /* Enhanced mobile digital watch */
+  .digital-watch-display {
+    padding: 0.1rem;
+    gap: 0.15rem;
+  }
+  
+  .time-section {
+    min-width: 50px;
+  }
+  
+  .time-value {
+    font-size: 0.85rem;
+  }
+  
+  .time-label {
+    font-size: 0.6rem;
+  }
+  
+  /* Enhanced mobile readiness status */
+  .readiness-status {
+    flex-direction: column;
+    gap: 0.25rem;
+    margin-top: 0.25rem;
+  }
+  
+  .status-emoji {
+    font-size: 1.2rem;
+  }
+  
+  .status-text {
+    font-size: 0.7rem;
+  }
+  
+  .readiness-message {
+    font-size: 0.6rem;
+    padding: 0 0.25rem;
+  }
+  
+  /* Enhanced mobile smart insights */
+  .smart-insight,
+  .smart-weakness,
+  .smart-confidence {
+    padding: 0.5rem;
+    margin-top: 0.25rem;
+  }
+  
+  .focus-details,
+  .weakness-details {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.25rem;
+  }
+  
+  .focus-time,
+  .weakness-score {
+    align-self: flex-start;
+  }
+}
+
+@keyframes slideInDown {
+  from {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
   }
 }
 
@@ -411,7 +730,7 @@
 .insights-grid {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 0.35rem;
+  gap: 0;
   flex: 1;
   overflow: hidden;
   padding-bottom: 0;
@@ -422,20 +741,21 @@
   .insights-grid {
     overflow: visible !important;
     flex: none !important;
+    gap: 0 !important;
   }
   
   .insight-card {
     min-height: auto !important;
     max-height: none !important;
     overflow: visible !important;
-    margin-bottom: 0.5rem !important;
+    margin-bottom: 0 !important;
   }
 }
 
 /* Web only - make larger than mobile */
 @media (min-width: 1025px) {
   .insights-grid {
-    gap: 1.2rem !important;
+    gap: 0 !important;
   }
 }
 
@@ -445,7 +765,7 @@
   gap: 0.3rem;
   padding: 0.4rem;
   border-radius: 6px;
-  border: 1px solid #e5e7eb;
+  border: none;
   transition: all 0.3s ease;
   flex-shrink: 0;
   min-height: 58px;
@@ -578,7 +898,8 @@
   font-weight: 800;
   cursor: pointer;
   transition: all 0.3s ease;
-  width: 100%;
+  width: auto;
+  max-width: 140px;
   justify-content: center;
   box-shadow: 0 4px 12px rgba(26, 62, 122, 0.4);
   text-transform: uppercase;
@@ -630,13 +951,13 @@
   
   .insights-grid {
     grid-template-columns: 1fr;
-    gap: 0.4rem;
+    gap: 0;
   }
   
   .dashboard-summary,
   .ai-insights-summary {
     padding: 0.5rem;
-    margin-bottom: 0.5rem;
+    margin-bottom: 0;
   }
   
   .summary-stat .stat-number {
@@ -831,10 +1152,11 @@
 .digital-watch-display {
   background: #000;
   border-radius: 8px;
-  padding: 0.8rem;
+  padding: 0.15rem; /* Hard reduced by 20% from 0.19rem */
   display: flex;
   align-items: center;
-  gap: 1rem;
+  justify-content: center;
+  gap: 0.24rem; /* Hard reduced by 20% from 0.3rem */
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
 }
 
@@ -842,8 +1164,11 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: flex-start;
   gap: 0.2rem;
   min-width: 80px;
+  height: auto;
+  align-self: flex-start;
 }
 
 .time-value {
@@ -867,6 +1192,8 @@
   flex: 1;
   display: flex;
   align-items: center;
+  justify-content: center;
+  padding: 0 0.5rem;
 }
 
 .digital-watch-display .progress-bar-bg {
@@ -887,8 +1214,10 @@
 /* Mobile responsive */
 @media (max-width: 768px) {
   .digital-watch-display {
-    padding: 0.6rem;
-    gap: 0.8rem;
+    padding: 0.12rem; /* Hard reduced by 20% from 0.15rem */
+    gap: 0.18rem; /* Hard reduced by 20% from 0.23rem */
+    align-items: center;
+    justify-content: center;
   }
   
   .time-section {
@@ -911,6 +1240,281 @@
   font-weight: 600;
   margin-top: 0.25rem;
   opacity: 0.8;
+}
+
+/* Achievement Notification */
+.achievement-notification {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 10001;
+  animation: slideInRight 0.5s ease-out;
+}
+
+.achievement-content {
+  background: white;
+  border-radius: 12px;
+  padding: 1rem;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  min-width: 300px;
+  border: 2px solid #f3f4f6;
+}
+
+.achievement-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  flex-shrink: 0;
+}
+
+.achievement-text h4 {
+  margin: 0 0 0.25rem 0;
+  font-size: 1rem;
+  font-weight: 700;
+  color: #1f2937;
+}
+
+.achievement-text p {
+  margin: 0;
+  font-size: 0.875rem;
+  color: #6b7280;
+}
+
+.achievement-close {
+  background: none;
+  border: none;
+  font-size: 1.25rem;
+  color: #9ca3af;
+  cursor: pointer;
+  padding: 0.25rem;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+}
+
+.achievement-close:hover {
+  background: #f3f4f6;
+  color: #374151;
+}
+
+@keyframes slideInRight {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+/* Enhanced Readiness Status */
+.readiness-status {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.status-emoji {
+  font-size: 1rem;
+}
+
+.status-text {
+  color: var(--text-primary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.readiness-message {
+  font-size: 0.65rem;
+  color: var(--text-secondary);
+  text-align: center;
+  margin-top: 0.25rem;
+  line-height: 1.3;
+  padding: 0 0.5rem;
+}
+
+/* Enhanced Loading States */
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 50vh;
+  gap: 2rem;
+  padding: 2rem;
+}
+
+.loading-spinner {
+  position: relative;
+  width: 60px;
+  height: 60px;
+}
+
+.spinner-ring {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border: 3px solid transparent;
+  border-top: 3px solid #1A3E7A;
+  border-radius: 50%;
+  animation: spin 1.5s linear infinite;
+}
+
+.spinner-ring:nth-child(2) {
+  width: 80%;
+  height: 80%;
+  top: 10%;
+  left: 10%;
+  border-top-color: #3b82f6;
+  animation-delay: -0.5s;
+  animation-duration: 2s;
+}
+
+.spinner-ring:nth-child(3) {
+  width: 60%;
+  height: 60%;
+  top: 20%;
+  left: 20%;
+  border-top-color: #10b981;
+  animation-delay: -1s;
+  animation-duration: 2.5s;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.loading-text {
+  text-align: center;
+  color: #1A3E7A;
+}
+
+.loading-text h3 {
+  margin: 0 0 0.5rem 0;
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.loading-text p {
+  margin: 0;
+  font-size: 1rem;
+  color: #6b7280;
+}
+
+.loading-progress {
+  width: 200px;
+}
+
+.loading-progress .progress-bar {
+  width: 100%;
+  height: 4px;
+  background: #e5e7eb;
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.loading-progress .progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #1A3E7A, #3b82f6, #10b981);
+  border-radius: 2px;
+  animation: loadingProgress 2s ease-in-out infinite;
+}
+
+@keyframes loadingProgress {
+  0% {
+    width: 0%;
+    transform: translateX(-100%);
+  }
+  50% {
+    width: 70%;
+    transform: translateX(0%);
+  }
+  100% {
+    width: 100%;
+    transform: translateX(0%);
+  }
+}
+
+/* Enhanced Progress Bar Animations */
+.progress-bar-fill {
+  height: 100%;
+  border-radius: 4px;
+  transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.progress-bar-fill::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+  animation: shimmer 2s infinite;
+}
+
+@keyframes shimmer {
+  0% {
+    left: -100%;
+  }
+  100% {
+    left: 100%;
+  }
+}
+
+/* Enhanced Digital Watch Animations */
+.digital-watch-display {
+  background: #000;
+  border-radius: 8px;
+  padding: 0.15rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.24rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  position: relative;
+  overflow: hidden;
+}
+
+.digital-watch-display::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(0, 255, 0, 0.1), transparent);
+  animation: digitalGlow 3s infinite;
+}
+
+@keyframes digitalGlow {
+  0% {
+    left: -100%;
+  }
+  50% {
+    left: 0%;
+  }
+  100% {
+    left: 100%;
+  }
 }
 
 /* Exam Date Prompt */

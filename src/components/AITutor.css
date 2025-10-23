@@ -352,7 +352,7 @@
   cursor: not-allowed;
 }
 
-/* ChatGPT-style send button - Always visible */
+/* ChatGPT-style send button - Always visible and clear */
 .ai-tutor-send {
   background: #002868;
   border: 1px solid #002868;
@@ -370,6 +370,16 @@
   flex-shrink: 0;
   opacity: 1;
   position: relative;
+  min-width: 40px;
+  min-height: 40px;
+}
+
+/* Ensure the send icon is always visible */
+.ai-tutor-send svg {
+  width: 18px;
+  height: 18px;
+  fill: white;
+  stroke: none;
 }
 
 .ai-tutor-send:hover:not(:disabled) {
@@ -377,6 +387,19 @@
   border-color: #1A3E7A;
   transform: translateY(-1px);
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+}
+
+/* Make the send button more prominent when enabled */
+.ai-tutor-send:not(:disabled) {
+  background: #002868;
+  border-color: #002868;
+  box-shadow: 0 2px 4px rgba(0, 40, 104, 0.3);
+}
+
+.ai-tutor-send:not(:disabled):hover {
+  background: #1A3E7A;
+  border-color: #1A3E7A;
+  box-shadow: 0 4px 8px rgba(0, 40, 104, 0.4);
 }
 
 /* Make disabled state more visible like ChatGPT */

@@ -224,6 +224,15 @@ export const TestsPage: React.FC = () => {
       difficulty: 'medium',
       category: 'Signals',
       icon: '🚦'
+    },
+    {
+      id: 'mock-test',
+      name: 'Mock Test',
+      description: 'Practice with official exam format questions',
+      questionCount: 25,
+      difficulty: 'hard',
+      category: 'Practice',
+      icon: '📝'
     }
   ];
 
@@ -246,6 +255,7 @@ export const TestsPage: React.FC = () => {
           </div>
 
           <div className="tests-content">
+
             {/* Recommendation Banner - iOS/Android Style */}
             <div className="recommendation-banner">
               <div className="recommendation-header">
@@ -267,6 +277,7 @@ export const TestsPage: React.FC = () => {
             <div className="tests-grid">
               {practiceTests.map((test) => {
                 const testScore = aiCoach.getTestScore(test.id);
+                const isTestCompleted = testScore !== null && testScore !== undefined;
                 return (
                   <div 
                     key={test.id}
@@ -274,14 +285,12 @@ export const TestsPage: React.FC = () => {
                     onClick={() => handleTestClick(test.id)}
                   >
                     <div className="test-content">
-                      <h3 className="test-name">{test.name}</h3>
-                      {testScore && (
-                        <div className="test-score">
-                          <span className={`score-value ${testScore >= 70 ? 'passed' : 'failed'}`}>
-                            {testScore}%
-                          </span>
-                        </div>
-                      )}
+                      <h3 className="test-name">
+                        {test.name}
+                        {isTestCompleted && (
+                          <span className="test-score-inline"> - {testScore}%</span>
+                        )}
+                      </h3>
                     </div>
                   </div>
                 );
@@ -291,6 +300,7 @@ export const TestsPage: React.FC = () => {
           </div>
         </div>
       </main>
+
     </div>
   );
 };

@@ -18,6 +18,10 @@ export const MockExamResults: React.FC = () => {
   const location = useLocation();
   const resultsData = location.state as ResultsData;
 
+  // Debug logging for results verification
+  console.log('=== MOCK EXAM RESULTS DEBUG ===');
+  console.log('Results data received:', resultsData);
+
   if (!resultsData) {
     navigate('/mock-exam');
     return null;
@@ -26,6 +30,18 @@ export const MockExamResults: React.FC = () => {
   const getDifficultyLabel = (difficulty: string) => {
     return difficulty.charAt(0).toUpperCase() + difficulty.slice(1);
   };
+
+  // Get next available mock exam
+  const getNextMockExam = (currentExamId: string) => {
+    const mockExams = ['mock-exam1', 'mock-exam2', 'mock-exam3'];
+    const currentIndex = mockExams.indexOf(currentExamId);
+    if (currentIndex < mockExams.length - 1) {
+      return mockExams[currentIndex + 1];
+    }
+    return null; // No next exam available
+  };
+
+  const nextExamId = getNextMockExam(resultsData.examId);
 
   return (
     <div className="result-page">
@@ -57,17 +73,29 @@ export const MockExamResults: React.FC = () => {
               >
                 Retake Exam
               </button>
+              {nextExamId ? (
+                <button 
+                  className="practice-nav-btn"
+                  onClick={() => navigate(`/mock-exam/${nextExamId}`)}
+                >
+                  Start Mock Exam {nextExamId.replace('mock-exam', '')}
+                </button>
+              ) : (
+                <button 
+                  className="practice-nav-btn"
+                  onClick={() => navigate('/mock-exam')}
+                >
+                  Mock Exam Dashboard
+                </button>
+              )}
               <button 
                 className="practice-nav-btn"
-                onClick={() => navigate('/mock-exam')}
+                onClick={() => {
+                  console.log('Navigating to dashboard...');
+                  navigate('/');
+                }}
               >
-                All Mock Exams
-              </button>
-              <button 
-                className="practice-nav-btn"
-                onClick={() => navigate('/')}
-              >
-                Back to Dashboard
+                Dashboard
               </button>
             </div>
           </div>

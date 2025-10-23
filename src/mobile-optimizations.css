@@ -1,9 +1,14 @@
-/* 📱 iOS & Android Mobile Optimizations */
+/* 📱 iOS & Android Mobile Optimizations - Enhanced for Native App Experience */
 
 /* Global Mobile Optimizations */
 * {
   box-sizing: border-box;
   -webkit-tap-highlight-color: transparent;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }
 
 html {
@@ -18,6 +23,14 @@ html {
   
   /* Prevent pull-to-refresh */
   overscroll-behavior-y: contain;
+  
+  /* iOS 15+ optimizations */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  
+  /* Android Chrome optimizations */
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
 }
 
 body {
@@ -49,8 +62,19 @@ body {
   /* Prevent pull-to-refresh on mobile */
   overscroll-behavior-y: contain;
   
-  /* iOS safe area support */
+  /* iOS safe area support - Enhanced */
   padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+  
+  /* iOS 15+ Dynamic Island support */
+  padding-top: max(env(safe-area-inset-top), 20px);
+  
+  /* Android navigation bar support */
+  padding-bottom: max(env(safe-area-inset-bottom), 0px);
+  
+  /* Performance optimizations */
+  will-change: auto;
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
 }
 
 /* iOS Safe Area Support */
@@ -113,6 +137,7 @@ textarea {
   
   /* Remove iOS styling */
   -webkit-appearance: none;
+  appearance: none;
   -webkit-border-radius: 0;
   border-radius: 8px;
 }
@@ -146,6 +171,7 @@ button {
 button {
   /* Remove iOS button styling */
   -webkit-appearance: none;
+  appearance: none;
   -webkit-border-radius: 0;
   border-radius: 8px;
   
@@ -248,44 +274,151 @@ button {
   }
 }
 
-/* iOS Specific Optimizations */
+/* iOS Specific Optimizations - Enhanced */
 @supports (-webkit-touch-callout: none) {
   /* iOS Safari specific styles */
   body {
     -webkit-overflow-scrolling: touch;
     -webkit-font-smoothing: antialiased;
+    -webkit-text-size-adjust: 100%;
   }
   
-  /* Fix iOS input zoom */
+  /* Fix iOS input zoom - Enhanced */
   input, textarea, select {
     font-size: 16px !important;
     transform: translateZ(0);
+    -webkit-appearance: none;
+    appearance: none;
+    -webkit-border-radius: 0;
+    border-radius: 8px;
   }
   
-  /* Fix iOS button styling */
+  /* Fix iOS button styling - Enhanced */
   button {
     -webkit-appearance: none;
+    appearance: none;
     -webkit-border-radius: 0;
+    border-radius: 8px;
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0.1);
+    touch-action: manipulation;
   }
   
-  /* Fix iOS scroll bounce */
+  /* Fix iOS scroll bounce - Enhanced */
   .scroll-container {
     -webkit-overflow-scrolling: touch;
     overscroll-behavior: contain;
   }
+  
+  /* iOS 15+ Dynamic Island support */
+  .ios-dynamic-island {
+    padding-top: max(env(safe-area-inset-top), 44px);
+  }
+  
+  /* iOS notch support for older devices */
+  .ios-notch {
+    padding-top: max(env(safe-area-inset-top), 20px);
+  }
+  
+  /* iOS home indicator support */
+  .ios-home-indicator {
+    padding-bottom: max(env(safe-area-inset-bottom), 0px);
+  }
+  
+  /* iOS specific touch feedback */
+  button:active, a:active, [role="button"]:active {
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0.2);
+    transform: scale(0.98);
+  }
+  
+  /* iOS specific scroll momentum */
+  .ios-momentum-scroll {
+    -webkit-overflow-scrolling: touch;
+    overflow-y: auto;
+  }
+  
+  /* iOS specific text selection */
+  .ios-text-selectable {
+    -webkit-user-select: text;
+    user-select: text;
+  }
 }
 
-/* Android Specific Optimizations */
+/* Android Specific Optimizations - Enhanced */
 @supports not (-webkit-touch-callout: none) {
   /* Android Chrome specific styles */
   body {
     -webkit-backface-visibility: hidden;
     backface-visibility: hidden;
+    -webkit-font-smoothing: antialiased;
   }
   
-  /* Better Android touch feedback */
+  /* Better Android touch feedback - Material Design */
   button, a, [role="button"] {
     -webkit-tap-highlight-color: rgba(0, 0, 0, 0.2);
+    touch-action: manipulation;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  /* Android Material Design ripple effect */
+  .android-ripple {
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .android-ripple::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.3);
+    transform: translate(-50%, -50%);
+    transition: width 0.3s, height 0.3s;
+  }
+  
+  .android-ripple:active::before {
+    width: 300px;
+    height: 300px;
+  }
+  
+  /* Android navigation bar support */
+  .android-nav-bar {
+    padding-bottom: max(env(safe-area-inset-bottom), 0px);
+  }
+  
+  /* Android status bar support */
+  .android-status-bar {
+    padding-top: max(env(safe-area-inset-top), 0px);
+  }
+  
+  /* Android specific scroll behavior */
+  .android-scroll {
+    -webkit-overflow-scrolling: auto;
+    overscroll-behavior: contain;
+  }
+  
+  /* Android specific input styling */
+  input, textarea, select {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    border-radius: 8px;
+  }
+  
+  /* Android specific button styling */
+  button {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    border-radius: 8px;
+  }
+  
+  /* Android specific focus states */
+  button:focus-visible, input:focus-visible {
+    outline: 2px solid #1976d2;
+    outline-offset: 2px;
   }
 }
 
@@ -359,15 +492,65 @@ a:focus-visible {
   background: rgba(0, 0, 0, 0.5);
 }
 
-/* Utility Classes */
+/* Enhanced Touch Interactions and Gestures */
+
+/* Swipe gestures support */
+.swipe-container {
+  touch-action: pan-x pan-y;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
+}
+
+/* Pull-to-refresh gesture */
+.pull-to-refresh {
+  touch-action: pan-y;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Enhanced touch targets for accessibility */
 .touch-target {
   min-height: 44px;
   min-width: 44px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0.1);
 }
 
+/* Large touch targets for better accessibility */
+.touch-target-large {
+  min-height: 48px;
+  min-width: 48px;
+  padding: 12px;
+}
+
+/* Haptic feedback simulation */
+.haptic-light {
+  transition: transform 0.1s ease;
+}
+
+.haptic-light:active {
+  transform: scale(0.98);
+}
+
+.haptic-medium {
+  transition: transform 0.15s ease;
+}
+
+.haptic-medium:active {
+  transform: scale(0.95);
+}
+
+.haptic-heavy {
+  transition: transform 0.2s ease;
+}
+
+.haptic-heavy:active {
+  transform: scale(0.92);
+}
+
+/* Utility Classes */
 .no-scroll {
   overflow: hidden;
   position: fixed;
@@ -382,6 +565,22 @@ a:focus-visible {
   padding-right: env(safe-area-inset-right);
 }
 
+/* Enhanced iOS safe area support */
+.ios-safe-area-enhanced {
+  padding-top: max(env(safe-area-inset-top), 20px);
+  padding-bottom: max(env(safe-area-inset-bottom), 0px);
+  padding-left: max(env(safe-area-inset-left), 0px);
+  padding-right: max(env(safe-area-inset-right), 0px);
+}
+
+/* Android safe area support */
+.android-safe-area {
+  padding-top: max(env(safe-area-inset-top), 0px);
+  padding-bottom: max(env(safe-area-inset-bottom), 0px);
+  padding-left: max(env(safe-area-inset-left), 0px);
+  padding-right: max(env(safe-area-inset-right), 0px);
+}
+
 /* Performance Optimizations */
 .will-change-transform {
   will-change: transform;
@@ -394,4 +593,51 @@ a:focus-visible {
 .gpu-accelerated {
   transform: translateZ(0);
   -webkit-transform: translateZ(0);
+}
+
+/* Mobile-specific performance optimizations */
+.mobile-optimized {
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  -webkit-perspective: 1000px;
+  perspective: 1000px;
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
+}
+
+/* Smooth scrolling for mobile */
+.smooth-scroll {
+  -webkit-overflow-scrolling: touch;
+  scroll-behavior: smooth;
+}
+
+/* Mobile-specific animations */
+@keyframes mobileSlideIn {
+  from {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes mobileSlideOut {
+  from {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+}
+
+.mobile-slide-in {
+  animation: mobileSlideIn 0.3s ease-out;
+}
+
+.mobile-slide-out {
+  animation: mobileSlideOut 0.3s ease-in;
 }

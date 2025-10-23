@@ -94,6 +94,7 @@ export const UserAuth: React.FC<UserAuthProps> = ({ onUserChange }) => {
 
   const handleGuestMode = () => {
     const guestUser = userAuth.createGuestUser();
+    localStorage.setItem('userAuthenticated', 'true');
     onUserChange(guestUser);
   };
 

@@ -105,12 +105,6 @@ export const ExamDateSelection: React.FC<ExamDateSelectionProps> = ({ onComplete
           {t('examDate.title', 'When\'s Your Exam?')}
         </h1>
 
-        {/* Weekday notice */}
-        <div className="weekday-notice">
-          <p className="weekday-text">
-            {t('examDate.weekdayNotice', 'Select a weekday (Monday-Friday) within the next 7 business days')}
-          </p>
-        </div>
 
         {/* Date Selection */}
         <div className="date-selection-container">

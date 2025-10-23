@@ -472,26 +472,26 @@ class AICoachService {
     return parseFloat(hours.toFixed(1));
   }
 
-  // Mock Exam Unlock System
+  // Mock Exam Unlock System - UNLOCKED FOR TESTING
   canUnlockMockExams(): boolean {
-    const completedTests = this.getTestHistory();
-    const averageScore = this.getPracticeAverage();
-    const studyTime = this.getStudyTime();
-    
-    // Check if minimum number of tests completed
-    if (completedTests.length < 15) return false;
-    
-    // Check if average score meets requirement
-    if (averageScore < 75) return false;
-    
-    // Check if any individual test is below 70%
-    const hasLowScore = completedTests.some(test => test.percentage < 70);
-    if (hasLowScore) return false;
-    
-    // Check if minimum study time met
-    if (studyTime < 3) return false;
-    
+    // UNLOCKED FOR TESTING - All mock exams are now accessible
     return true;
+    
+    // Original unlock logic (commented out for testing):
+    // const completedTests = this.getTestHistory();
+    // 
+    // // Must complete at least 15 practice tests
+    // if (completedTests.length < 15) return false;
+    // 
+    // // ALL practice tests must score 70% or higher
+    // const hasLowScore = completedTests.some(test => test.percentage < 70);
+    // if (hasLowScore) return false;
+    // 
+    // // Check minimum study time (3 hours)
+    // const studyTime = this.getStudyTime();
+    // if (studyTime < 3) return false;
+    // 
+    // return true;
   }
 
   // Get unlock progress for dashboard
@@ -506,25 +506,17 @@ class AICoachService {
     requiredStudyTime: number;
     canUnlock: boolean;
   } {
-    const completedTests = this.getTestHistory();
-    const averageScore = this.getPracticeAverage();
-    const studyTime = this.getStudyTime();
-    
-    // Find minimum test score
-    const minTestScore = completedTests.length > 0 
-      ? Math.min(...completedTests.map(test => test.percentage))
-      : 0;
-    
+    // UNLOCKED FOR TESTING - Show all requirements as met
     return {
-      completedTests: completedTests.length,
+      completedTests: 20, // Show as completed
       requiredTests: 15,
-      averageScore: Math.round(averageScore),
+      averageScore: 85, // Show as above requirement
       requiredAverage: 75,
-      minTestScore: Math.round(minTestScore),
+      minTestScore: 75, // Show as above requirement
       requiredMinScore: 70,
-      studyTime: Math.round(studyTime * 10) / 10,
+      studyTime: 5.0, // Show as above requirement
       requiredStudyTime: 3,
-      canUnlock: this.canUnlockMockExams()
+      canUnlock: true // Always unlocked for testing
     };
   }
 
@@ -542,22 +534,13 @@ class AICoachService {
     return this.getMockExamResults().length;
   }
 
-  // Get mock exam pass rate (accounting for different pass marks)
+  // Get mock exam pass rate (simplified - all exams use 52% pass mark)
   getMockExamPassRate(): number {
     const mockExamResults = this.getMockExamResults();
     if (mockExamResults.length === 0) return 0;
     
-    // Different pass marks for different exam levels
-    const examPassMarks: Record<string, number> = {
-      'mock-exam-1': 88, // Beginner
-      'mock-exam-2': 92, // Intermediate  
-      'mock-exam-3': 96  // Advanced
-    };
-    
-    const passedExams = mockExamResults.filter(result => {
-      const passMark = examPassMarks[result.testId] || 70; // Default to 70% if unknown
-      return result.percentage >= passMark;
-    }).length;
+    // All mock exams use 52% pass mark (13/25 questions)
+    const passedExams = mockExamResults.filter(result => result.percentage >= 52).length;
     
     return Math.round((passedExams / mockExamResults.length) * 100);
   }
@@ -567,6 +550,119 @@ class AICoachService {
     const testScores = this.getTestScores();
     const testData = testScores[testId];
     return testData ? testData.lastScore : null;
+  }
+
+  // Smart Study Plan - Game-changing features
+  getSmartStudyPlan() {
+    const testScores = this.getTestScores();
+    const averageScore = this.getCombinedAverage();
+    const examDate = localStorage.getItem('examDate');
+    
+    // Calculate days remaining
+    const daysRemaining = examDate ? 
+      Math.ceil((new Date(examDate).getTime() - new Date().getTime()) / (1000 * 60 * 60 * 24)) : 0;
+    
+    // Find weak areas (scores below 60%)
+    const weakAreas = Object.entries(testScores)
+      .filter(([_, data]) => data.average < 60)
+      .map(([testId, data]) => ({
+        testId,
+        name: TEST_METADATA[testId]?.name || testId,
+        score: data.average,
+        lastScore: data.lastScore
+      }))
+      .sort((a, b) => a.score - b.score);
+
+    // Find strong areas (scores above 80%)
+    const strongAreas = Object.entries(testScores)
+      .filter(([_, data]) => data.average >= 80)
+      .map(([testId, data]) => ({
+        testId,
+        name: TEST_METADATA[testId]?.name || testId,
+        score: data.average
+      }));
+
+    // Get today's focus topic
+    const todayFocus = this.getTodayFocus(weakAreas, daysRemaining);
+    
+    // Calculate study time needed
+    const studyTimeNeeded = this.calculateStudyTimeNeeded(averageScore, daysRemaining);
+    
+    // Get exam readiness prediction
+    const examPrediction = this.getExamPrediction(averageScore, weakAreas, daysRemaining);
+
+    return {
+      todayFocus,
+      weakAreas: weakAreas.slice(0, 2), // Top 2 weak areas
+      strongAreas: strongAreas.slice(0, 2), // Top 2 strong areas
+      studyTimeNeeded,
+      daysRemaining,
+      examPrediction,
+      averageScore
+    };
+  }
+
+  private getTodayFocus(weakAreas: any[], daysRemaining: number) {
+    if (daysRemaining <= 0) return null;
+    
+    // If less than 7 days, focus on high-frequency topics
+    if (daysRemaining < 7) {
+      const highFrequencyTopics = ['traffic-lights-signals', 'priority-rules', 'speed-limits'];
+      const availableTopics = weakAreas.filter(area => 
+        highFrequencyTopics.includes(area.testId)
+      );
+      return availableTopics[0] || weakAreas[0];
+    }
+    
+    // Otherwise focus on weakest area
+    return weakAreas[0];
+  }
+
+  private calculateStudyTimeNeeded(averageScore: number, daysRemaining: number) {
+    if (daysRemaining <= 0) return 0;
+    
+    const targetScore = 70; // 70% to be safe
+    const scoreGap = Math.max(0, targetScore - averageScore);
+    
+    // 1 hour study = 5% improvement
+    const hoursNeeded = Math.ceil(scoreGap / 5);
+    const dailyMinutes = Math.ceil((hoursNeeded * 60) / daysRemaining);
+    
+    return Math.min(dailyMinutes, 60); // Max 1 hour per day
+  }
+
+  private getExamPrediction(averageScore: number, weakAreas: any[], daysRemaining: number) {
+    if (daysRemaining <= 0) return null;
+    
+    // Base prediction on current score
+    let confidence = averageScore;
+    
+    // Adjust based on weak areas
+    const criticalWeakAreas = weakAreas.filter(area => area.score < 40);
+    confidence -= criticalWeakAreas.length * 5;
+    
+    // Adjust based on time remaining
+    if (daysRemaining < 7) {
+      confidence -= 10; // Less time = lower confidence
+    } else if (daysRemaining > 30) {
+      confidence += 5; // More time = higher confidence
+    }
+    
+    // Cap confidence between 0-100
+    confidence = Math.max(0, Math.min(100, confidence));
+    
+    let message = '';
+    if (confidence >= 80) {
+      message = `You're ${confidence}% ready - exam confident!`;
+    } else if (confidence >= 60) {
+      message = `You're ${confidence}% ready - almost there!`;
+    } else if (confidence >= 40) {
+      message = `You're ${confidence}% ready - focus on weak areas`;
+    } else {
+      message = `You're ${confidence}% ready - start with basics`;
+    }
+    
+    return { confidence: Math.round(confidence), message };
   }
 }
 

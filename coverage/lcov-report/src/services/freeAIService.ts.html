@@ -1,0 +1,2593 @@
+
+<!doctype html>
+<html lang="en">
+
+<head>
+    <title>Code coverage report for src/services/freeAIService.ts</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="../../prettify.css" />
+    <link rel="stylesheet" href="../../base.css" />
+    <link rel="shortcut icon" type="image/x-icon" href="../../favicon.png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <style type='text/css'>
+        .coverage-summary .sorter {
+            background-image: url(../../sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+    
+<body>
+<div class='wrapper'>
+    <div class='pad1'>
+        <h1><a href="../../index.html">All files</a> / <a href="index.html">src/services</a> freeAIService.ts</h1>
+        <div class='clearfix'>
+            
+            <div class='fl pad1y space-right2'>
+                <span class="strong">0% </span>
+                <span class="quiet">Statements</span>
+                <span class='fraction'>0/183</span>
+            </div>
+        
+            
+            <div class='fl pad1y space-right2'>
+                <span class="strong">0% </span>
+                <span class="quiet">Branches</span>
+                <span class='fraction'>0/237</span>
+            </div>
+        
+            
+            <div class='fl pad1y space-right2'>
+                <span class="strong">0% </span>
+                <span class="quiet">Functions</span>
+                <span class='fraction'>0/32</span>
+            </div>
+        
+            
+            <div class='fl pad1y space-right2'>
+                <span class="strong">0% </span>
+                <span class="quiet">Lines</span>
+                <span class='fraction'>0/179</span>
+            </div>
+        
+            
+        </div>
+        <p class="quiet">
+            Press <em>n</em> or <em>j</em> to go to the next uncovered block, <em>b</em>, <em>p</em> or <em>k</em> for the previous block.
+        </p>
+        <template id="filterTemplate">
+            <div class="quiet">
+                Filter:
+                <input type="search" id="fileSearch">
+            </div>
+        </template>
+    </div>
+    <div class='status-line low'></div>
+    <pre><table class="coverage">
+<tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
+<a name='L2'></a><a href='#L2'>2</a>
+<a name='L3'></a><a href='#L3'>3</a>
+<a name='L4'></a><a href='#L4'>4</a>
+<a name='L5'></a><a href='#L5'>5</a>
+<a name='L6'></a><a href='#L6'>6</a>
+<a name='L7'></a><a href='#L7'>7</a>
+<a name='L8'></a><a href='#L8'>8</a>
+<a name='L9'></a><a href='#L9'>9</a>
+<a name='L10'></a><a href='#L10'>10</a>
+<a name='L11'></a><a href='#L11'>11</a>
+<a name='L12'></a><a href='#L12'>12</a>
+<a name='L13'></a><a href='#L13'>13</a>
+<a name='L14'></a><a href='#L14'>14</a>
+<a name='L15'></a><a href='#L15'>15</a>
+<a name='L16'></a><a href='#L16'>16</a>
+<a name='L17'></a><a href='#L17'>17</a>
+<a name='L18'></a><a href='#L18'>18</a>
+<a name='L19'></a><a href='#L19'>19</a>
+<a name='L20'></a><a href='#L20'>20</a>
+<a name='L21'></a><a href='#L21'>21</a>
+<a name='L22'></a><a href='#L22'>22</a>
+<a name='L23'></a><a href='#L23'>23</a>
+<a name='L24'></a><a href='#L24'>24</a>
+<a name='L25'></a><a href='#L25'>25</a>
+<a name='L26'></a><a href='#L26'>26</a>
+<a name='L27'></a><a href='#L27'>27</a>
+<a name='L28'></a><a href='#L28'>28</a>
+<a name='L29'></a><a href='#L29'>29</a>
+<a name='L30'></a><a href='#L30'>30</a>
+<a name='L31'></a><a href='#L31'>31</a>
+<a name='L32'></a><a href='#L32'>32</a>
+<a name='L33'></a><a href='#L33'>33</a>
+<a name='L34'></a><a href='#L34'>34</a>
+<a name='L35'></a><a href='#L35'>35</a>
+<a name='L36'></a><a href='#L36'>36</a>
+<a name='L37'></a><a href='#L37'>37</a>
+<a name='L38'></a><a href='#L38'>38</a>
+<a name='L39'></a><a href='#L39'>39</a>
+<a name='L40'></a><a href='#L40'>40</a>
+<a name='L41'></a><a href='#L41'>41</a>
+<a name='L42'></a><a href='#L42'>42</a>
+<a name='L43'></a><a href='#L43'>43</a>
+<a name='L44'></a><a href='#L44'>44</a>
+<a name='L45'></a><a href='#L45'>45</a>
+<a name='L46'></a><a href='#L46'>46</a>
+<a name='L47'></a><a href='#L47'>47</a>
+<a name='L48'></a><a href='#L48'>48</a>
+<a name='L49'></a><a href='#L49'>49</a>
+<a name='L50'></a><a href='#L50'>50</a>
+<a name='L51'></a><a href='#L51'>51</a>
+<a name='L52'></a><a href='#L52'>52</a>
+<a name='L53'></a><a href='#L53'>53</a>
+<a name='L54'></a><a href='#L54'>54</a>
+<a name='L55'></a><a href='#L55'>55</a>
+<a name='L56'></a><a href='#L56'>56</a>
+<a name='L57'></a><a href='#L57'>57</a>
+<a name='L58'></a><a href='#L58'>58</a>
+<a name='L59'></a><a href='#L59'>59</a>
+<a name='L60'></a><a href='#L60'>60</a>
+<a name='L61'></a><a href='#L61'>61</a>
+<a name='L62'></a><a href='#L62'>62</a>
+<a name='L63'></a><a href='#L63'>63</a>
+<a name='L64'></a><a href='#L64'>64</a>
+<a name='L65'></a><a href='#L65'>65</a>
+<a name='L66'></a><a href='#L66'>66</a>
+<a name='L67'></a><a href='#L67'>67</a>
+<a name='L68'></a><a href='#L68'>68</a>
+<a name='L69'></a><a href='#L69'>69</a>
+<a name='L70'></a><a href='#L70'>70</a>
+<a name='L71'></a><a href='#L71'>71</a>
+<a name='L72'></a><a href='#L72'>72</a>
+<a name='L73'></a><a href='#L73'>73</a>
+<a name='L74'></a><a href='#L74'>74</a>
+<a name='L75'></a><a href='#L75'>75</a>
+<a name='L76'></a><a href='#L76'>76</a>
+<a name='L77'></a><a href='#L77'>77</a>
+<a name='L78'></a><a href='#L78'>78</a>
+<a name='L79'></a><a href='#L79'>79</a>
+<a name='L80'></a><a href='#L80'>80</a>
+<a name='L81'></a><a href='#L81'>81</a>
+<a name='L82'></a><a href='#L82'>82</a>
+<a name='L83'></a><a href='#L83'>83</a>
+<a name='L84'></a><a href='#L84'>84</a>
+<a name='L85'></a><a href='#L85'>85</a>
+<a name='L86'></a><a href='#L86'>86</a>
+<a name='L87'></a><a href='#L87'>87</a>
+<a name='L88'></a><a href='#L88'>88</a>
+<a name='L89'></a><a href='#L89'>89</a>
+<a name='L90'></a><a href='#L90'>90</a>
+<a name='L91'></a><a href='#L91'>91</a>
+<a name='L92'></a><a href='#L92'>92</a>
+<a name='L93'></a><a href='#L93'>93</a>
+<a name='L94'></a><a href='#L94'>94</a>
+<a name='L95'></a><a href='#L95'>95</a>
+<a name='L96'></a><a href='#L96'>96</a>
+<a name='L97'></a><a href='#L97'>97</a>
+<a name='L98'></a><a href='#L98'>98</a>
+<a name='L99'></a><a href='#L99'>99</a>
+<a name='L100'></a><a href='#L100'>100</a>
+<a name='L101'></a><a href='#L101'>101</a>
+<a name='L102'></a><a href='#L102'>102</a>
+<a name='L103'></a><a href='#L103'>103</a>
+<a name='L104'></a><a href='#L104'>104</a>
+<a name='L105'></a><a href='#L105'>105</a>
+<a name='L106'></a><a href='#L106'>106</a>
+<a name='L107'></a><a href='#L107'>107</a>
+<a name='L108'></a><a href='#L108'>108</a>
+<a name='L109'></a><a href='#L109'>109</a>
+<a name='L110'></a><a href='#L110'>110</a>
+<a name='L111'></a><a href='#L111'>111</a>
+<a name='L112'></a><a href='#L112'>112</a>
+<a name='L113'></a><a href='#L113'>113</a>
+<a name='L114'></a><a href='#L114'>114</a>
+<a name='L115'></a><a href='#L115'>115</a>
+<a name='L116'></a><a href='#L116'>116</a>
+<a name='L117'></a><a href='#L117'>117</a>
+<a name='L118'></a><a href='#L118'>118</a>
+<a name='L119'></a><a href='#L119'>119</a>
+<a name='L120'></a><a href='#L120'>120</a>
+<a name='L121'></a><a href='#L121'>121</a>
+<a name='L122'></a><a href='#L122'>122</a>
+<a name='L123'></a><a href='#L123'>123</a>
+<a name='L124'></a><a href='#L124'>124</a>
+<a name='L125'></a><a href='#L125'>125</a>
+<a name='L126'></a><a href='#L126'>126</a>
+<a name='L127'></a><a href='#L127'>127</a>
+<a name='L128'></a><a href='#L128'>128</a>
+<a name='L129'></a><a href='#L129'>129</a>
+<a name='L130'></a><a href='#L130'>130</a>
+<a name='L131'></a><a href='#L131'>131</a>
+<a name='L132'></a><a href='#L132'>132</a>
+<a name='L133'></a><a href='#L133'>133</a>
+<a name='L134'></a><a href='#L134'>134</a>
+<a name='L135'></a><a href='#L135'>135</a>
+<a name='L136'></a><a href='#L136'>136</a>
+<a name='L137'></a><a href='#L137'>137</a>
+<a name='L138'></a><a href='#L138'>138</a>
+<a name='L139'></a><a href='#L139'>139</a>
+<a name='L140'></a><a href='#L140'>140</a>
+<a name='L141'></a><a href='#L141'>141</a>
+<a name='L142'></a><a href='#L142'>142</a>
+<a name='L143'></a><a href='#L143'>143</a>
+<a name='L144'></a><a href='#L144'>144</a>
+<a name='L145'></a><a href='#L145'>145</a>
+<a name='L146'></a><a href='#L146'>146</a>
+<a name='L147'></a><a href='#L147'>147</a>
+<a name='L148'></a><a href='#L148'>148</a>
+<a name='L149'></a><a href='#L149'>149</a>
+<a name='L150'></a><a href='#L150'>150</a>
+<a name='L151'></a><a href='#L151'>151</a>
+<a name='L152'></a><a href='#L152'>152</a>
+<a name='L153'></a><a href='#L153'>153</a>
+<a name='L154'></a><a href='#L154'>154</a>
+<a name='L155'></a><a href='#L155'>155</a>
+<a name='L156'></a><a href='#L156'>156</a>
+<a name='L157'></a><a href='#L157'>157</a>
+<a name='L158'></a><a href='#L158'>158</a>
+<a name='L159'></a><a href='#L159'>159</a>
+<a name='L160'></a><a href='#L160'>160</a>
+<a name='L161'></a><a href='#L161'>161</a>
+<a name='L162'></a><a href='#L162'>162</a>
+<a name='L163'></a><a href='#L163'>163</a>
+<a name='L164'></a><a href='#L164'>164</a>
+<a name='L165'></a><a href='#L165'>165</a>
+<a name='L166'></a><a href='#L166'>166</a>
+<a name='L167'></a><a href='#L167'>167</a>
+<a name='L168'></a><a href='#L168'>168</a>
+<a name='L169'></a><a href='#L169'>169</a>
+<a name='L170'></a><a href='#L170'>170</a>
+<a name='L171'></a><a href='#L171'>171</a>
+<a name='L172'></a><a href='#L172'>172</a>
+<a name='L173'></a><a href='#L173'>173</a>
+<a name='L174'></a><a href='#L174'>174</a>
+<a name='L175'></a><a href='#L175'>175</a>
+<a name='L176'></a><a href='#L176'>176</a>
+<a name='L177'></a><a href='#L177'>177</a>
+<a name='L178'></a><a href='#L178'>178</a>
+<a name='L179'></a><a href='#L179'>179</a>
+<a name='L180'></a><a href='#L180'>180</a>
+<a name='L181'></a><a href='#L181'>181</a>
+<a name='L182'></a><a href='#L182'>182</a>
+<a name='L183'></a><a href='#L183'>183</a>
+<a name='L184'></a><a href='#L184'>184</a>
+<a name='L185'></a><a href='#L185'>185</a>
+<a name='L186'></a><a href='#L186'>186</a>
+<a name='L187'></a><a href='#L187'>187</a>
+<a name='L188'></a><a href='#L188'>188</a>
+<a name='L189'></a><a href='#L189'>189</a>
+<a name='L190'></a><a href='#L190'>190</a>
+<a name='L191'></a><a href='#L191'>191</a>
+<a name='L192'></a><a href='#L192'>192</a>
+<a name='L193'></a><a href='#L193'>193</a>
+<a name='L194'></a><a href='#L194'>194</a>
+<a name='L195'></a><a href='#L195'>195</a>
+<a name='L196'></a><a href='#L196'>196</a>
+<a name='L197'></a><a href='#L197'>197</a>
+<a name='L198'></a><a href='#L198'>198</a>
+<a name='L199'></a><a href='#L199'>199</a>
+<a name='L200'></a><a href='#L200'>200</a>
+<a name='L201'></a><a href='#L201'>201</a>
+<a name='L202'></a><a href='#L202'>202</a>
+<a name='L203'></a><a href='#L203'>203</a>
+<a name='L204'></a><a href='#L204'>204</a>
+<a name='L205'></a><a href='#L205'>205</a>
+<a name='L206'></a><a href='#L206'>206</a>
+<a name='L207'></a><a href='#L207'>207</a>
+<a name='L208'></a><a href='#L208'>208</a>
+<a name='L209'></a><a href='#L209'>209</a>
+<a name='L210'></a><a href='#L210'>210</a>
+<a name='L211'></a><a href='#L211'>211</a>
+<a name='L212'></a><a href='#L212'>212</a>
+<a name='L213'></a><a href='#L213'>213</a>
+<a name='L214'></a><a href='#L214'>214</a>
+<a name='L215'></a><a href='#L215'>215</a>
+<a name='L216'></a><a href='#L216'>216</a>
+<a name='L217'></a><a href='#L217'>217</a>
+<a name='L218'></a><a href='#L218'>218</a>
+<a name='L219'></a><a href='#L219'>219</a>
+<a name='L220'></a><a href='#L220'>220</a>
+<a name='L221'></a><a href='#L221'>221</a>
+<a name='L222'></a><a href='#L222'>222</a>
+<a name='L223'></a><a href='#L223'>223</a>
+<a name='L224'></a><a href='#L224'>224</a>
+<a name='L225'></a><a href='#L225'>225</a>
+<a name='L226'></a><a href='#L226'>226</a>
+<a name='L227'></a><a href='#L227'>227</a>
+<a name='L228'></a><a href='#L228'>228</a>
+<a name='L229'></a><a href='#L229'>229</a>
+<a name='L230'></a><a href='#L230'>230</a>
+<a name='L231'></a><a href='#L231'>231</a>
+<a name='L232'></a><a href='#L232'>232</a>
+<a name='L233'></a><a href='#L233'>233</a>
+<a name='L234'></a><a href='#L234'>234</a>
+<a name='L235'></a><a href='#L235'>235</a>
+<a name='L236'></a><a href='#L236'>236</a>
+<a name='L237'></a><a href='#L237'>237</a>
+<a name='L238'></a><a href='#L238'>238</a>
+<a name='L239'></a><a href='#L239'>239</a>
+<a name='L240'></a><a href='#L240'>240</a>
+<a name='L241'></a><a href='#L241'>241</a>
+<a name='L242'></a><a href='#L242'>242</a>
+<a name='L243'></a><a href='#L243'>243</a>
+<a name='L244'></a><a href='#L244'>244</a>
+<a name='L245'></a><a href='#L245'>245</a>
+<a name='L246'></a><a href='#L246'>246</a>
+<a name='L247'></a><a href='#L247'>247</a>
+<a name='L248'></a><a href='#L248'>248</a>
+<a name='L249'></a><a href='#L249'>249</a>
+<a name='L250'></a><a href='#L250'>250</a>
+<a name='L251'></a><a href='#L251'>251</a>
+<a name='L252'></a><a href='#L252'>252</a>
+<a name='L253'></a><a href='#L253'>253</a>
+<a name='L254'></a><a href='#L254'>254</a>
+<a name='L255'></a><a href='#L255'>255</a>
+<a name='L256'></a><a href='#L256'>256</a>
+<a name='L257'></a><a href='#L257'>257</a>
+<a name='L258'></a><a href='#L258'>258</a>
+<a name='L259'></a><a href='#L259'>259</a>
+<a name='L260'></a><a href='#L260'>260</a>
+<a name='L261'></a><a href='#L261'>261</a>
+<a name='L262'></a><a href='#L262'>262</a>
+<a name='L263'></a><a href='#L263'>263</a>
+<a name='L264'></a><a href='#L264'>264</a>
+<a name='L265'></a><a href='#L265'>265</a>
+<a name='L266'></a><a href='#L266'>266</a>
+<a name='L267'></a><a href='#L267'>267</a>
+<a name='L268'></a><a href='#L268'>268</a>
+<a name='L269'></a><a href='#L269'>269</a>
+<a name='L270'></a><a href='#L270'>270</a>
+<a name='L271'></a><a href='#L271'>271</a>
+<a name='L272'></a><a href='#L272'>272</a>
+<a name='L273'></a><a href='#L273'>273</a>
+<a name='L274'></a><a href='#L274'>274</a>
+<a name='L275'></a><a href='#L275'>275</a>
+<a name='L276'></a><a href='#L276'>276</a>
+<a name='L277'></a><a href='#L277'>277</a>
+<a name='L278'></a><a href='#L278'>278</a>
+<a name='L279'></a><a href='#L279'>279</a>
+<a name='L280'></a><a href='#L280'>280</a>
+<a name='L281'></a><a href='#L281'>281</a>
+<a name='L282'></a><a href='#L282'>282</a>
+<a name='L283'></a><a href='#L283'>283</a>
+<a name='L284'></a><a href='#L284'>284</a>
+<a name='L285'></a><a href='#L285'>285</a>
+<a name='L286'></a><a href='#L286'>286</a>
+<a name='L287'></a><a href='#L287'>287</a>
+<a name='L288'></a><a href='#L288'>288</a>
+<a name='L289'></a><a href='#L289'>289</a>
+<a name='L290'></a><a href='#L290'>290</a>
+<a name='L291'></a><a href='#L291'>291</a>
+<a name='L292'></a><a href='#L292'>292</a>
+<a name='L293'></a><a href='#L293'>293</a>
+<a name='L294'></a><a href='#L294'>294</a>
+<a name='L295'></a><a href='#L295'>295</a>
+<a name='L296'></a><a href='#L296'>296</a>
+<a name='L297'></a><a href='#L297'>297</a>
+<a name='L298'></a><a href='#L298'>298</a>
+<a name='L299'></a><a href='#L299'>299</a>
+<a name='L300'></a><a href='#L300'>300</a>
+<a name='L301'></a><a href='#L301'>301</a>
+<a name='L302'></a><a href='#L302'>302</a>
+<a name='L303'></a><a href='#L303'>303</a>
+<a name='L304'></a><a href='#L304'>304</a>
+<a name='L305'></a><a href='#L305'>305</a>
+<a name='L306'></a><a href='#L306'>306</a>
+<a name='L307'></a><a href='#L307'>307</a>
+<a name='L308'></a><a href='#L308'>308</a>
+<a name='L309'></a><a href='#L309'>309</a>
+<a name='L310'></a><a href='#L310'>310</a>
+<a name='L311'></a><a href='#L311'>311</a>
+<a name='L312'></a><a href='#L312'>312</a>
+<a name='L313'></a><a href='#L313'>313</a>
+<a name='L314'></a><a href='#L314'>314</a>
+<a name='L315'></a><a href='#L315'>315</a>
+<a name='L316'></a><a href='#L316'>316</a>
+<a name='L317'></a><a href='#L317'>317</a>
+<a name='L318'></a><a href='#L318'>318</a>
+<a name='L319'></a><a href='#L319'>319</a>
+<a name='L320'></a><a href='#L320'>320</a>
+<a name='L321'></a><a href='#L321'>321</a>
+<a name='L322'></a><a href='#L322'>322</a>
+<a name='L323'></a><a href='#L323'>323</a>
+<a name='L324'></a><a href='#L324'>324</a>
+<a name='L325'></a><a href='#L325'>325</a>
+<a name='L326'></a><a href='#L326'>326</a>
+<a name='L327'></a><a href='#L327'>327</a>
+<a name='L328'></a><a href='#L328'>328</a>
+<a name='L329'></a><a href='#L329'>329</a>
+<a name='L330'></a><a href='#L330'>330</a>
+<a name='L331'></a><a href='#L331'>331</a>
+<a name='L332'></a><a href='#L332'>332</a>
+<a name='L333'></a><a href='#L333'>333</a>
+<a name='L334'></a><a href='#L334'>334</a>
+<a name='L335'></a><a href='#L335'>335</a>
+<a name='L336'></a><a href='#L336'>336</a>
+<a name='L337'></a><a href='#L337'>337</a>
+<a name='L338'></a><a href='#L338'>338</a>
+<a name='L339'></a><a href='#L339'>339</a>
+<a name='L340'></a><a href='#L340'>340</a>
+<a name='L341'></a><a href='#L341'>341</a>
+<a name='L342'></a><a href='#L342'>342</a>
+<a name='L343'></a><a href='#L343'>343</a>
+<a name='L344'></a><a href='#L344'>344</a>
+<a name='L345'></a><a href='#L345'>345</a>
+<a name='L346'></a><a href='#L346'>346</a>
+<a name='L347'></a><a href='#L347'>347</a>
+<a name='L348'></a><a href='#L348'>348</a>
+<a name='L349'></a><a href='#L349'>349</a>
+<a name='L350'></a><a href='#L350'>350</a>
+<a name='L351'></a><a href='#L351'>351</a>
+<a name='L352'></a><a href='#L352'>352</a>
+<a name='L353'></a><a href='#L353'>353</a>
+<a name='L354'></a><a href='#L354'>354</a>
+<a name='L355'></a><a href='#L355'>355</a>
+<a name='L356'></a><a href='#L356'>356</a>
+<a name='L357'></a><a href='#L357'>357</a>
+<a name='L358'></a><a href='#L358'>358</a>
+<a name='L359'></a><a href='#L359'>359</a>
+<a name='L360'></a><a href='#L360'>360</a>
+<a name='L361'></a><a href='#L361'>361</a>
+<a name='L362'></a><a href='#L362'>362</a>
+<a name='L363'></a><a href='#L363'>363</a>
+<a name='L364'></a><a href='#L364'>364</a>
+<a name='L365'></a><a href='#L365'>365</a>
+<a name='L366'></a><a href='#L366'>366</a>
+<a name='L367'></a><a href='#L367'>367</a>
+<a name='L368'></a><a href='#L368'>368</a>
+<a name='L369'></a><a href='#L369'>369</a>
+<a name='L370'></a><a href='#L370'>370</a>
+<a name='L371'></a><a href='#L371'>371</a>
+<a name='L372'></a><a href='#L372'>372</a>
+<a name='L373'></a><a href='#L373'>373</a>
+<a name='L374'></a><a href='#L374'>374</a>
+<a name='L375'></a><a href='#L375'>375</a>
+<a name='L376'></a><a href='#L376'>376</a>
+<a name='L377'></a><a href='#L377'>377</a>
+<a name='L378'></a><a href='#L378'>378</a>
+<a name='L379'></a><a href='#L379'>379</a>
+<a name='L380'></a><a href='#L380'>380</a>
+<a name='L381'></a><a href='#L381'>381</a>
+<a name='L382'></a><a href='#L382'>382</a>
+<a name='L383'></a><a href='#L383'>383</a>
+<a name='L384'></a><a href='#L384'>384</a>
+<a name='L385'></a><a href='#L385'>385</a>
+<a name='L386'></a><a href='#L386'>386</a>
+<a name='L387'></a><a href='#L387'>387</a>
+<a name='L388'></a><a href='#L388'>388</a>
+<a name='L389'></a><a href='#L389'>389</a>
+<a name='L390'></a><a href='#L390'>390</a>
+<a name='L391'></a><a href='#L391'>391</a>
+<a name='L392'></a><a href='#L392'>392</a>
+<a name='L393'></a><a href='#L393'>393</a>
+<a name='L394'></a><a href='#L394'>394</a>
+<a name='L395'></a><a href='#L395'>395</a>
+<a name='L396'></a><a href='#L396'>396</a>
+<a name='L397'></a><a href='#L397'>397</a>
+<a name='L398'></a><a href='#L398'>398</a>
+<a name='L399'></a><a href='#L399'>399</a>
+<a name='L400'></a><a href='#L400'>400</a>
+<a name='L401'></a><a href='#L401'>401</a>
+<a name='L402'></a><a href='#L402'>402</a>
+<a name='L403'></a><a href='#L403'>403</a>
+<a name='L404'></a><a href='#L404'>404</a>
+<a name='L405'></a><a href='#L405'>405</a>
+<a name='L406'></a><a href='#L406'>406</a>
+<a name='L407'></a><a href='#L407'>407</a>
+<a name='L408'></a><a href='#L408'>408</a>
+<a name='L409'></a><a href='#L409'>409</a>
+<a name='L410'></a><a href='#L410'>410</a>
+<a name='L411'></a><a href='#L411'>411</a>
+<a name='L412'></a><a href='#L412'>412</a>
+<a name='L413'></a><a href='#L413'>413</a>
+<a name='L414'></a><a href='#L414'>414</a>
+<a name='L415'></a><a href='#L415'>415</a>
+<a name='L416'></a><a href='#L416'>416</a>
+<a name='L417'></a><a href='#L417'>417</a>
+<a name='L418'></a><a href='#L418'>418</a>
+<a name='L419'></a><a href='#L419'>419</a>
+<a name='L420'></a><a href='#L420'>420</a>
+<a name='L421'></a><a href='#L421'>421</a>
+<a name='L422'></a><a href='#L422'>422</a>
+<a name='L423'></a><a href='#L423'>423</a>
+<a name='L424'></a><a href='#L424'>424</a>
+<a name='L425'></a><a href='#L425'>425</a>
+<a name='L426'></a><a href='#L426'>426</a>
+<a name='L427'></a><a href='#L427'>427</a>
+<a name='L428'></a><a href='#L428'>428</a>
+<a name='L429'></a><a href='#L429'>429</a>
+<a name='L430'></a><a href='#L430'>430</a>
+<a name='L431'></a><a href='#L431'>431</a>
+<a name='L432'></a><a href='#L432'>432</a>
+<a name='L433'></a><a href='#L433'>433</a>
+<a name='L434'></a><a href='#L434'>434</a>
+<a name='L435'></a><a href='#L435'>435</a>
+<a name='L436'></a><a href='#L436'>436</a>
+<a name='L437'></a><a href='#L437'>437</a>
+<a name='L438'></a><a href='#L438'>438</a>
+<a name='L439'></a><a href='#L439'>439</a>
+<a name='L440'></a><a href='#L440'>440</a>
+<a name='L441'></a><a href='#L441'>441</a>
+<a name='L442'></a><a href='#L442'>442</a>
+<a name='L443'></a><a href='#L443'>443</a>
+<a name='L444'></a><a href='#L444'>444</a>
+<a name='L445'></a><a href='#L445'>445</a>
+<a name='L446'></a><a href='#L446'>446</a>
+<a name='L447'></a><a href='#L447'>447</a>
+<a name='L448'></a><a href='#L448'>448</a>
+<a name='L449'></a><a href='#L449'>449</a>
+<a name='L450'></a><a href='#L450'>450</a>
+<a name='L451'></a><a href='#L451'>451</a>
+<a name='L452'></a><a href='#L452'>452</a>
+<a name='L453'></a><a href='#L453'>453</a>
+<a name='L454'></a><a href='#L454'>454</a>
+<a name='L455'></a><a href='#L455'>455</a>
+<a name='L456'></a><a href='#L456'>456</a>
+<a name='L457'></a><a href='#L457'>457</a>
+<a name='L458'></a><a href='#L458'>458</a>
+<a name='L459'></a><a href='#L459'>459</a>
+<a name='L460'></a><a href='#L460'>460</a>
+<a name='L461'></a><a href='#L461'>461</a>
+<a name='L462'></a><a href='#L462'>462</a>
+<a name='L463'></a><a href='#L463'>463</a>
+<a name='L464'></a><a href='#L464'>464</a>
+<a name='L465'></a><a href='#L465'>465</a>
+<a name='L466'></a><a href='#L466'>466</a>
+<a name='L467'></a><a href='#L467'>467</a>
+<a name='L468'></a><a href='#L468'>468</a>
+<a name='L469'></a><a href='#L469'>469</a>
+<a name='L470'></a><a href='#L470'>470</a>
+<a name='L471'></a><a href='#L471'>471</a>
+<a name='L472'></a><a href='#L472'>472</a>
+<a name='L473'></a><a href='#L473'>473</a>
+<a name='L474'></a><a href='#L474'>474</a>
+<a name='L475'></a><a href='#L475'>475</a>
+<a name='L476'></a><a href='#L476'>476</a>
+<a name='L477'></a><a href='#L477'>477</a>
+<a name='L478'></a><a href='#L478'>478</a>
+<a name='L479'></a><a href='#L479'>479</a>
+<a name='L480'></a><a href='#L480'>480</a>
+<a name='L481'></a><a href='#L481'>481</a>
+<a name='L482'></a><a href='#L482'>482</a>
+<a name='L483'></a><a href='#L483'>483</a>
+<a name='L484'></a><a href='#L484'>484</a>
+<a name='L485'></a><a href='#L485'>485</a>
+<a name='L486'></a><a href='#L486'>486</a>
+<a name='L487'></a><a href='#L487'>487</a>
+<a name='L488'></a><a href='#L488'>488</a>
+<a name='L489'></a><a href='#L489'>489</a>
+<a name='L490'></a><a href='#L490'>490</a>
+<a name='L491'></a><a href='#L491'>491</a>
+<a name='L492'></a><a href='#L492'>492</a>
+<a name='L493'></a><a href='#L493'>493</a>
+<a name='L494'></a><a href='#L494'>494</a>
+<a name='L495'></a><a href='#L495'>495</a>
+<a name='L496'></a><a href='#L496'>496</a>
+<a name='L497'></a><a href='#L497'>497</a>
+<a name='L498'></a><a href='#L498'>498</a>
+<a name='L499'></a><a href='#L499'>499</a>
+<a name='L500'></a><a href='#L500'>500</a>
+<a name='L501'></a><a href='#L501'>501</a>
+<a name='L502'></a><a href='#L502'>502</a>
+<a name='L503'></a><a href='#L503'>503</a>
+<a name='L504'></a><a href='#L504'>504</a>
+<a name='L505'></a><a href='#L505'>505</a>
+<a name='L506'></a><a href='#L506'>506</a>
+<a name='L507'></a><a href='#L507'>507</a>
+<a name='L508'></a><a href='#L508'>508</a>
+<a name='L509'></a><a href='#L509'>509</a>
+<a name='L510'></a><a href='#L510'>510</a>
+<a name='L511'></a><a href='#L511'>511</a>
+<a name='L512'></a><a href='#L512'>512</a>
+<a name='L513'></a><a href='#L513'>513</a>
+<a name='L514'></a><a href='#L514'>514</a>
+<a name='L515'></a><a href='#L515'>515</a>
+<a name='L516'></a><a href='#L516'>516</a>
+<a name='L517'></a><a href='#L517'>517</a>
+<a name='L518'></a><a href='#L518'>518</a>
+<a name='L519'></a><a href='#L519'>519</a>
+<a name='L520'></a><a href='#L520'>520</a>
+<a name='L521'></a><a href='#L521'>521</a>
+<a name='L522'></a><a href='#L522'>522</a>
+<a name='L523'></a><a href='#L523'>523</a>
+<a name='L524'></a><a href='#L524'>524</a>
+<a name='L525'></a><a href='#L525'>525</a>
+<a name='L526'></a><a href='#L526'>526</a>
+<a name='L527'></a><a href='#L527'>527</a>
+<a name='L528'></a><a href='#L528'>528</a>
+<a name='L529'></a><a href='#L529'>529</a>
+<a name='L530'></a><a href='#L530'>530</a>
+<a name='L531'></a><a href='#L531'>531</a>
+<a name='L532'></a><a href='#L532'>532</a>
+<a name='L533'></a><a href='#L533'>533</a>
+<a name='L534'></a><a href='#L534'>534</a>
+<a name='L535'></a><a href='#L535'>535</a>
+<a name='L536'></a><a href='#L536'>536</a>
+<a name='L537'></a><a href='#L537'>537</a>
+<a name='L538'></a><a href='#L538'>538</a>
+<a name='L539'></a><a href='#L539'>539</a>
+<a name='L540'></a><a href='#L540'>540</a>
+<a name='L541'></a><a href='#L541'>541</a>
+<a name='L542'></a><a href='#L542'>542</a>
+<a name='L543'></a><a href='#L543'>543</a>
+<a name='L544'></a><a href='#L544'>544</a>
+<a name='L545'></a><a href='#L545'>545</a>
+<a name='L546'></a><a href='#L546'>546</a>
+<a name='L547'></a><a href='#L547'>547</a>
+<a name='L548'></a><a href='#L548'>548</a>
+<a name='L549'></a><a href='#L549'>549</a>
+<a name='L550'></a><a href='#L550'>550</a>
+<a name='L551'></a><a href='#L551'>551</a>
+<a name='L552'></a><a href='#L552'>552</a>
+<a name='L553'></a><a href='#L553'>553</a>
+<a name='L554'></a><a href='#L554'>554</a>
+<a name='L555'></a><a href='#L555'>555</a>
+<a name='L556'></a><a href='#L556'>556</a>
+<a name='L557'></a><a href='#L557'>557</a>
+<a name='L558'></a><a href='#L558'>558</a>
+<a name='L559'></a><a href='#L559'>559</a>
+<a name='L560'></a><a href='#L560'>560</a>
+<a name='L561'></a><a href='#L561'>561</a>
+<a name='L562'></a><a href='#L562'>562</a>
+<a name='L563'></a><a href='#L563'>563</a>
+<a name='L564'></a><a href='#L564'>564</a>
+<a name='L565'></a><a href='#L565'>565</a>
+<a name='L566'></a><a href='#L566'>566</a>
+<a name='L567'></a><a href='#L567'>567</a>
+<a name='L568'></a><a href='#L568'>568</a>
+<a name='L569'></a><a href='#L569'>569</a>
+<a name='L570'></a><a href='#L570'>570</a>
+<a name='L571'></a><a href='#L571'>571</a>
+<a name='L572'></a><a href='#L572'>572</a>
+<a name='L573'></a><a href='#L573'>573</a>
+<a name='L574'></a><a href='#L574'>574</a>
+<a name='L575'></a><a href='#L575'>575</a>
+<a name='L576'></a><a href='#L576'>576</a>
+<a name='L577'></a><a href='#L577'>577</a>
+<a name='L578'></a><a href='#L578'>578</a>
+<a name='L579'></a><a href='#L579'>579</a>
+<a name='L580'></a><a href='#L580'>580</a>
+<a name='L581'></a><a href='#L581'>581</a>
+<a name='L582'></a><a href='#L582'>582</a>
+<a name='L583'></a><a href='#L583'>583</a>
+<a name='L584'></a><a href='#L584'>584</a>
+<a name='L585'></a><a href='#L585'>585</a>
+<a name='L586'></a><a href='#L586'>586</a>
+<a name='L587'></a><a href='#L587'>587</a>
+<a name='L588'></a><a href='#L588'>588</a>
+<a name='L589'></a><a href='#L589'>589</a>
+<a name='L590'></a><a href='#L590'>590</a>
+<a name='L591'></a><a href='#L591'>591</a>
+<a name='L592'></a><a href='#L592'>592</a>
+<a name='L593'></a><a href='#L593'>593</a>
+<a name='L594'></a><a href='#L594'>594</a>
+<a name='L595'></a><a href='#L595'>595</a>
+<a name='L596'></a><a href='#L596'>596</a>
+<a name='L597'></a><a href='#L597'>597</a>
+<a name='L598'></a><a href='#L598'>598</a>
+<a name='L599'></a><a href='#L599'>599</a>
+<a name='L600'></a><a href='#L600'>600</a>
+<a name='L601'></a><a href='#L601'>601</a>
+<a name='L602'></a><a href='#L602'>602</a>
+<a name='L603'></a><a href='#L603'>603</a>
+<a name='L604'></a><a href='#L604'>604</a>
+<a name='L605'></a><a href='#L605'>605</a>
+<a name='L606'></a><a href='#L606'>606</a>
+<a name='L607'></a><a href='#L607'>607</a>
+<a name='L608'></a><a href='#L608'>608</a>
+<a name='L609'></a><a href='#L609'>609</a>
+<a name='L610'></a><a href='#L610'>610</a>
+<a name='L611'></a><a href='#L611'>611</a>
+<a name='L612'></a><a href='#L612'>612</a>
+<a name='L613'></a><a href='#L613'>613</a>
+<a name='L614'></a><a href='#L614'>614</a>
+<a name='L615'></a><a href='#L615'>615</a>
+<a name='L616'></a><a href='#L616'>616</a>
+<a name='L617'></a><a href='#L617'>617</a>
+<a name='L618'></a><a href='#L618'>618</a>
+<a name='L619'></a><a href='#L619'>619</a>
+<a name='L620'></a><a href='#L620'>620</a>
+<a name='L621'></a><a href='#L621'>621</a>
+<a name='L622'></a><a href='#L622'>622</a>
+<a name='L623'></a><a href='#L623'>623</a>
+<a name='L624'></a><a href='#L624'>624</a>
+<a name='L625'></a><a href='#L625'>625</a>
+<a name='L626'></a><a href='#L626'>626</a>
+<a name='L627'></a><a href='#L627'>627</a>
+<a name='L628'></a><a href='#L628'>628</a>
+<a name='L629'></a><a href='#L629'>629</a>
+<a name='L630'></a><a href='#L630'>630</a>
+<a name='L631'></a><a href='#L631'>631</a>
+<a name='L632'></a><a href='#L632'>632</a>
+<a name='L633'></a><a href='#L633'>633</a>
+<a name='L634'></a><a href='#L634'>634</a>
+<a name='L635'></a><a href='#L635'>635</a>
+<a name='L636'></a><a href='#L636'>636</a>
+<a name='L637'></a><a href='#L637'>637</a>
+<a name='L638'></a><a href='#L638'>638</a>
+<a name='L639'></a><a href='#L639'>639</a>
+<a name='L640'></a><a href='#L640'>640</a>
+<a name='L641'></a><a href='#L641'>641</a>
+<a name='L642'></a><a href='#L642'>642</a>
+<a name='L643'></a><a href='#L643'>643</a>
+<a name='L644'></a><a href='#L644'>644</a>
+<a name='L645'></a><a href='#L645'>645</a>
+<a name='L646'></a><a href='#L646'>646</a>
+<a name='L647'></a><a href='#L647'>647</a>
+<a name='L648'></a><a href='#L648'>648</a>
+<a name='L649'></a><a href='#L649'>649</a>
+<a name='L650'></a><a href='#L650'>650</a>
+<a name='L651'></a><a href='#L651'>651</a>
+<a name='L652'></a><a href='#L652'>652</a>
+<a name='L653'></a><a href='#L653'>653</a>
+<a name='L654'></a><a href='#L654'>654</a>
+<a name='L655'></a><a href='#L655'>655</a>
+<a name='L656'></a><a href='#L656'>656</a>
+<a name='L657'></a><a href='#L657'>657</a>
+<a name='L658'></a><a href='#L658'>658</a>
+<a name='L659'></a><a href='#L659'>659</a>
+<a name='L660'></a><a href='#L660'>660</a>
+<a name='L661'></a><a href='#L661'>661</a>
+<a name='L662'></a><a href='#L662'>662</a>
+<a name='L663'></a><a href='#L663'>663</a>
+<a name='L664'></a><a href='#L664'>664</a>
+<a name='L665'></a><a href='#L665'>665</a>
+<a name='L666'></a><a href='#L666'>666</a>
+<a name='L667'></a><a href='#L667'>667</a>
+<a name='L668'></a><a href='#L668'>668</a>
+<a name='L669'></a><a href='#L669'>669</a>
+<a name='L670'></a><a href='#L670'>670</a>
+<a name='L671'></a><a href='#L671'>671</a>
+<a name='L672'></a><a href='#L672'>672</a>
+<a name='L673'></a><a href='#L673'>673</a>
+<a name='L674'></a><a href='#L674'>674</a>
+<a name='L675'></a><a href='#L675'>675</a>
+<a name='L676'></a><a href='#L676'>676</a>
+<a name='L677'></a><a href='#L677'>677</a>
+<a name='L678'></a><a href='#L678'>678</a>
+<a name='L679'></a><a href='#L679'>679</a>
+<a name='L680'></a><a href='#L680'>680</a>
+<a name='L681'></a><a href='#L681'>681</a>
+<a name='L682'></a><a href='#L682'>682</a>
+<a name='L683'></a><a href='#L683'>683</a>
+<a name='L684'></a><a href='#L684'>684</a>
+<a name='L685'></a><a href='#L685'>685</a>
+<a name='L686'></a><a href='#L686'>686</a>
+<a name='L687'></a><a href='#L687'>687</a>
+<a name='L688'></a><a href='#L688'>688</a>
+<a name='L689'></a><a href='#L689'>689</a>
+<a name='L690'></a><a href='#L690'>690</a>
+<a name='L691'></a><a href='#L691'>691</a>
+<a name='L692'></a><a href='#L692'>692</a>
+<a name='L693'></a><a href='#L693'>693</a>
+<a name='L694'></a><a href='#L694'>694</a>
+<a name='L695'></a><a href='#L695'>695</a>
+<a name='L696'></a><a href='#L696'>696</a>
+<a name='L697'></a><a href='#L697'>697</a>
+<a name='L698'></a><a href='#L698'>698</a>
+<a name='L699'></a><a href='#L699'>699</a>
+<a name='L700'></a><a href='#L700'>700</a>
+<a name='L701'></a><a href='#L701'>701</a>
+<a name='L702'></a><a href='#L702'>702</a>
+<a name='L703'></a><a href='#L703'>703</a>
+<a name='L704'></a><a href='#L704'>704</a>
+<a name='L705'></a><a href='#L705'>705</a>
+<a name='L706'></a><a href='#L706'>706</a>
+<a name='L707'></a><a href='#L707'>707</a>
+<a name='L708'></a><a href='#L708'>708</a>
+<a name='L709'></a><a href='#L709'>709</a>
+<a name='L710'></a><a href='#L710'>710</a>
+<a name='L711'></a><a href='#L711'>711</a>
+<a name='L712'></a><a href='#L712'>712</a>
+<a name='L713'></a><a href='#L713'>713</a>
+<a name='L714'></a><a href='#L714'>714</a>
+<a name='L715'></a><a href='#L715'>715</a>
+<a name='L716'></a><a href='#L716'>716</a>
+<a name='L717'></a><a href='#L717'>717</a>
+<a name='L718'></a><a href='#L718'>718</a>
+<a name='L719'></a><a href='#L719'>719</a>
+<a name='L720'></a><a href='#L720'>720</a>
+<a name='L721'></a><a href='#L721'>721</a>
+<a name='L722'></a><a href='#L722'>722</a>
+<a name='L723'></a><a href='#L723'>723</a>
+<a name='L724'></a><a href='#L724'>724</a>
+<a name='L725'></a><a href='#L725'>725</a>
+<a name='L726'></a><a href='#L726'>726</a>
+<a name='L727'></a><a href='#L727'>727</a>
+<a name='L728'></a><a href='#L728'>728</a>
+<a name='L729'></a><a href='#L729'>729</a>
+<a name='L730'></a><a href='#L730'>730</a>
+<a name='L731'></a><a href='#L731'>731</a>
+<a name='L732'></a><a href='#L732'>732</a>
+<a name='L733'></a><a href='#L733'>733</a>
+<a name='L734'></a><a href='#L734'>734</a>
+<a name='L735'></a><a href='#L735'>735</a>
+<a name='L736'></a><a href='#L736'>736</a>
+<a name='L737'></a><a href='#L737'>737</a>
+<a name='L738'></a><a href='#L738'>738</a>
+<a name='L739'></a><a href='#L739'>739</a>
+<a name='L740'></a><a href='#L740'>740</a>
+<a name='L741'></a><a href='#L741'>741</a>
+<a name='L742'></a><a href='#L742'>742</a>
+<a name='L743'></a><a href='#L743'>743</a>
+<a name='L744'></a><a href='#L744'>744</a>
+<a name='L745'></a><a href='#L745'>745</a>
+<a name='L746'></a><a href='#L746'>746</a>
+<a name='L747'></a><a href='#L747'>747</a>
+<a name='L748'></a><a href='#L748'>748</a>
+<a name='L749'></a><a href='#L749'>749</a>
+<a name='L750'></a><a href='#L750'>750</a>
+<a name='L751'></a><a href='#L751'>751</a>
+<a name='L752'></a><a href='#L752'>752</a>
+<a name='L753'></a><a href='#L753'>753</a>
+<a name='L754'></a><a href='#L754'>754</a>
+<a name='L755'></a><a href='#L755'>755</a>
+<a name='L756'></a><a href='#L756'>756</a>
+<a name='L757'></a><a href='#L757'>757</a>
+<a name='L758'></a><a href='#L758'>758</a>
+<a name='L759'></a><a href='#L759'>759</a>
+<a name='L760'></a><a href='#L760'>760</a>
+<a name='L761'></a><a href='#L761'>761</a>
+<a name='L762'></a><a href='#L762'>762</a>
+<a name='L763'></a><a href='#L763'>763</a>
+<a name='L764'></a><a href='#L764'>764</a>
+<a name='L765'></a><a href='#L765'>765</a>
+<a name='L766'></a><a href='#L766'>766</a>
+<a name='L767'></a><a href='#L767'>767</a>
+<a name='L768'></a><a href='#L768'>768</a>
+<a name='L769'></a><a href='#L769'>769</a>
+<a name='L770'></a><a href='#L770'>770</a>
+<a name='L771'></a><a href='#L771'>771</a>
+<a name='L772'></a><a href='#L772'>772</a>
+<a name='L773'></a><a href='#L773'>773</a>
+<a name='L774'></a><a href='#L774'>774</a>
+<a name='L775'></a><a href='#L775'>775</a>
+<a name='L776'></a><a href='#L776'>776</a>
+<a name='L777'></a><a href='#L777'>777</a>
+<a name='L778'></a><a href='#L778'>778</a>
+<a name='L779'></a><a href='#L779'>779</a>
+<a name='L780'></a><a href='#L780'>780</a>
+<a name='L781'></a><a href='#L781'>781</a>
+<a name='L782'></a><a href='#L782'>782</a>
+<a name='L783'></a><a href='#L783'>783</a>
+<a name='L784'></a><a href='#L784'>784</a>
+<a name='L785'></a><a href='#L785'>785</a>
+<a name='L786'></a><a href='#L786'>786</a>
+<a name='L787'></a><a href='#L787'>787</a>
+<a name='L788'></a><a href='#L788'>788</a>
+<a name='L789'></a><a href='#L789'>789</a>
+<a name='L790'></a><a href='#L790'>790</a>
+<a name='L791'></a><a href='#L791'>791</a>
+<a name='L792'></a><a href='#L792'>792</a>
+<a name='L793'></a><a href='#L793'>793</a>
+<a name='L794'></a><a href='#L794'>794</a>
+<a name='L795'></a><a href='#L795'>795</a>
+<a name='L796'></a><a href='#L796'>796</a>
+<a name='L797'></a><a href='#L797'>797</a>
+<a name='L798'></a><a href='#L798'>798</a>
+<a name='L799'></a><a href='#L799'>799</a>
+<a name='L800'></a><a href='#L800'>800</a>
+<a name='L801'></a><a href='#L801'>801</a>
+<a name='L802'></a><a href='#L802'>802</a>
+<a name='L803'></a><a href='#L803'>803</a>
+<a name='L804'></a><a href='#L804'>804</a>
+<a name='L805'></a><a href='#L805'>805</a>
+<a name='L806'></a><a href='#L806'>806</a>
+<a name='L807'></a><a href='#L807'>807</a>
+<a name='L808'></a><a href='#L808'>808</a>
+<a name='L809'></a><a href='#L809'>809</a>
+<a name='L810'></a><a href='#L810'>810</a>
+<a name='L811'></a><a href='#L811'>811</a>
+<a name='L812'></a><a href='#L812'>812</a>
+<a name='L813'></a><a href='#L813'>813</a>
+<a name='L814'></a><a href='#L814'>814</a>
+<a name='L815'></a><a href='#L815'>815</a>
+<a name='L816'></a><a href='#L816'>816</a>
+<a name='L817'></a><a href='#L817'>817</a>
+<a name='L818'></a><a href='#L818'>818</a>
+<a name='L819'></a><a href='#L819'>819</a>
+<a name='L820'></a><a href='#L820'>820</a>
+<a name='L821'></a><a href='#L821'>821</a>
+<a name='L822'></a><a href='#L822'>822</a>
+<a name='L823'></a><a href='#L823'>823</a>
+<a name='L824'></a><a href='#L824'>824</a>
+<a name='L825'></a><a href='#L825'>825</a>
+<a name='L826'></a><a href='#L826'>826</a>
+<a name='L827'></a><a href='#L827'>827</a>
+<a name='L828'></a><a href='#L828'>828</a>
+<a name='L829'></a><a href='#L829'>829</a>
+<a name='L830'></a><a href='#L830'>830</a>
+<a name='L831'></a><a href='#L831'>831</a>
+<a name='L832'></a><a href='#L832'>832</a>
+<a name='L833'></a><a href='#L833'>833</a>
+<a name='L834'></a><a href='#L834'>834</a>
+<a name='L835'></a><a href='#L835'>835</a>
+<a name='L836'></a><a href='#L836'>836</a>
+<a name='L837'></a><a href='#L837'>837</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">// Free AI Service - No credit card required!
+// Uses Hugging Face Inference API (completely free)
+&nbsp;
+export interface AIExplanation {
+  explanation: string;
+  personalizedTips: string[];
+  relatedConcepts: string[];
+  difficulty: 'easy' | 'medium' | 'hard';
+}
+&nbsp;
+export interface AIStudyPlan {
+  personalizedPath: string[];
+  estimatedTimeToPass: number;
+  dailyGoals: string[];
+  focusAreas: string[];
+  motivation: string;
+}
+&nbsp;
+export interface AIAnalytics {
+  examReadinessScore: number;
+  predictedPassProbability: number;
+  timeToExamReadiness: number;
+  riskFactors: string[];
+  recommendations: string[];
+  strengths: string[];
+  weaknesses: string[];
+}
+&nbsp;
+export interface AITutorResponse {
+  message: string;
+  tone: 'encouraging' | 'motivational' | 'analytical' | 'supportive';
+  actionItems: string[];
+  nextSteps: string[];
+}
+&nbsp;
+class FreeAIService {
+  // Upgraded to better free AI model - Google Flan-T5 for better instruction following
+  private huggingFaceUrl = <span class="cstat-no" title="statement not covered" >'https://api-inference.huggingface.co/models/google/flan-t5-base';</span>
+  private fallbackModel = <span class="cstat-no" title="statement not covered" >'https://api-inference.huggingface.co/models/microsoft/DialoGPT-medium';</span>
+  
+  // Conversation memory for context awareness
+  private conversationHistory: Array&lt;{role: 'user' | 'ai', message: string, timestamp: Date}&gt; = <span class="cstat-no" title="statement not covered" >[];</span>
+  private maxHistoryLength = <span class="cstat-no" title="statement not covered" >10;</span> // Keep last 10 exchanges
+  
+  // Check if AI is available
+<span class="fstat-no" title="function not covered" >  is</span>AIAvailable(): boolean {
+<span class="cstat-no" title="statement not covered" >    return true; </span>// Always available, no API key needed
+  }
+&nbsp;
+  // Add conversation to memory
+<span class="fstat-no" title="function not covered" >  pr</span>ivate addToHistory(role: 'user' | 'ai', message: string): void {
+<span class="cstat-no" title="statement not covered" >    this.conversationHistory.push({</span>
+      role,
+      message,
+      timestamp: new Date()
+    });
+    
+    // Keep only recent history
+<span class="cstat-no" title="statement not covered" >    if (this.conversationHistory.length &gt; this.maxHistoryLength) {</span>
+<span class="cstat-no" title="statement not covered" >      this.conversationHistory = this.conversationHistory.slice(-this.maxHistoryLength);</span>
+    }
+  }
+&nbsp;
+  // Get conversation context for AI
+<span class="fstat-no" title="function not covered" >  pr</span>ivate getConversationContext(): string {
+<span class="cstat-no" title="statement not covered" >    if (this.conversationHistory.length === 0) <span class="cstat-no" title="statement not covered" >return '';</span></span>
+    
+    const recentHistory = <span class="cstat-no" title="statement not covered" >this.conversationHistory.slice(-5);</span> // Last 5 exchanges
+<span class="cstat-no" title="statement not covered" >    return recentHistory.map(<span class="fstat-no" title="function not covered" >en</span>try =&gt; </span>
+<span class="cstat-no" title="statement not covered" >      `${entry.role === 'user' ? 'User' : 'AI'}: ${entry.message}`</span>
+    ).join('\n');
+  }
+&nbsp;
+  // Clear conversation history
+<span class="fstat-no" title="function not covered" >  cl</span>earConversationHistory(): void {
+<span class="cstat-no" title="statement not covered" >    this.conversationHistory = [];</span>
+  }
+&nbsp;
+  // Get conversation statistics
+<span class="fstat-no" title="function not covered" >  ge</span>tConversationStats(): {totalExchanges: number, lastInteraction: Date | null} {
+<span class="cstat-no" title="statement not covered" >    return {</span>
+      totalExchanges: this.conversationHistory.length,
+      lastInteraction: this.conversationHistory.length &gt; 0 ? this.conversationHistory[this.conversationHistory.length - 1].timestamp : null
+    };
+  }
+&nbsp;
+  // Generate AI explanation for a question
+<span class="fstat-no" title="function not covered" >  as</span>ync generateExplanation(
+    question: string,
+    userAnswer: string,
+    correctAnswer: string,
+    explanation: string,
+    userHistory: any[]
+  ): Promise&lt;AIExplanation&gt; {
+<span class="cstat-no" title="statement not covered" >    try {</span>
+      // Use Hugging Face for AI response
+      const prompt = <span class="cstat-no" title="statement not covered" >`Question: ${question}</span>
+User Answer: ${userAnswer}
+Correct Answer: ${correctAnswer}
+Basic Explanation: ${explanation}
+&nbsp;
+Provide a helpful explanation with tips.`;
+&nbsp;
+      const aiResponse = <span class="cstat-no" title="statement not covered" >await this.callHuggingFace(prompt);</span>
+      
+<span class="cstat-no" title="statement not covered" >      return {</span>
+        explanation: aiResponse || explanation,
+        personalizedTips: [
+          'Keep practicing similar questions',
+          'Review the theory behind this topic',
+          'Take notes on key concepts'
+        ],
+        relatedConcepts: ['Related traffic rules', 'Similar scenarios'],
+        difficulty: 'medium'
+      };
+    } catch (error) {
+<span class="cstat-no" title="statement not covered" >      console.error('Free AI explanation error:', error);</span>
+<span class="cstat-no" title="statement not covered" >      return this.getFallbackExplanation(explanation);</span>
+    }
+  }
+&nbsp;
+  // Generate personalized study plan
+<span class="fstat-no" title="function not covered" >  as</span>ync generateStudyPlan(userProgress: any): Promise&lt;AIStudyPlan&gt; {
+<span class="cstat-no" title="statement not covered" >    try {</span>
+      const prompt = <span class="cstat-no" title="statement not covered" >`Create a study plan for Dutch driving theory based on this progress: ${JSON.stringify(userProgress)}`;</span>
+      const aiResponse = <span class="cstat-no" title="statement not covered" >await this.callHuggingFace(prompt);</span>
+      
+<span class="cstat-no" title="statement not covered" >      return {</span>
+        personalizedPath: ['traffic-rules-signs', 'priority-rules', 'hazard-perception'],
+        estimatedTimeToPass: 24,
+        dailyGoals: [
+          'Complete 1 practice test',
+          'Review weak areas',
+          'Take notes on mistakes'
+        ],
+        focusAreas: ['Priority rules', 'Traffic signs'],
+        motivation: aiResponse || 'You\'re making great progress! Keep practicing to learn Dutch driving theory.'
+      };
+    } catch (error) {
+<span class="cstat-no" title="statement not covered" >      console.error('Free AI study plan error:', error);</span>
+<span class="cstat-no" title="statement not covered" >      return this.getFallbackStudyPlan();</span>
+    }
+  }
+&nbsp;
+  // Generate AI analytics and predictions
+<span class="fstat-no" title="function not covered" >  as</span>ync generateAnalytics(userProgress: any): Promise&lt;AIAnalytics&gt; {
+    // For now, return static analytics - can be enhanced with AI later
+<span class="cstat-no" title="statement not covered" >      return {</span>
+        examReadinessScore: 65,
+        predictedPassProbability: 70,
+        timeToExamReadiness: 12,
+        riskFactors: ['Need more practice with priority rules'],
+        recommendations: ['Focus on weak areas', 'Take more practice tests'],
+        strengths: ['Good understanding of basic concepts'],
+        weaknesses: ['Priority rules need improvement']
+      };
+  }
+&nbsp;
+  // AI Tutor conversation - Enhanced with context awareness and smarter responses
+<span class="fstat-no" title="function not covered" >  as</span>ync getTutorResponse(userMessage: string, context: any): Promise&lt;AITutorResponse&gt; {
+    // Add user message to conversation history
+<span class="cstat-no" title="statement not covered" >    this.addToHistory('user', userMessage);</span>
+    
+    // Get current language from context or default to English
+    // const currentLanguage = context?.language || 'en';
+    
+<span class="cstat-no" title="statement not covered" >    try {</span>
+      // Enhanced Dutch driving theory keywords - More comprehensive (now unused but kept for future use)
+      /*
+      const dutchDrivingKeywords = [
+        // CBR &amp; Dutch Exam System
+        'cbr', 'driving', 'theory', 'exam', 'test', 'practice', 'study', 'learn',
+        'license', 'permit', 'rijbewijs', 'theorie', 'praktijk', 'rijexamen',
+        'nederland', 'dutch', 'netherlands', 'holland', 'amsterdam', 'rotterdam',
+        'cost', 'price', 'fee', 'how much', 'money', 'euro', '€', 'booking',
+        'appointment', 'schedule', 'date', 'time', 'location', 'center',
+        
+        // Dutch Traffic Rules (Specific)
+        'verkeer', 'verkeersregels', 'voorrang', 'voorrang verlenen', 'voorrang krijgen',
+        'rechts gaat voor', 'rechtsaf', 'linksaf', 'rechtdoor', 'kruispunt',
+        'rotonde', 'rotonde regels', 'rotonde voorrang', 'rotonde richtingaanwijzer',
+        'snelheid', 'snelheidslimiet', 'bebouwde kom', 'buiten bebouwde kom',
+        'autosnelweg', 'rijksweg', 'provinciale weg', 'gemeentelijke weg',
+        
+        // Dutch Road Signs &amp; Markings
+        'verkeersbord', 'verkeersborden', 'wegmarkering', 'wegmarkeringen',
+        'waarschuwingsbord', 'verbodsbord', 'gebodsbord', 'informatiebord',
+        'stopbord', 'voorrangsbord', 'snelheidsbord', 'parkeerbord',
+        'witte lijn', 'gele lijn', 'onderbroken lijn', 'doorgetrokken lijn',
+        'haaientanden', 'driehoek', 'driehoek bord', 'voorrang verlenen',
+        
+        // Dutch Traffic Lights &amp; Signals
+        'verkeerslicht', 'stoplicht', 'rood licht', 'oranje licht', 'groen licht',
+        'geel licht', 'amber licht', 'knipperend licht', 'knipperend oranje',
+        'verkeersregelinstallatie', 'vri', 'intelligente verkeerslichten',
+        
+        // Dutch Road Types &amp; Infrastructure
+        'autoweg', 'autosnelweg', 'rijksweg', 'provinciale weg', 'gemeentelijke weg',
+        'woonerf', 'zone 30', 'zone 50', 'zone 60', 'zone 80', 'zone 100',
+        'fietspad', 'voetpad', 'trottoir', 'rijbaan', 'rijstrook', 'spitsstrook',
+        'vluchtstrook', 'pechstrook', 'invoegstrook', 'uitvoegstrook',
+        
+        // Dutch Priority &amp; Right of Way
+        'voorrang', 'voorrang verlenen', 'voorrang krijgen', 'rechts gaat voor',
+        'rechtsaf gaat voor', 'linksaf gaat voor', 'rechtdoor gaat voor',
+        'kruispunt voorrang', 'rotonde voorrang', 'tram voorrang',
+        'voetganger voorrang', 'fietser voorrang', 'bus voorrang',
+        
+        // Dutch Speed Limits &amp; Zones
+        'snelheidslimiet', 'maximum snelheid', 'zone 30', 'zone 50', 'zone 60',
+        'zone 80', 'zone 100', 'zone 130', 'bebouwde kom', 'buiten bebouwde kom',
+        'autosnelweg snelheid', 'rijksweg snelheid', 'woonerf snelheid',
+        'schoolzone', 'schoolomgeving', 'kinderen', 'spelende kinderen',
+        
+        // Dutch Parking &amp; Stopping
+        'parkeren', 'stilstaan', 'parkeerplaats', 'parkeerzone', 'betaald parkeren',
+        'gratis parkeren', 'parkeerschijf', 'parkeermeter', 'parkeerautomaat',
+        'gehandicaptenparkeerplaats', 'laadpaal', 'elektrisch parkeren',
+        
+        // Dutch Vehicle Types &amp; Rules
+        'auto', 'personenauto', 'bestelauto', 'vrachtwagen', 'bus', 'tram',
+        'fiets', 'bromfiets', 'snorfiets', 'motor', 'motorfiets', 'scooter',
+        'elektrische fiets', 'e-bike', 'speed pedelec', 'bakfiets', 'cargo bike',
+        
+        // Dutch Safety &amp; Behavior
+        'veiligheid', 'verkeersveiligheid', 'gordel', 'veiligheidsgordel',
+        'helm', 'fietshelm', 'motorhelm', 'spiegel', 'buitenspiegel', 'binnenspiegel',
+        'dode hoek', 'dodehoek', 'uitkijken', 'kijken', 'spiegelen',
+        'alcohol', 'alcoholpromillage', 'drank', 'drugs', 'vermoeidheid',
+        'concentratie', 'afleiding', 'telefoon', 'mobiel', 'app', 'whatsapp',
+        
+        // Dutch Weather &amp; Conditions
+        'weer', 'weersomstandigheden', 'regen', 'sneeuw', 'ijzel', 'mist',
+        'zicht', 'zichtbaarheid', 'nat wegdek', 'glad wegdek', 'winterbanden',
+        'zomerbanden', 'all season banden', 'bandenspanning', 'profiel',
+        
+        // Dutch Documents &amp; Legal
+        'documenten', 'rijbewijs', 'kenteken', 'kentekenbewijs', 'apk',
+        'verzekering', 'wa verzekering', 'casco verzekering', 'boete',
+        'verkeersboete', 'parkeerboete', 'snelheidsboete', 'politie',
+        'handhaving', 'verkeershandhaving', 'camera', 'flitspaal', 'snelheidscamera'
+      ];
+      */
+      
+      // Get lowercase message for easier matching
+      const lowerMessage = <span class="cstat-no" title="statement not covered" >userMessage.toLowerCase();</span>
+      
+      // FIRST: Check for specific CBR exam questions (HIGHEST PRIORITY)
+<span class="cstat-no" title="statement not covered" >      if (lowerMessage.includes('how much') || lowerMessage.includes('cost') || lowerMessage.includes('price') || </span>
+          lowerMessage.includes('fee') || lowerMessage.includes('money') || lowerMessage.includes('euro') || 
+          lowerMessage.includes('€') || lowerMessage.includes('cbr exam cost') || lowerMessage.includes('exam price')) {
+<span class="cstat-no" title="statement not covered" >        return {</span>
+          message: "💰 CBR Exam Cost &amp; Pricing:\n\n**Theory Exam Cost:**\n• **€37.50** (2024 price)\n• Pay online when booking\n• No additional fees\n\n**What's Included:**\n• 25 multiple choice questions\n• 30 minutes exam time\n• Immediate results\n• Certificate valid for 1.5 years\n\n**Payment Methods:**\n• Credit card (Visa, Mastercard)\n• Debit card (Maestro)\n• iDEAL (Dutch online banking)\n• PayPal\n\n**Retake Costs:**\n• Each retake: €37.50\n• No limit on retakes\n• Wait 2 weeks between attempts\n\n**Pro Tip**: Book early to get your preferred date - popular slots fill up quickly!",
+          tone: 'encouraging',
+          actionItems: ['Check cbr.nl for current prices', 'Prepare payment method', 'Book your preferred date'],
+          nextSteps: ['Book your exam', 'Continue practicing', 'Prepare for success']
+        };
+      }
+      
+      // Check for other CBR exam questions
+<span class="cstat-no" title="statement not covered" >      if (lowerMessage.includes('cbr exam') || lowerMessage.includes('exam format') || lowerMessage.includes('how many questions') || </span>
+          lowerMessage.includes('exam time') || lowerMessage.includes('pass mark') || lowerMessage.includes('exam structure')) {
+<span class="cstat-no" title="statement not covered" >        return {</span>
+          message: "📋 CBR Theory Exam Format:\n\n**Structure:**\n• 25 multiple choice questions\n• 30 minutes total time\n• Computer-based at CBR test center\n\n**Pass Requirements:**\n• Need 13+ correct answers (52%+)\n• But aim for 80%+ for confidence!\n\n**Question Types:**\n• Traffic rules &amp; regulations\n• Road signs &amp; markings\n• Priority &amp; right of way\n• Safety &amp; hazard perception\n\n**Tips:**\n• Read questions carefully\n• Use elimination method\n• Don't rush - you have time\n• Trust your preparation!",
+          tone: 'encouraging',
+          actionItems: ['Practice with 25-question tests', 'Time yourself on practice tests', 'Review all question types'],
+          nextSteps: ['Take mock exams', 'Build exam confidence', 'Book your real exam when ready']
+        };
+      }
+      
+      // REMOVED FALLBACK - Let the chatbot answer all questions like ChatGPT
+      
+      // Use smart contextual responses FIRST (more reliable than Hugging Face)
+      const currentPage = <span class="cstat-no" title="statement not covered" >context?.currentTest || 'dashboard';</span>
+      const userProgress = <span class="cstat-no" title="statement not covered" >context?.userProgress || {};</span>
+      
+      // Get smart response based on user message
+      const smartResponse = <span class="cstat-no" title="statement not covered" >this.getSmartFallbackResponse(userMessage, currentPage, userProgress);</span>
+      
+      // Add response to conversation history
+<span class="cstat-no" title="statement not covered" >      this.addToHistory('ai', smartResponse.message);</span>
+      
+<span class="cstat-no" title="statement not covered" >      return smartResponse;</span>
+      
+    } catch (error) {
+<span class="cstat-no" title="statement not covered" >      console.error('Free AI tutor error:', error);</span>
+<span class="cstat-no" title="statement not covered" >      return this.getSmartFallbackResponse(userMessage, context?.currentTest || 'dashboard', context?.userProgress || {});</span>
+    }
+  }
+&nbsp;
+  // Call Hugging Face API (FREE!) - Enhanced with fallback model
+<span class="fstat-no" title="function not covered" >  pr</span>ivate async callHuggingFace(prompt: string): Promise&lt;string&gt; {
+<span class="cstat-no" title="statement not covered" >    try {</span>
+      // Try primary model first
+      const response = <span class="cstat-no" title="statement not covered" >await this.tryHuggingFaceModel(this.huggingFaceUrl, prompt);</span>
+<span class="cstat-no" title="statement not covered" >      if (response) <span class="cstat-no" title="statement not covered" >return response;</span></span>
+      
+      // If primary fails, try fallback model
+<span class="cstat-no" title="statement not covered" >      console.log('Primary model failed, trying fallback...');</span>
+<span class="cstat-no" title="statement not covered" >      return await this.tryHuggingFaceModel(this.fallbackModel, prompt);</span>
+      
+    } catch (error) {
+<span class="cstat-no" title="statement not covered" >      console.error('Both AI models failed:', error);</span>
+<span class="cstat-no" title="statement not covered" >      return '';</span>
+    }
+  }
+&nbsp;
+  // Try a specific Hugging Face model
+<span class="fstat-no" title="function not covered" >  pr</span>ivate async tryHuggingFaceModel(modelUrl: string, prompt: string): Promise&lt;string&gt; {
+<span class="cstat-no" title="statement not covered" >    try {</span>
+      // Add timeout and retry logic
+      const controller = <span class="cstat-no" title="statement not covered" >new AbortController();</span>
+      const timeoutId = <span class="cstat-no" title="statement not covered" >setTimeout(<span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >controller.abort(),</span> 8000);</span> // 8 second timeout
+&nbsp;
+      const response = <span class="cstat-no" title="statement not covered" >await fetch(modelUrl, {</span>
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'User-Agent': 'CBR-AI-Coach/1.0'
+        },
+        body: JSON.stringify({
+          inputs: prompt,
+          parameters: {
+            max_length: 120, // Shorter for CBR focus
+            temperature: 0.6, // Lower for more consistent responses
+            do_sample: true,
+            top_p: 0.9,
+            repetition_penalty: 1.1
+          }
+        }),
+        signal: controller.signal
+      });
+&nbsp;
+<span class="cstat-no" title="statement not covered" >      clearTimeout(timeoutId);</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >      if (!response.ok) {</span>
+<span class="cstat-no" title="statement not covered" >        if (response.status === 503) {</span>
+          // Model is loading, return empty to try fallback
+<span class="cstat-no" title="statement not covered" >          return '';</span>
+        }
+<span class="cstat-no" title="statement not covered" >        throw new Error(`Hugging Face API error: ${response.status}`);</span>
+      }
+&nbsp;
+      const data = <span class="cstat-no" title="statement not covered" >await response.json();</span>
+      
+      // Enhanced text extraction
+      let generatedText = <span class="cstat-no" title="statement not covered" >'';</span>
+      
+<span class="cstat-no" title="statement not covered" >      if (Array.isArray(data) &amp;&amp; data.length &gt; 0) {</span>
+<span class="cstat-no" title="statement not covered" >        generatedText = data[0].generated_text || data[0].text || '';</span>
+      } else <span class="cstat-no" title="statement not covered" >if (data.generated_text) {</span>
+<span class="cstat-no" title="statement not covered" >        generatedText = data.generated_text;</span>
+      } else <span class="cstat-no" title="statement not covered" >if (data.text) {</span>
+<span class="cstat-no" title="statement not covered" >        generatedText = data.text;</span>
+      }
+      
+      // Clean up the response
+<span class="cstat-no" title="statement not covered" >      if (generatedText) {</span>
+        // Remove the original prompt from the response
+<span class="cstat-no" title="statement not covered" >        generatedText = generatedText.replace(prompt, '').trim();</span>
+        
+        // Ensure it's CBR-related
+<span class="cstat-no" title="statement not covered" >        if (this.isCBRRelated(generatedText)) {</span>
+<span class="cstat-no" title="statement not covered" >          return generatedText;</span>
+        }
+      }
+      
+<span class="cstat-no" title="statement not covered" >      return ''; </span>// Return empty if not CBR-related
+    } catch (error) {
+<span class="cstat-no" title="statement not covered" >      console.error('Hugging Face model failed:', error);</span>
+<span class="cstat-no" title="statement not covered" >      return ''; </span>// Return empty string to try fallback
+    }
+  }
+&nbsp;
+  // Check if generated text is CBR-related
+<span class="fstat-no" title="function not covered" >  pr</span>ivate isCBRRelated(text: string): boolean {
+    const cbrIndicators = <span class="cstat-no" title="statement not covered" >[</span>
+      'traffic', 'road', 'sign', 'rule', 'driving', 'cbr', 'vehicle', 'safety',
+      'priority', 'speed', 'parking', 'roundabout', 'intersection', 'highway',
+      'license', 'exam', 'test', 'practice', 'theory', 'regulation'
+    ];
+    
+    const lowerText = <span class="cstat-no" title="statement not covered" >text.toLowerCase();</span>
+<span class="cstat-no" title="statement not covered" >    return cbrIndicators.some(<span class="fstat-no" title="function not covered" >in</span>dicator =&gt; <span class="cstat-no" title="statement not covered" >lowerText.includes(indicator))</span>;</span>
+  }
+&nbsp;
+  // Fallback methods when AI is not available
+<span class="fstat-no" title="function not covered" >  pr</span>ivate getFallbackExplanation(explanation: string): AIExplanation {
+<span class="cstat-no" title="statement not covered" >    return {</span>
+      explanation: explanation,
+      personalizedTips: ['Keep practicing similar questions', 'Review the theory behind this topic'],
+      relatedConcepts: ['Related traffic rules', 'Similar scenarios'],
+      difficulty: 'medium'
+    };
+  }
+&nbsp;
+<span class="fstat-no" title="function not covered" >  pr</span>ivate getFallbackStudyPlan(): AIStudyPlan {
+<span class="cstat-no" title="statement not covered" >    return {</span>
+      personalizedPath: ['traffic-rules-signs', 'priority-rules', 'hazard-perception'],
+      estimatedTimeToPass: 24,
+      dailyGoals: ['Complete 1 practice test', 'Review weak areas', 'Take notes on mistakes'],
+      focusAreas: ['Priority rules', 'Traffic signs'],
+      motivation: 'You\'re making great progress! Keep practicing to learn Dutch driving theory.'
+    };
+  }
+&nbsp;
+<span class="fstat-no" title="function not covered" >  pr</span>ivate getFallbackAnalytics(): AIAnalytics {
+<span class="cstat-no" title="statement not covered" >    return {</span>
+      examReadinessScore: 65,
+      predictedPassProbability: 70,
+      timeToExamReadiness: 12,
+      riskFactors: ['Need more practice with priority rules'],
+      recommendations: ['Focus on weak areas', 'Take more practice tests'],
+      strengths: ['Good understanding of basic concepts'],
+      weaknesses: ['Priority rules need improvement']
+    };
+  }
+&nbsp;
+<span class="fstat-no" title="function not covered" >  pr</span>ivate getFallbackTutorResponse(): AITutorResponse {
+<span class="cstat-no" title="statement not covered" >    return {</span>
+      message: 'Keep practicing your driving theory! Focus on traffic rules, road signs, and CBR exam preparation. You\'re making great progress!',
+      tone: 'encouraging',
+      actionItems: ['Complete today\'s practice test', 'Review traffic rules', 'Study road signs'],
+      nextSteps: ['Focus on weak areas', 'Take a mock exam', 'Practice priority rules']
+    };
+  }
+&nbsp;
+  // Enhanced fallback with mock exam motivation
+<span class="fstat-no" title="function not covered" >  pr</span>ivate getMockExamMotivatedResponse(): AITutorResponse {
+<span class="cstat-no" title="statement not covered" >    return {</span>
+      message: 'Excellent progress! You\'re ready to test your knowledge with a mock exam. This will help you see how well you\'ve mastered the material!',
+      tone: 'motivational',
+      actionItems: ['Start a mock exam', 'Review your strong areas', 'Practice any weak spots'],
+      nextSteps: ['Take Mock Exam 1', 'Focus on exam readiness', 'Build confidence']
+    };
+  }
+&nbsp;
+  // Enhanced response processing
+<span class="fstat-no" title="function not covered" >  pr</span>ivate enhanceResponse(aiResponse: string, currentPage: string, userProgress: any): string {
+<span class="cstat-no" title="statement not covered" >    if (!aiResponse || aiResponse.trim().length &lt; 10) {</span>
+<span class="cstat-no" title="statement not covered" >      return this.getContextualFallbackMessage(currentPage);</span>
+    }
+&nbsp;
+    // Clean up the response
+    let cleanedResponse = <span class="cstat-no" title="statement not covered" >aiResponse.trim();</span>
+    
+    // Remove any non-CBR content
+<span class="cstat-no" title="statement not covered" >    if (this.containsNonCBRContent(cleanedResponse)) {</span>
+<span class="cstat-no" title="statement not covered" >      return this.getContextualFallbackMessage(currentPage);</span>
+    }
+&nbsp;
+    // Add contextual encouragement
+    const encouragement = <span class="cstat-no" title="statement not covered" >this.getContextualEncouragement(currentPage, userProgress);</span>
+    
+<span class="cstat-no" title="statement not covered" >    return `${cleanedResponse}\n\n${encouragement}`;</span>
+  }
+&nbsp;
+  // Check if response contains non-CBR content
+<span class="fstat-no" title="function not covered" >  pr</span>ivate containsNonCBRContent(response: string): boolean {
+    const nonCBRTerms = <span class="cstat-no" title="statement not covered" >[</span>
+      'cooking', 'recipe', 'food', 'movie', 'music', 'sports', 'politics',
+      'weather forecast', 'news', 'entertainment', 'shopping', 'travel',
+      'health advice', 'medical', 'relationship', 'dating', 'personal'
+    ];
+    
+<span class="cstat-no" title="statement not covered" >    return nonCBRTerms.some(<span class="fstat-no" title="function not covered" >te</span>rm =&gt; </span>
+<span class="cstat-no" title="statement not covered" >      response.toLowerCase().includes(term.toLowerCase())</span>
+    );
+  }
+&nbsp;
+  // Get contextual action items based on current page
+<span class="fstat-no" title="function not covered" >  pr</span>ivate getContextualActionItems(currentPage: string): string[] {
+<span class="cstat-no" title="statement not covered" >    switch (currentPage) {</span>
+      case 'dashboard':
+<span class="cstat-no" title="statement not covered" >        return ['Check your progress', 'Start a practice test', 'Review weak areas'];</span>
+      case 'practice-tests':
+      case 'tests-page':
+<span class="cstat-no" title="statement not covered" >        return ['Choose a practice test', 'Focus on weak topics', 'Take a mock exam'];</span>
+      default:
+<span class="cstat-no" title="statement not covered" >        if (currentPage.startsWith('practice-')) {</span>
+<span class="cstat-no" title="statement not covered" >          return ['Continue this test', 'Review explanations', 'Take notes'];</span>
+        }
+<span class="cstat-no" title="statement not covered" >        return ['Practice more', 'Review theory', 'Take a test'];</span>
+    }
+  }
+&nbsp;
+  // Get contextual next steps based on page and progress
+<span class="fstat-no" title="function not covered" >  pr</span>ivate getContextualNextSteps(currentPage: string, userProgress: any): string[] {
+    const averageScore = <span class="cstat-no" title="statement not covered" >userProgress?.averageScore || 0;</span>
+    
+<span class="cstat-no" title="statement not covered" >    if (averageScore &lt; 60) {</span>
+<span class="cstat-no" title="statement not covered" >      return ['Focus on basic concepts', 'Take easier tests first', 'Review theory thoroughly'];</span>
+    } else <span class="cstat-no" title="statement not covered" >if (averageScore &lt; 80) {</span>
+<span class="cstat-no" title="statement not covered" >      return ['Practice weak areas', 'Take mock exams', 'Review mistakes'];</span>
+    } else {
+<span class="cstat-no" title="statement not covered" >      return ['Take advanced tests', 'Practice mock exams', 'Prepare for real exam'];</span>
+    }
+  }
+&nbsp;
+  // Get localized responses based on language
+<span class="fstat-no" title="function not covered" >  pr</span>ivate getLocalizedResponse(language: string, messageType: string, userProgress?: any): AITutorResponse {
+    const averageScore = <span class="cstat-no" title="statement not covered" >userProgress?.averageScore || 0;</span>
+    
+<span class="cstat-no" title="statement not covered" >    switch (language) {</span>
+      case 'nl': // Dutch
+<span class="cstat-no" title="statement not covered" >        return this.getDutchResponse(messageType, averageScore);</span>
+      case 'ar': // Arabic
+<span class="cstat-no" title="statement not covered" >        return this.getArabicResponse(messageType, averageScore);</span>
+      default: // English
+<span class="cstat-no" title="statement not covered" >        return this.getEnglishResponse(messageType, averageScore);</span>
+    }
+  }
+&nbsp;
+  // Dutch responses
+<span class="fstat-no" title="function not covered" >  pr</span>ivate getDutchResponse(messageType: string, averageScore: number): AITutorResponse {
+<span class="cstat-no" title="statement not covered" >    if (messageType === 'help' || messageType === 'general') {</span>
+<span class="cstat-no" title="statement not covered" >      if (averageScore &lt; 30) {</span>
+<span class="cstat-no" title="statement not covered" >        return {</span>
+          message: `Hoi! Ik ben je persoonlijke theorie coach! Omdat je net begint (${averageScore}% gemiddeld), kan ik je helpen met:\n\n🎯 **Start Slim**: Begin met Verkeersregels &amp; Borden - dit is de basis\n🎯 **Bouw Geleidelijk**: Beheers één onderwerp op 80%+ voordat je verder gaat\n🎯 **Oefen Dagelijks**: 10-15 vragen per dag is beter dan blokken\n\n**Je persoonlijke doel**: Bereik 70%+ gemiddeld om oefenexamens te ontgrendelen!\n\nWelk specifiek onderwerp wil je hulp bij?`,
+          tone: 'encouraging',
+          actionItems: ['Start met Verkeersregels &amp; Borden', 'Stel een dagelijks oefendoel', 'Volg je voortgang'],
+          nextSteps: ['Doe je eerste oefentoets', 'Focus op begrip, niet op snelheid', 'Bouw consistentie op']
+        };
+      } else <span class="cstat-no" title="statement not covered" >if (averageScore &lt; 70) {</span>
+<span class="cstat-no" title="statement not covered" >        return {</span>
+          message: `Uitstekende voortgang! Je zit op ${averageScore}% gemiddeld - goed op weg! Hier is hoe ik je kan helpen naar 70%+:\n\n🎯 **Focus op Zwakke Gebieden**: Bekijk je dashboard voor persoonlijke aanbevelingen\n🎯 **Beheers Elk Onderwerp**: Streef naar 80%+ in elk gebied voordat je verder gaat\n🎯 **Bouw Consistentie**: Oefen dagelijks om momentum te behouden\n\n**Je bent ${70 - averageScore}% verwijderd van het ontgrendelen van oefenexamens!**\n\nWelk specifiek gebied wil je verbeteren?`,
+          tone: 'motivational',
+          actionItems: ['Bekijk je dashboard inzichten', 'Focus op je zwakste gebied', 'Oefen dagelijks'],
+          nextSteps: ['Doe een oefentoets', 'Bekijk je fouten', 'Bouw naar 70%+']
+        };
+      } else {
+<span class="cstat-no" title="statement not covered" >        return {</span>
+          message: `Uitstekend! Je zit op ${averageScore}% gemiddeld - klaar voor het volgende niveau! 🎉\n\n🎯 **Je bent klaar voor oefenexamens!** - Dit is waar je je echte examengereedheid test\n🎯 **Focus op examenstategie** - Tijdmanagement en drukbehandeling\n🎯 **Polijst je zwakke punten** - Zelfs kleine verbeteringen tellen\n\n**Je doel**: Sla alle 3 oefenexamens om echt examengereed te zijn!\n\nWaar wil je volgende aan werken?`,
+          tone: 'motivational',
+          actionItems: ['Start een oefenexamen', 'Bekijk je sterke gebieden', 'Polijst eventuele zwakke punten'],
+          nextSteps: ['Doe Oefenexamen 1', 'Bouw examenzelfvertrouwen', 'Bereid je voor op het echte ding']
+        };
+      }
+    }
+    
+<span class="cstat-no" title="statement not covered" >    return {</span>
+      message: "Ik ben hier om te helpen met je theoriestudie! Ik kan uitleggen:\n\n• Verkeersregels en voorschriften\n• Wegmarkeringen en borden\n• Voorrang en voorrang verlenen\n• Snelheidslimieten en veiligheid\n• Rotondes en kruispunten\n\nWelk specifiek onderwerp wil je hulp bij?",
+      tone: 'supportive',
+      actionItems: ['Vraag over specifieke onderwerpen', 'Doe oefentoetsen'],
+      nextSteps: ['Studieer zwakke gebieden', 'Oefen regelmatig']
+    };
+  }
+&nbsp;
+  // Arabic responses
+<span class="fstat-no" title="function not covered" >  pr</span>ivate getArabicResponse(messageType: string, averageScore: number): AITutorResponse {
+<span class="cstat-no" title="statement not covered" >    if (messageType === 'help' || messageType === 'general') {</span>
+<span class="cstat-no" title="statement not covered" >      if (averageScore &lt; 30) {</span>
+<span class="cstat-no" title="statement not covered" >        return {</span>
+          message: `مرحباً! أنا مدربك الشخصي في النظرية! بما أنك تبدأ للتو (${averageScore}% متوسط)، يمكنني مساعدتك في:\n\n🎯 **ابدأ بذكاء**: ابدأ بقواعد المرور والعلامات - هذا هو الأساس\n🎯 **ابن تدريجياً**: أتقن موضوعاً واحداً بنسبة 80%+ قبل الانتقال\n🎯 **تدرب يومياً**: 10-15 سؤال يومياً أفضل من الحفظ\n\n**هدفك الشخصي**: وصل إلى 70%+ متوسط لفتح الامتحانات التجريبية!\n\nما الموضوع المحدد الذي تريد المساعدة فيه؟`,
+          tone: 'encouraging',
+          actionItems: ['ابدأ بقواعد المرور والعلامات', 'ضع هدف تدريب يومي', 'تتبع تقدمك'],
+          nextSteps: ['خذ أول اختبار تدريبي', 'ركز على الفهم، ليس السرعة', 'ابن الثبات']
+        };
+      } else <span class="cstat-no" title="statement not covered" >if (averageScore &lt; 70) {</span>
+<span class="cstat-no" title="statement not covered" >        return {</span>
+          message: `تقدم ممتاز! أنت على ${averageScore}% متوسط - في الطريق الصحيح! إليك كيف يمكنني مساعدتك للوصول إلى 70%+:\n\n🎯 **ركز على المناطق الضعيفة**: تحقق من لوحة التحكم للحصول على توصيات شخصية\n🎯 **أتقن كل موضوع**: اهدف إلى 80%+ في كل منطقة قبل الانتقال\n🎯 **ابن الثبات**: تدرب يومياً للحفاظ على الزخم\n\n**أنت على بعد ${70 - averageScore}% من فتح الامتحانات التجريبية!**\n\nما المنطقة المحددة التي تريد تحسينها؟`,
+          tone: 'motivational',
+          actionItems: ['تحقق من رؤى لوحة التحكم', 'ركز على أضعف منطقة', 'تدرب يومياً'],
+          nextSteps: ['خذ اختبار تدريبي', 'راجع أخطاءك', 'ابن نحو 70%+']
+        };
+      } else {
+<span class="cstat-no" title="statement not covered" >        return {</span>
+          message: `ممتاز! أنت على ${averageScore}% متوسط - جاهز للمستوى التالي! 🎉\n\n🎯 **أنت جاهز للامتحانات التجريبية!** - هذا حيث تختبر جاهزيتك الحقيقية للامتحان\n🎯 **ركز على استراتيجية الامتحان** - إدارة الوقت والتعامل مع الضغط\n🎯 **صقل نقاط ضعفك** - حتى التحسينات الصغيرة مهمة\n\n**هدفك**: اجتاز جميع الامتحانات التجريبية الثلاثة لتكون جاهزاً حقاً للامتحان!\n\nما الذي تريد العمل عليه بعد ذلك؟`,
+          tone: 'motivational',
+          actionItems: ['ابدأ امتحان تجريبي', 'راجع مناطق قوتك', 'صقل أي نقاط ضعف'],
+          nextSteps: ['خذ الامتحان التجريبي 1', 'ابن ثقة الامتحان', 'استعد للشيء الحقيقي']
+        };
+      }
+    }
+    
+<span class="cstat-no" title="statement not covered" >    return {</span>
+      message: "أنا هنا للمساعدة في دراستك النظرية! يمكنني شرح:\n\n• قواعد المرور واللوائح\n• علامات الطريق والرموز\n• الأولوية وحق المرور\n• حدود السرعة والسلامة\n• الدوارات والتقاطعات\n\nما الموضوع المحدد الذي تريد المساعدة فيه؟",
+      tone: 'supportive',
+      actionItems: ['اسأل عن مواضيع محددة', 'خذ اختبارات تدريبية'],
+      nextSteps: ['ادرس المناطق الضعيفة', 'تدرب بانتظام']
+    };
+  }
+&nbsp;
+  // English responses (existing logic)
+<span class="fstat-no" title="function not covered" >  pr</span>ivate getEnglishResponse(messageType: string, averageScore: number): AITutorResponse {
+    // This will use the existing English responses
+<span class="cstat-no" title="statement not covered" >    return {</span>
+      message: "I'm here to help with your driving theory! I can explain:\n\n• Traffic rules and regulations\n• Road signs and markings\n• Priority and right of way\n• Speed limits and safety\n• Roundabouts and intersections\n\nWhat specific topic would you like help with?",
+      tone: 'supportive',
+      actionItems: ['Ask about specific topics', 'Take practice tests'],
+      nextSteps: ['Study weak areas', 'Practice regularly']
+    };
+  }
+&nbsp;
+  // Get contextual encouragement based on page
+<span class="fstat-no" title="function not covered" >  pr</span>ivate getContextualEncouragement(currentPage: string, userProgress: any): string {
+    const averageScore = <span class="cstat-no" title="statement not covered" >userProgress?.averageScore || 0;</span>
+    
+<span class="cstat-no" title="statement not covered" >    if (averageScore &lt; 60) {</span>
+<span class="cstat-no" title="statement not covered" >      return "Don't worry! Everyone starts somewhere. Keep practicing and you'll improve!";</span>
+    } else <span class="cstat-no" title="statement not covered" >if (averageScore &lt; 80) {</span>
+<span class="cstat-no" title="statement not covered" >      return "Great progress! You're on the right track. Keep practicing to reach 80%+";</span>
+    } else {
+<span class="cstat-no" title="statement not covered" >      return "Excellent work! You're almost ready for the real CBR exam!";</span>
+    }
+  }
+&nbsp;
+  // Get contextual fallback message
+<span class="fstat-no" title="function not covered" >  pr</span>ivate getContextualFallbackMessage(currentPage: string): string {
+<span class="cstat-no" title="statement not covered" >    switch (currentPage) {</span>
+      case 'dashboard':
+<span class="cstat-no" title="statement not covered" >        return "I can help you understand your progress and suggest what to study next. What specific area would you like help with?";</span>
+      case 'practice-tests':
+      case 'tests-page':
+<span class="cstat-no" title="statement not covered" >        return "I can help you choose the right practice test or explain any driving theory concepts. What would you like to know?";</span>
+      default:
+<span class="cstat-no" title="statement not covered" >        if (currentPage.startsWith('practice-')) {</span>
+<span class="cstat-no" title="statement not covered" >          return "I can help explain this question or any driving theory concept. What would you like to know?";</span>
+        }
+<span class="cstat-no" title="statement not covered" >        return "I'm here to help with your driving theory studies. What can I help you with?";</span>
+    }
+  }
+&nbsp;
+  // Smart fallback responses for common driving theory questions
+<span class="fstat-no" title="function not covered" >  pr</span>ivate getSmartFallbackResponse(userMessage: string, currentPage: string, userProgress: any): AITutorResponse {
+    const lowerMessage = <span class="cstat-no" title="statement not covered" >userMessage.toLowerCase();</span>
+    const averageScore = <span class="cstat-no" title="statement not covered" >userProgress?.averageScore || 0;</span>
+    
+    // Personalized responses based on user progress
+<span class="cstat-no" title="statement not covered" >    if (lowerMessage.includes('focus') || lowerMessage.includes('start') || lowerMessage.includes('begin')) {</span>
+<span class="cstat-no" title="statement not covered" >      if (averageScore &lt; 30) {</span>
+<span class="cstat-no" title="statement not covered" >        return {</span>
+          message: `Perfect! Let's build your foundation. Since you're just starting (${averageScore}% average), I recommend:\n\n🎯 **Start with Traffic Rules &amp; Signs** - This is the foundation of everything\n🎯 **Then Priority Rules** - Essential for Dutch driving\n🎯 **Practice 10-15 questions daily** - Consistency beats intensity\n\nYour goal: Reach 70%+ in these basics, then unlock mock exams!`,
+          tone: 'encouraging',
+          actionItems: ['Start with Traffic Rules &amp; Signs', 'Set daily practice goal', 'Track your progress'],
+          nextSteps: ['Take your first practice test', 'Focus on understanding, not speed']
+        };
+      } else <span class="cstat-no" title="statement not covered" >if (averageScore &lt; 70) {</span>
+<span class="cstat-no" title="statement not covered" >        return {</span>
+          message: `Great progress! You're at ${averageScore}% average. Here's your personalized path:\n\n🎯 **Focus on your weakest area** - Check your dashboard insights\n🎯 **Aim for 80%+ in each topic** - Mastery before moving on\n🎯 **Take practice tests daily** - Build consistency\n\nYou're ${70 - averageScore}% away from unlocking mock exams!`,
+          tone: 'motivational',
+          actionItems: ['Check your dashboard insights', 'Focus on weak areas', 'Practice daily'],
+          nextSteps: ['Take a practice test', 'Review your mistakes', 'Build toward 70%+']
+        };
+      } else {
+<span class="cstat-no" title="statement not covered" >        return this.getMockExamMotivatedResponse();</span>
+      }
+    }
+    
+    // Check if user is ready for mock exams and provide motivation
+<span class="cstat-no" title="statement not covered" >    if (averageScore &gt;= 70) {</span>
+      // User is ready for mock exams - provide motivation
+<span class="cstat-no" title="statement not covered" >      if (lowerMessage.includes('ready') || lowerMessage.includes('exam') || lowerMessage.includes('test') || </span>
+          lowerMessage.includes('mock') || lowerMessage.includes('practice') || lowerMessage.includes('next')) {
+<span class="cstat-no" title="statement not covered" >        return this.getMockExamMotivatedResponse();</span>
+      }
+    }
+    
+    // Dutch Traffic Lights - ChatGPT style
+<span class="cstat-no" title="statement not covered" >    if (lowerMessage.includes('traffic light') || lowerMessage.includes('red light') || lowerMessage.includes('amber') || </span>
+        lowerMessage.includes('verkeerslicht') || lowerMessage.includes('stoplicht') || lowerMessage.includes('rood licht')) {
+<span class="cstat-no" title="statement not covered" >      return {</span>
+        message: `Ah, verkeerslichten! 🚦 These are crucial for Dutch driving theory. Let me explain the Dutch system:\n\n**Dutch Traffic Light Rules:**\n• **ROOD (Red)**: Stop completely behind the stop line - no exceptions!\n• **ORANJE (Amber)**: Prepare to stop unless it's unsafe to brake\n• **GROEN (Green)**: You may proceed if safe and clear\n\n**Special Dutch Features:**\n• **Rood + Oranje together**: Stop - groen is coming next (unique to Netherlands!)\n• **Knipperend oranje**: Proceed with caution (often at pedestrian crossings)\n• **Intelligente verkeerslichten**: Smart lights that adapt to traffic flow\n\n**Pro Tip**: Dutch drivers are very strict about red lights - never run them! The fines are steep (€370) and you'll fail your exam instantly.\n\n**For your CBR exam**: Focus on the timing - you have 1.2 minutes per question, so don't overthink traffic lights!`,
+        tone: 'encouraging',
+        actionItems: ['Practice traffic light scenarios', 'Study the red+amber combination', 'Learn about smart traffic lights'],
+        nextSteps: ['Take a practice test on traffic lights', 'Review priority rules', 'Build confidence with timing']
+      };
+    }
+    
+    // Dutch Priority Rules - ChatGPT style
+<span class="cstat-no" title="statement not covered" >    if (lowerMessage.includes('priority') || lowerMessage.includes('right of way') || lowerMessage.includes('give way') || </span>
+        lowerMessage.includes('voorrang') || lowerMessage.includes('rechts gaat voor') || lowerMessage.includes('kruispunt')) {
+<span class="cstat-no" title="statement not covered" >      return {</span>
+        message: `Voorrang! 🚗 This is the heart of Dutch driving theory. Let me break it down for you:\n\n**The Golden Rule: "Rechts gaat voor" (Right goes first)**\n• **At equal intersections**: Traffic from your RIGHT has priority\n• **Exception**: When signs or markings say otherwise\n• **Remember**: "Rechts gaat voor" is the default rule!\n\n**Dutch Priority Hierarchy:**\n1. **Emergency vehicles** (ambulance, police, fire) - always!\n2. **Trams** - they have their own tracks and rules\n3. **Traffic from the right** - the fundamental rule\n4. **Main road traffic** - when you're on a side road\n5. **Pedestrians at crossings** - they have priority\n\n**Key Dutch Signs:**\n• **Driehoek (triangle)**: Give way - voorrang verlenen\n• **Stop bord**: Complete stop required\n• **Voorrangsbord**: You have priority on this road\n\n**Pro Tip**: Dutch drivers are very predictable - they follow the rules strictly. Learn the patterns and you'll be fine!\n\n**For your CBR exam**: This is 30% of all questions - master this and you're halfway there!`,
+        tone: 'encouraging',
+        actionItems: ['Practice "rechts gaat voor" scenarios', 'Study Dutch priority signs', 'Learn tram priority rules'],
+        nextSteps: ['Take priority rules practice test', 'Review intersection scenarios', 'Build confidence with Dutch rules']
+      };
+    }
+    
+    // Dutch Speed Limits - ChatGPT style
+<span class="cstat-no" title="statement not covered" >    if (lowerMessage.includes('speed') || lowerMessage.includes('limit') || lowerMessage.includes('km/h') || </span>
+        lowerMessage.includes('snelheid') || lowerMessage.includes('snelheidslimiet') || lowerMessage.includes('zone')) {
+<span class="cstat-no" title="statement not covered" >      return {</span>
+        message: `Snelheidslimieten! 🏁 Dutch speed limits are quite specific and different from other countries. Here's the complete guide:\n\n**Dutch Speed Limit System:**\n• **Bebouwde kom (Built-up areas)**: 50 km/h default\n• **Buiten bebouwde kom (Outside built-up)**: 80 km/h default\n• **Autosnelweg (Motorway)**: 100-130 km/h (check signs!)\n• **Zone 30**: Residential areas, schools, hospitals\n• **Zone 50**: Urban areas, city centers\n• **Zone 60**: Some rural roads\n• **Zone 80**: Country roads, provincial roads\n\n**Special Dutch Zones:**\n• **Woonerf**: 15 km/h (residential areas with shared space)\n• **Schoolomgeving**: 30 km/h (school zones)\n• **Zone 30**: Often in residential areas\n\n**Key Dutch Rules:**\n• **Signs override everything** - always check for speed limit signs\n• **Flitspaal (speed camera)**: Very common - they're everywhere!\n• **Handhaving**: Traffic enforcement is strict\n• **Boete**: Fines start at €35 and go up to €370+\n\n**Pro Tip**: Dutch drivers are very conscious of speed limits. Follow them religiously - it's not just about the fine, it's about safety!\n\n**For your CBR exam**: Speed questions are 20% of the test - know your zones!`,
+        tone: 'encouraging',
+        actionItems: ['Learn all Dutch speed zones', 'Study speed limit signs', 'Practice speed calculation questions'],
+        nextSteps: ['Take speed &amp; safety practice test', 'Review Dutch road types', 'Build confidence with speed limits']
+      };
+    }
+    
+    // Dutch Roundabouts - ChatGPT style
+<span class="cstat-no" title="statement not covered" >    if (lowerMessage.includes('roundabout') || lowerMessage.includes('rotonde') || lowerMessage.includes('rotonde regels')) {</span>
+<span class="cstat-no" title="statement not covered" >      return {</span>
+        message: `Rotondes! 🔄 These are everywhere in the Netherlands and have very specific rules. Let me explain the Dutch system:\n\n**Dutch Roundabout Rules (Rotonde Regels):**\n• **Voorrang verlenen**: Give way to traffic already ON the roundabout\n• **Richtingaanwijzer**: Signal LEFT when entering (if going left or straight)\n• **Uitvoegen**: Signal RIGHT when exiting\n• **Rechts houden**: Keep to the right lane unless signs indicate otherwise\n\n**Dutch Roundabout Types:**\n• **Kleine rotonde**: Small roundabout - usually single lane\n• **Grote rotonde**: Large roundabout - multiple lanes\n• **Turborotonde**: Turbo roundabout - special lane markings\n• **Rotonde met verkeerslichten**: Roundabout with traffic lights\n\n**Key Dutch Rules:**\n• **Traffic ON the roundabout has priority** - always!\n• **Signal LEFT when entering** - this is unique to Netherlands!\n• **Signal RIGHT when exiting** - standard rule\n• **Check your mirrors** - especially the dode hoek (blind spot)\n\n**Pro Tip**: Dutch roundabouts are very predictable. Learn the pattern: give way → signal left → enter → signal right → exit. Practice this sequence!\n\n**For your CBR exam**: Roundabouts are 15% of questions - master the signaling!`,
+        tone: 'encouraging',
+        actionItems: ['Practice roundabout signaling', 'Study Dutch roundabout types', 'Learn the entry/exit sequence'],
+        nextSteps: ['Take roundabout practice test', 'Review Dutch traffic rules', 'Build confidence with signaling']
+      };
+    }
+    
+    // CBR Exam Format Questions
+<span class="cstat-no" title="statement not covered" >    if (lowerMessage.includes('cbr exam') || lowerMessage.includes('exam format') || lowerMessage.includes('how many questions') || </span>
+        lowerMessage.includes('exam time') || lowerMessage.includes('pass mark') || lowerMessage.includes('exam structure')) {
+<span class="cstat-no" title="statement not covered" >      return {</span>
+        message: "📋 CBR Theory Exam Format:\n\n**Structure:**\n• 25 multiple choice questions\n• 30 minutes total time\n• Computer-based at CBR test center\n\n**Pass Requirements:**\n• Need 13+ correct answers (52%+)\n• But aim for 80%+ for confidence!\n\n**Question Types:**\n• Traffic rules &amp; regulations\n• Road signs &amp; markings\n• Priority &amp; right of way\n• Safety &amp; hazard perception\n\n**Tips:**\n• Read questions carefully\n• Use elimination method\n• Don't rush - you have time\n• Trust your preparation!",
+        tone: 'encouraging',
+        actionItems: ['Practice with 25-question tests', 'Time yourself on practice tests', 'Review all question types'],
+        nextSteps: ['Take mock exams', 'Build exam confidence', 'Book your real exam when ready']
+      };
+    }
+    
+    // CBR Exam Cost &amp; Price Questions
+<span class="cstat-no" title="statement not covered" >    if (lowerMessage.includes('how much') || lowerMessage.includes('cost') || lowerMessage.includes('price') || </span>
+        lowerMessage.includes('fee') || lowerMessage.includes('money') || lowerMessage.includes('euro') || 
+        lowerMessage.includes('€') || lowerMessage.includes('cbr exam cost') || lowerMessage.includes('exam price')) {
+<span class="cstat-no" title="statement not covered" >      return {</span>
+        message: "💰 CBR Exam Cost &amp; Pricing:\n\n**Theory Exam Cost:**\n• **€37.50** (2024 price)\n• Pay online when booking\n• No additional fees\n\n**What's Included:**\n• 25 multiple choice questions\n• 30 minutes exam time\n• Immediate results\n• Certificate valid for 1.5 years\n\n**Payment Methods:**\n• Credit card (Visa, Mastercard)\n• Debit card (Maestro)\n• iDEAL (Dutch online banking)\n• PayPal\n\n**Retake Costs:**\n• Each retake: €37.50\n• No limit on retakes\n• Wait 2 weeks between attempts\n\n**Pro Tip**: Book early to get your preferred date - popular slots fill up quickly!",
+        tone: 'encouraging',
+        actionItems: ['Check cbr.nl for current prices', 'Prepare payment method', 'Book your preferred date'],
+        nextSteps: ['Book your exam', 'Continue practicing', 'Prepare for success']
+      };
+    }
+    
+    // CBR Exam Booking &amp; Process
+<span class="cstat-no" title="statement not covered" >    if (lowerMessage.includes('book exam') || lowerMessage.includes('exam booking') || lowerMessage.includes('cbr appointment') || </span>
+        lowerMessage.includes('exam location') || lowerMessage.includes('how to book') || lowerMessage.includes('appointment')) {
+<span class="cstat-no" title="statement not covered" >      return {</span>
+        message: "📅 CBR Exam Booking Process:\n\n**How to Book:**\n• Visit cbr.nl (official website)\n• Create account with DigiD\n• Choose test center &amp; date\n• Pay €37.50 (2024 price)\n\n**What to Bring:**\n• Valid ID (passport/ID card)\n• Confirmation email\n• Arrive 15 minutes early\n\n**Test Centers:**\n• Available in most major cities\n• Choose closest to you\n• Book 2-4 weeks in advance\n\n**After the Exam:**\n• Results immediately\n• Valid for 1.5 years\n• Start practical lessons!",
+        tone: 'supportive',
+        actionItems: ['Check cbr.nl for available dates', 'Prepare your documents', 'Practice until confident'],
+        nextSteps: ['Book your exam', 'Continue practicing', 'Prepare for success']
+      };
+    }
+    
+    // CBR Exam Preparation Strategy
+<span class="cstat-no" title="statement not covered" >    if (lowerMessage.includes('prepare') || lowerMessage.includes('study plan') || lowerMessage.includes('exam strategy') || </span>
+        lowerMessage.includes('ready') || lowerMessage.includes('when to book')) {
+<span class="cstat-no" title="statement not covered" >      return {</span>
+        message: "🎯 CBR Exam Preparation Strategy:\n\n**Phase 1: Foundation (0-60%)**\n• Master traffic rules &amp; signs\n• Practice 10-15 questions daily\n• Focus on understanding concepts\n\n**Phase 2: Building (60-80%)**\n• Take full practice tests\n• Review all mistakes thoroughly\n• Build consistency\n\n**Phase 3: Exam Ready (80%+)**\n• Take mock exams regularly\n• Time yourself (30 minutes)\n• Build exam confidence\n\n**When to Book:**\n• Consistently score 80%+ on practice tests\n• Pass all 3 mock exams\n• Feel confident and ready!\n\n**Exam Day Tips:**\n• Get good sleep\n• Eat breakfast\n• Arrive early\n• Stay calm and focused!",
+        tone: 'motivational',
+        actionItems: ['Check your current progress', 'Set daily study goals', 'Take practice tests'],
+        nextSteps: ['Build toward 80%+', 'Take mock exams', 'Book when ready']
+      };
+    }
+    
+    // Common CBR Exam Questions
+<span class="cstat-no" title="statement not covered" >    if (lowerMessage.includes('difficult') || lowerMessage.includes('hard') || lowerMessage.includes('challenging') || </span>
+        lowerMessage.includes('struggle')) {
+<span class="cstat-no" title="statement not covered" >      return {</span>
+        message: "💪 CBR Exam Difficulty - You Can Do This!\n\n**Why It Feels Hard:**\n• New concepts and rules to learn\n• Different from your home country\n• Pressure of timed exam\n• Fear of failure\n\n**Success Strategies:**\n• Start with basics - don't rush\n• Practice daily - consistency is key\n• Learn from mistakes - don't repeat them\n• Build confidence gradually\n\n**Remember:**\n• 25 questions in 30 minutes = 1.2 minutes per question\n• You have time to think\n• Most questions are logical\n• Trust your preparation!\n\n**Your Progress:** Keep practicing and you'll get there!",
+        tone: 'encouraging',
+        actionItems: ['Start with easier topics', 'Practice daily', 'Review mistakes'],
+        nextSteps: ['Build confidence gradually', 'Take practice tests', 'Do not give up']
+      };
+    }
+    
+    // CBR Exam Results &amp; Retakes
+<span class="cstat-no" title="statement not covered" >    if (lowerMessage.includes('fail') || lowerMessage.includes('retake') || lowerMessage.includes('results') || </span>
+        lowerMessage.includes('failed') || lowerMessage.includes('retry')) {
+<span class="cstat-no" title="statement not covered" >      return {</span>
+        message: "🔄 CBR Exam Results &amp; Retakes:\n\n**If You Don't Pass:**\n• Don't worry - it's common!\n• Results show immediately\n• You can retake after 2 weeks\n• Use the time to practice more\n\n**Retake Strategy:**\n• Focus on your weak areas\n• Take more practice tests\n• Review all mistakes\n• Build confidence\n\n**Cost:**\n• Each retake costs €37.50\n• No limit on retakes\n• Take your time to prepare\n\n**Success Tips:**\n• Practice until consistently 80%+\n• Take mock exams regularly\n• Don't rush to retake\n• Build real confidence first!\n\n**Remember:** Many people need 2-3 attempts - you're not alone!",
+        tone: 'supportive',
+        actionItems: ['Review your weak areas', 'Practice more', 'Take mock exams'],
+        nextSteps: ['Build confidence', 'Practice until ready', 'Retake when confident']
+      };
+    }
+    
+    // CBR Exam Cost &amp; Price Questions - PRIORITY CHECK
+<span class="cstat-no" title="statement not covered" >    if (lowerMessage.includes('how much') || lowerMessage.includes('cost') || lowerMessage.includes('price') || </span>
+        lowerMessage.includes('fee') || lowerMessage.includes('money') || lowerMessage.includes('euro') || 
+        lowerMessage.includes('€') || lowerMessage.includes('cbr exam cost') || lowerMessage.includes('exam price')) {
+<span class="cstat-no" title="statement not covered" >      return {</span>
+        message: "💰 CBR Exam Cost &amp; Pricing:\n\n**Theory Exam Cost:**\n• **€37.50** (2024 price)\n• Pay online when booking\n• No additional fees\n\n**What's Included:**\n• 25 multiple choice questions\n• 30 minutes exam time\n• Immediate results\n• Certificate valid for 1.5 years\n\n**Payment Methods:**\n• Credit card (Visa, Mastercard)\n• Debit card (Maestro)\n• iDEAL (Dutch online banking)\n• PayPal\n\n**Retake Costs:**\n• Each retake: €37.50\n• No limit on retakes\n• Wait 2 weeks between attempts\n\n**Pro Tip**: Book early to get your preferred date - popular slots fill up quickly!",
+        tone: 'encouraging',
+        actionItems: ['Check cbr.nl for current prices', 'Prepare payment method', 'Book your preferred date'],
+        nextSteps: ['Book your exam', 'Continue practicing', 'Prepare for success']
+      };
+    }
+    
+    // Personalized help based on user progress
+<span class="cstat-no" title="statement not covered" >    if (lowerMessage.includes('help') || lowerMessage.includes('what') || lowerMessage.includes('how')) {</span>
+<span class="cstat-no" title="statement not covered" >      if (averageScore &lt; 30) {</span>
+<span class="cstat-no" title="statement not covered" >        return {</span>
+          message: `I'm your personal driving theory coach! Since you're just starting (${averageScore}% average), here's how I can help:\n\n🎯 **Start Smart**: Begin with Traffic Rules &amp; Signs - it's the foundation\n🎯 **Build Gradually**: Master one topic at 80%+ before moving on\n🎯 **Practice Daily**: 10-15 questions daily beats cramming\n\n**Your personalized goal**: Reach 70%+ average to unlock mock exams!\n\nWhat specific topic would you like help with?`,
+          tone: 'encouraging',
+          actionItems: ['Start with Traffic Rules &amp; Signs', 'Set a daily practice routine', 'Track your progress'],
+          nextSteps: ['Take your first practice test', 'Focus on understanding concepts', 'Build consistency']
+        };
+      } else <span class="cstat-no" title="statement not covered" >if (averageScore &lt; 70) {</span>
+<span class="cstat-no" title="statement not covered" >        return {</span>
+          message: `Excellent progress! You're at ${averageScore}% average - well on your way! Here's how I can help you reach 70%+:\n\n🎯 **Focus on Weak Areas**: Check your dashboard for personalized recommendations\n🎯 **Master Each Topic**: Aim for 80%+ in each area before moving on\n🎯 **Build Consistency**: Practice daily to maintain momentum\n\n**You're ${70 - averageScore}% away from unlocking mock exams!**\n\nWhat specific area would you like to improve?`,
+          tone: 'motivational',
+          actionItems: ['Check your dashboard insights', 'Focus on your weakest area', 'Practice daily'],
+          nextSteps: ['Take a practice test', 'Review your mistakes', 'Build toward 70%+']
+        };
+      } else {
+<span class="cstat-no" title="statement not covered" >        return {</span>
+          message: `Outstanding! You're at ${averageScore}% average - ready for the next level! 🎉\n\n🎯 **You're ready for mock exams!** - This is where you test your real exam readiness\n🎯 **Focus on exam strategy** - Time management and pressure handling\n🎯 **Polish your weak spots** - Even small improvements matter\n\n**Your goal**: Pass all 3 mock exams to be truly exam-ready!\n\nWhat would you like to work on next?`,
+          tone: 'motivational',
+          actionItems: ['Start a mock exam', 'Review your strong areas', 'Polish any weak spots'],
+          nextSteps: ['Take Mock Exam 1', 'Build exam confidence', 'Prepare for the real thing']
+        };
+      }
+    }
+    
+    // Additional specific responses for common questions
+<span class="cstat-no" title="statement not covered" >    if (lowerMessage.includes('hello') || lowerMessage.includes('hi') || lowerMessage.includes('hey')) {</span>
+<span class="cstat-no" title="statement not covered" >      return {</span>
+        message: `Hello! 👋 I'm your AI driving theory coach. I can help you with:\n\n• **CBR Exam**: Cost, format, booking, preparation\n• **Dutch Traffic Rules**: Priority, lights, roundabouts, speed limits\n• **Road Signs**: All Dutch traffic signs and meanings\n• **Study Tips**: How to prepare effectively\n\nWhat would you like to know?`,
+        tone: 'encouraging',
+        actionItems: ['Ask about CBR exam', 'Learn traffic rules', 'Get study help'],
+        nextSteps: ['Start practicing', 'Take a test', 'Build your knowledge']
+      };
+    }
+    
+<span class="cstat-no" title="statement not covered" >    if (lowerMessage.includes('thank') || lowerMessage.includes('thanks')) {</span>
+<span class="cstat-no" title="statement not covered" >      return {</span>
+        message: `You're welcome! 😊 I'm here to help you succeed with your Dutch driving theory.\n\nKeep practicing and feel free to ask me anything about:\n• CBR exam details\n• Dutch traffic rules\n• Study strategies\n• Road signs and markings\n\nGood luck with your preparation!`,
+        tone: 'supportive',
+        actionItems: ['Continue studying', 'Take practice tests', 'Ask more questions'],
+        nextSteps: ['Build your confidence', 'Prepare for success', 'Keep learning']
+      };
+    }
+    
+    // ChatGPT-style response for any question
+<span class="cstat-no" title="statement not covered" >    return {</span>
+      message: `I'm your AI driving theory coach! I can help with:\n\n• **CBR Exam Questions**: Cost (€37.50), format (25 questions, 30 min), booking process\n• **Dutch Traffic Rules**: Priority rules, traffic lights, roundabouts, speed limits\n• **Road Signs &amp; Markings**: All Dutch traffic signs and their meanings\n• **Exam Preparation**: Study strategies, mock exams, readiness assessment\n• **General Driving Theory**: Any driving-related question you have\n\nWhat would you like to know about Dutch driving theory or the CBR exam?`,
+      tone: 'supportive',
+      actionItems: ['Ask about CBR exam details', 'Learn Dutch traffic rules', 'Get study tips'],
+      nextSteps: ['Take practice tests', 'Study specific topics', 'Prepare for your exam']
+    };
+  }
+}
+&nbsp;
+export const freeAIService = <span class="cstat-no" title="statement not covered" >new FreeAIService();</span>
+&nbsp;</pre></td></tr></table></pre>
+
+                <div class='push'></div><!-- for sticky footer -->
+            </div><!-- /wrapper -->
+            <div class='footer quiet pad2 space-top1 center small'>
+                Code coverage generated by
+                <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
+                at 2025-10-23T08:39:55.400Z
+            </div>
+        <script src="../../prettify.js"></script>
+        <script>
+            window.onload = function () {
+                prettyPrint();
+            };
+        </script>
+        <script src="../../sorter.js"></script>
+        <script src="../../block-navigation.js"></script>
+    </body>
+</html>
+    

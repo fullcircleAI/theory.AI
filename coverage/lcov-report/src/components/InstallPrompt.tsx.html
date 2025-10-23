@@ -25,7 +25,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/36</span>
+                <span class='fraction'>0/37</span>
             </div>
         
             
@@ -46,7 +46,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/35</span>
+                <span class='fraction'>0/36</span>
             </div>
         
             
@@ -167,11 +167,7 @@
 <a name='L102'></a><a href='#L102'>102</a>
 <a name='L103'></a><a href='#L103'>103</a>
 <a name='L104'></a><a href='#L104'>104</a>
-<a name='L105'></a><a href='#L105'>105</a>
-<a name='L106'></a><a href='#L106'>106</a>
-<a name='L107'></a><a href='#L107'>107</a>
-<a name='L108'></a><a href='#L108'>108</a>
-<a name='L109'></a><a href='#L109'>109</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L105'></a><a href='#L105'>105</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -179,6 +175,8 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -242,12 +240,6 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -280,6 +272,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import React, { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import './InstallPrompt.css';
 &nbsp;
 interface BeforeInstallPromptEvent extends Event {
@@ -288,6 +281,7 @@ interface BeforeInstallPromptEvent extends Event {
 }
 &nbsp;
 export const InstallPrompt: React.FC = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >()</span> =&gt; {</span>
+  const { t } = <span class="cstat-no" title="statement not covered" >useTranslation();</span>
   const [deferredPrompt, setDeferredPrompt] = <span class="cstat-no" title="statement not covered" >useState&lt;BeforeInstallPromptEvent | null&gt;(null);</span>
   const [showPrompt, setShowPrompt] = <span class="cstat-no" title="statement not covered" >useState(false);</span>
 &nbsp;
@@ -350,37 +344,31 @@ export const InstallPrompt: React.FC = <span class="cstat-no" title="statement n
 <span class="cstat-no" title="statement not covered" >  return (</span>
     &lt;div className="install-prompt-overlay" onClick={handleDismiss}&gt;
       &lt;div className="install-prompt" onClick={<span class="fstat-no" title="function not covered" >(e</span>) =&gt; <span class="cstat-no" title="statement not covered" >e.stopPropagation()}</span>&gt;
-        &lt;button className="install-close" onClick={handleDismiss}&gt;×&lt;/button&gt;
+        {/* iOS/Android drag handle */}
+        &lt;div className="install-drag-handle"&gt;&lt;/div&gt;
         
-        &lt;div className="install-icon"&gt;📱&lt;/div&gt;
+        &lt;div className="install-content"&gt;
+          &lt;div className="install-mascot"&gt;
+            &lt;img src="/images/mascot.png" alt="Theory Coach AI Mascot" className="mascot-image" /&gt;
+          &lt;/div&gt;
         
-        &lt;h3 className="install-title"&gt;Install Theory Coach AI&lt;/h3&gt;
+        &lt;h3 className="install-title"&gt;{t('install.title', 'Install Theory Coach AI')}&lt;/h3&gt;
         &lt;p className="install-description"&gt;
-          Install our app for quick access and offline practice. Works just like a native app!
+          {t('install.description', 'Learn driving theory in 24 hours with our AI-powered coaching system')}
         &lt;/p&gt;
         
-        &lt;div className="install-features"&gt;
-          &lt;div className="install-feature"&gt;
-            &lt;span className="feature-icon"&gt;⚡&lt;/span&gt;
-            &lt;span&gt;Fast &amp; Offline&lt;/span&gt;
-          &lt;/div&gt;
-          &lt;div className="install-feature"&gt;
-            &lt;span className="feature-icon"&gt;📱&lt;/span&gt;
-            &lt;span&gt;Home Screen Access&lt;/span&gt;
-          &lt;/div&gt;
-          &lt;div className="install-feature"&gt;
-            &lt;span className="feature-icon"&gt;🎯&lt;/span&gt;
-            &lt;span&gt;Native App Feel&lt;/span&gt;
-          &lt;/div&gt;
+        &lt;div className="install-mobile-message"&gt;
+          &lt;p&gt;{t('install.mobileMessage', 'Install on mobile for the best experience')}&lt;/p&gt;
         &lt;/div&gt;
         
-        &lt;div className="install-actions"&gt;
-          &lt;button className="install-btn primary" onClick={handleInstall}&gt;
-            Install Now
-          &lt;/button&gt;
-          &lt;button className="install-btn secondary" onClick={handleDismiss}&gt;
-            Maybe Later
-          &lt;/button&gt;
+          &lt;div className="install-actions"&gt;
+            &lt;button className="install-btn primary" onClick={handleInstall}&gt;
+              {t('install.installNow', 'Install Now')}
+            &lt;/button&gt;
+            &lt;button className="install-btn secondary" onClick={handleDismiss}&gt;
+              {t('install.maybeLater', 'Maybe Later')}
+            &lt;/button&gt;
+          &lt;/div&gt;
         &lt;/div&gt;
       &lt;/div&gt;
     &lt;/div&gt;
@@ -394,7 +382,7 @@ export const InstallPrompt: React.FC = <span class="cstat-no" title="statement n
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-10-10T10:22:28.994Z
+                at 2025-10-23T08:39:55.400Z
             </div>
         <script src="../../prettify.js"></script>
         <script>

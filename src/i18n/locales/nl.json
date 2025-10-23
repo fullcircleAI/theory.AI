@@ -36,7 +36,6 @@
     "selectDate": "Selecteer Datum",
     "dayRemaining": "dag over",
     "daysRemaining": "dagen over",
-    "weekdayNotice": "Selecteer een werkdag (maandag-vrijdag) binnen de volgende 7 werkdagen",
     "skip": "Overslaan",
     "continue": "Doorgaan",
     "continuing": "Bezig..."
@@ -2289,6 +2288,21 @@
         "o2": "Continue rijden op normal snelheid",
         "o3": "snelheid omhoog naar get through the wind snel"
       }
+    }
+  },
+  "aiTutor": {
+    "title": "Coach",
+    "welcome": "Hoi! Ik ben je Theorie Coach. Vraag me alles over verkeersregels, oefentoetsen of hoe je je scores kunt verbeteren!",
+    "error": "Sorry, ik heb nu problemen. Probeer het over een moment opnieuw.",
+    "actionItems": "Actiepunten:",
+    "nextSteps": "Volgende stappen:",
+    "inputPlaceholder": "Bericht Coach...",
+    "quickQuestions": {
+      "title": "Probeer te vragen:",
+      "whyWrong": "Waarom kreeg ik dit fout?",
+      "explainRule": "Leg deze regel uit",
+      "howImprove": "Hoe kan ik verbeteren?",
+      "whenReady": "Wanneer ben ik klaar voor het examen?"
     }
   },
   "install": {

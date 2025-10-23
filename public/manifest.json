@@ -89,6 +89,23 @@
   "edge_side_panel": {
     "preferred_width": 400
   },
+  
+  /* iOS PWA specific configurations */
+  "apple-mobile-web-app-capable": "yes",
+  "apple-mobile-web-app-status-bar-style": "default",
+  "apple-mobile-web-app-title": "AI Coach",
+  
+  /* Android PWA specific configurations */
+  "mobile-web-app-capable": "yes",
+  "msapplication-TileColor": "#002868",
+  "msapplication-config": "/browserconfig.xml",
+  
+  /* Enhanced PWA features */
+  "related_applications": [],
+  "prefer_related_applications": false,
+  "id": "ai-coach-theory-master",
+  "start_url": "/?source=pwa",
+  "display_override": ["window-controls-overlay", "standalone", "minimal-ui"],
   "shortcuts": [
     {
       "name": "Practice Tests",

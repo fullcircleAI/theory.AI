@@ -1,5 +1,13 @@
 /* Mock Exam Selection uses Tests Page styling */
 
+/* Exam Score in Title */
+.exam-score {
+  color: #6b7280;
+  font-weight: 500;
+  font-size: 0.9em;
+  margin-left: 0.5rem;
+}
+
 /* Make mock exam dashboard scrollable on mobile */
 .mock-exam-page .tests-page {
   height: auto;
@@ -27,55 +35,39 @@
   max-height: none;
 }
 
-/* Mock Exam Performance Summary */
-.mock-exam-performance-summary {
-  background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
-  border-radius: 12px;
-  padding: 1rem;
-  margin-bottom: 1rem;
-  border: 1px solid #e2e8f0;
+
+/* Mock Exam Cards */
+.test-card[data-difficulty="mock-exam"] {
+  background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 100%);
+  color: white;
+  border: 2px solid #1e3a8a;
+  box-shadow: 0 4px 12px rgba(30, 58, 138, 0.3);
 }
 
-.performance-header {
-  text-align: center;
-  margin-bottom: 1rem;
+.test-card[data-difficulty="mock-exam"]:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(30, 58, 138, 0.4);
 }
 
-.performance-header h3 {
-  font-size: 1.1rem;
-  font-weight: 600;
-  color: #1e293b;
-  margin: 0 0 0.25rem 0;
-}
-
-.performance-header p {
-  font-size: 0.85rem;
-  color: #64748b;
-  margin: 0;
-}
-
-.performance-stats {
-  display: flex;
-  justify-content: space-around;
-  gap: 1rem;
-}
-
-.performance-stat {
-  text-align: center;
-  flex: 1;
-}
-
-.performance-stat .stat-number {
-  font-size: 1.5rem;
+.test-card[data-difficulty="mock-exam"] .test-name {
+  color: white;
   font-weight: 700;
-  color: #1e293b;
-  margin-bottom: 0.25rem;
 }
 
-.performance-stat .stat-label {
-  font-size: 0.75rem;
-  color: #64748b;
-  font-weight: 500;
+.test-card[data-difficulty="mock-exam"] .test-meta {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.test-card[data-difficulty="mock-exam"] .exam-score {
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.test-card[data-difficulty="mock-exam"]::before {
+  content: "";
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  font-size: 1.5rem;
 }
 
 /* Mock Exam Requirement Note */

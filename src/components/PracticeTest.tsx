@@ -1,10 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { Navigation } from './Navigation';
 import * as questionData from '../question_data';
+import { getRandomRealExamQuestions } from '../question_data/realExamQuestions';
 import { lightHaptic, successHaptic, errorHaptic } from '../utils/haptics';
 import { aiCoach } from '../services/aiCoach';
+import { useLanguage } from '../contexts/LanguageContext';
 import './PracticeTest.css';
 import './PracticeResult.css';
 
@@ -31,6 +33,97 @@ export const PracticeTest: React.FC = () => {
   const [score, setScore] = useState(0);
   const [testComplete, setTestComplete] = useState(false);
   const [isMuted, setIsMuted] = useState(false);
+  const [timeLeft, setTimeLeft] = useState(0);
+  const [isVoiceEnabled, setIsVoiceEnabled] = useState(false);
+  // const [isSpeaking, setIsSpeaking] = useState(false); // Not used currently
+  const [speechUtterance, setSpeechUtterance] = useState<SpeechSynthesisUtterance | null>(null);
+
+  // Voice functionality - only for practice tests, not mock exams
+  const { getSpeechLang, getSpeechVoice } = useLanguage();
+
+  const speakQuestion = useCallback(() => {
+    // Don't speak for mock exams
+    if (testId === 'mock-test') {
+      console.log('Mock test - no voice');
+      return;
+    }
+    
+    console.log('Speaking question:', { isVoiceEnabled, isMuted, testId });
+    
+    // Stop any current speech
+    if (speechUtterance) {
+      window.speechSynthesis.cancel();
+    }
+
+    if (!isVoiceEnabled || isMuted) {
+      console.log('Voice disabled or muted');
+      return;
+    }
+
+    // We'll get currentQuestion later when we need it
+    if (questions.length === 0) {
+      console.log('No questions available');
+      return;
+    }
+
+    const questionText = questions[currentQuestionIndex]?.text || '';
+    console.log('Question text:', questionText);
+
+    const utterance = new SpeechSynthesisUtterance(questionText);
+    utterance.lang = getSpeechLang();
+    
+    // Get available voices
+    const voices = window.speechSynthesis.getVoices();
+    console.log('Available voices:', voices.length);
+    
+    const selectedVoice = voices.find(voice => voice.name === getSpeechVoice()) || voices.find(voice => voice.lang.startsWith(getSpeechLang()));
+    console.log('Selected voice:', selectedVoice?.name || 'default');
+    
+    utterance.voice = selectedVoice || null;
+    utterance.rate = 0.9;
+    utterance.pitch = 1;
+    utterance.volume = 0.8;
+
+    utterance.onstart = () => console.log('Voice started');
+    utterance.onend = () => console.log('Voice ended');
+    utterance.onerror = (e) => console.error('Voice error:', e);
+
+    setSpeechUtterance(utterance);
+    window.speechSynthesis.speak(utterance);
+  }, [testId, speechUtterance, isVoiceEnabled, isMuted, questions, currentQuestionIndex, getSpeechLang, getSpeechVoice]);
+
+  const stopSpeaking = () => {
+    if (speechUtterance) {
+      window.speechSynthesis.cancel();
+    }
+  };
+
+  const toggleVoice = () => {
+    console.log('Toggle voice clicked:', { isVoiceEnabled, testId });
+    if (isVoiceEnabled) {
+      stopSpeaking();
+      setIsVoiceEnabled(false);
+      console.log('Voice disabled');
+    } else {
+      setIsVoiceEnabled(true);
+      console.log('Voice enabled');
+      // Auto-speak current question when voice is enabled
+      setTimeout(() => speakQuestion(), 100);
+    }
+  };
+
+  // Auto-speak question when it changes (only for practice tests, not mock exams)
+  useEffect(() => {
+    console.log('Voice effect triggered:', { testId, isVoiceEnabled, isMuted, questionsLength: questions.length });
+    if (testId !== 'mock-test' && isVoiceEnabled && !isMuted && questions.length > 0) {
+      console.log('Auto-speaking question');
+      // Small delay to ensure question is rendered
+      const timer = setTimeout(() => {
+        speakQuestion();
+      }, 300);
+      return () => clearTimeout(timer);
+    }
+  }, [currentQuestionIndex, isVoiceEnabled, isMuted, testId, questions.length, speakQuestion]);
 
   // Hide mobile footer during practice tests
   useEffect(() => {
@@ -39,6 +132,34 @@ export const PracticeTest: React.FC = () => {
       document.body.classList.remove('practice-test-active');
     };
   }, []);
+
+  // Cleanup speech when component unmounts
+  useEffect(() => {
+    return () => {
+      if (speechUtterance) {
+        window.speechSynthesis.cancel();
+      }
+    };
+  }, [speechUtterance]);
+
+  // Timer for Mock Test (30 minutes = 1800 seconds)
+  useEffect(() => {
+    if (testId === 'mock-test') {
+      setTimeLeft(1800); // 30 minutes
+      const timer = setInterval(() => {
+        setTimeLeft(prev => {
+          if (prev <= 1) {
+            // Time's up - auto submit
+            setTestComplete(true);
+            return 0;
+          }
+          return prev - 1;
+        });
+      }, 1000);
+      
+      return () => clearInterval(timer);
+    }
+  }, [testId]);
 
   useEffect(() => {
     const loadQuestions = () => {
@@ -106,6 +227,17 @@ export const PracticeTest: React.FC = () => {
           break;
         case 'traffic-rules-signs':
           questions = questionData.mandatorySignQuestions;
+          break;
+        case 'mock-test':
+          // Use real exam questions for mock test
+          try {
+            questions = getRandomRealExamQuestions(25);
+            console.log('Mock test questions loaded:', questions.length);
+            console.log('First question:', questions[0]);
+          } catch (error) {
+            console.error('Error loading mock test questions:', error);
+            questions = [];
+          }
           break;
         default:
           questions = questionData.trafficLightsSignalsQuestions;
@@ -178,28 +310,33 @@ export const PracticeTest: React.FC = () => {
         // Use English (default)
         setQuestions(questions);
       }
+      console.log('Questions set:', questions.length, 'for test:', testId);
     };
     loadQuestions();
   }, [testId, t, i18n]);
 
+
   const handleAnswer = (answerId: string) => {
     if (!isAnswered) {
-      lightHaptic(); // Haptic feedback on selection
+      // Stop speaking when user chooses an answer
+      stopSpeaking();
+      
+      if (!isMuted) lightHaptic(); // Haptic feedback on selection
       setSelectedAnswer(answerId);
       setIsAnswered(true);
       setShowExplanation(true);
       
       if (answerId === questions[currentQuestionIndex].correctAnswerId) {
         setScore(score + 1);
-        successHaptic(); // Success haptic for correct answer
+        if (!isMuted) successHaptic(); // Success haptic for correct answer
       } else {
-        errorHaptic(); // Error haptic for wrong answer
+        if (!isMuted) errorHaptic(); // Error haptic for wrong answer
       }
     }
   };
 
   const nextQuestion = () => {
-    lightHaptic(); // Haptic feedback on next question
+    if (!isMuted) lightHaptic(); // Haptic feedback on next question
     if (currentQuestionIndex < questions.length - 1) {
       setCurrentQuestionIndex(currentQuestionIndex + 1);
       setSelectedAnswer(null);
@@ -224,6 +361,7 @@ export const PracticeTest: React.FC = () => {
     setIsMuted(!isMuted);
   };
 
+
   const getTestName = () => {
     switch (testId) {
       case 'traffic-lights-signals': return 'Traffic Lights & Signals';
@@ -247,6 +385,7 @@ export const PracticeTest: React.FC = () => {
       case 'emergency-procedures': return 'Emergency Procedures';
       case 'insight-practice': return 'Insight Practice';
       case 'traffic-rules-signs': return 'Traffic Rules & Signs';
+      case 'mock-test': return 'Mock Test';
       default: return 'Practice Test';
     }
   };
@@ -380,8 +519,8 @@ export const PracticeTest: React.FC = () => {
                 {/* Proficiency (80%+): Encourage progression */}
                 {hasMastery && (
                   <>
-                    {/* Show Mock Exam CTA if ready */}
-                    {isReadyForMockExam && (
+                    {/* Show Mock Exam CTA if ready OR if this is the mock test AND user scored 70%+ */}
+                    {((isReadyForMockExam || testId === 'mock-test') && percentage >= 70) && (
                       <button 
                         className="practice-nav-btn mock-exam-cta primary" 
                         onClick={() => navigate('/mock-exam')}
@@ -432,6 +571,8 @@ export const PracticeTest: React.FC = () => {
   const isCorrect = selectedAnswer === currentQuestion.correctAnswerId;
   const motivationWord = getMotivationWord();
 
+
+
   return (
     <div className="main-layout">
       <Navigation />
@@ -449,6 +590,13 @@ export const PracticeTest: React.FC = () => {
               <span className="practice-question-subject">{currentQuestion.subject}</span>
             </div>
             <div className="practice-header-controls">
+              {testId === 'mock-test' && (
+                <div className="timer">
+                  <span className="timer-text">
+                    {Math.floor(timeLeft / 60)}:{(timeLeft % 60).toString().padStart(2, '0')}
+                  </span>
+                </div>
+              )}
               <button
                 className="practice-exit-btn" 
                 onClick={() => navigate('/')}
@@ -457,8 +605,18 @@ export const PracticeTest: React.FC = () => {
               >
                 ×
               </button>
-              <button className={`practice-mute-btn${isMuted ? ' muted' : ''}`} onClick={toggleMute} aria-label={isMuted ? 'Unmute' : 'Mute'}>
-                {isMuted ? '🔇' : '🔊'}
+              <button 
+                className={`practice-mute-btn${isMuted ? ' muted' : ''}${isVoiceEnabled ? ' voice-enabled' : ''}`} 
+                onClick={() => {
+                  toggleMute();
+                  if (testId !== 'mock-test') {
+                    toggleVoice();
+                  }
+                }} 
+                aria-label={isMuted ? 'Unmute' : 'Mute'}
+                title={testId === 'mock-test' ? (isMuted ? 'Unmute' : 'Mute') : (isVoiceEnabled ? 'Disable Voice' : 'Enable Voice')}
+              >
+                {testId === 'mock-test' ? (isMuted ? '🔇' : '🔊') : (isVoiceEnabled ? '🎤' : '🔊')}
               </button>
             </div>
           </div>
@@ -490,7 +648,7 @@ export const PracticeTest: React.FC = () => {
             ))}
           </div>
 
-          {showExplanation && (
+          {showExplanation && testId !== 'mock-test' && (
             <div className="practice-explanation-section">
               <div style={{ position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                 {isAnswered && (

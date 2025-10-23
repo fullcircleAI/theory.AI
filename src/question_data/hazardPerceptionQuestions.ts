@@ -3,26 +3,26 @@ import type { Question } from '../types';
 export const hazardPerceptionQuestions: Question[] = [
   {
     id: 'q-hp-1',
-    text: 'Your speed is 50 km/h. A child on a scooter suddenly emerges from behind the parked car on the right. What do you do?',
+    text: 'According to Dutch traffic rules, your speed is 50 km/h in a built-up area. A child on a scooter suddenly emerges from behind the parked car on the right. What do you do?',
     options: [
-      { id: 'q-hp-1o1', text: 'Brake' },
+      { id: 'q-hp-1o1', text: 'Brake immediately' },
       { id: 'q-hp-1o2', text: 'Release Accelerator' },
       { id: 'q-hp-1o3', text: 'Do Nothing' },
     ],
     correctAnswerId: 'q-hp-1o1',
-    explanation: 'Immediate braking is necessary as a child has suddenly appeared in your path, creating a high-risk situation.',
+    explanation: 'Dutch traffic law requires immediate braking when a child has suddenly appeared in your path, creating a high-risk situation that demands immediate action.',
     subject: 'Hazard Perception',
   },
   {
     id: 'q-hp-2',
-    text: 'Your speed is 30 km/h. A pedestrian looking at their phone steps off the pavement from between parked cars. What do you do?',
+    text: 'According to Dutch traffic rules, your speed is 30 km/h in a residential area. A pedestrian looking at their phone steps off the pavement from between parked cars. What do you do?',
     options: [
-      { id: 'q-hp-2o1', text: 'Brake' },
+      { id: 'q-hp-2o1', text: 'Brake immediately' },
       { id: 'q-hp-2o2', text: 'Release Accelerator' },
       { id: 'q-hp-2o3', text: 'Do Nothing' },
     ],
     correctAnswerId: 'q-hp-2o1',
-    explanation: 'Braking is required as a pedestrian has unexpectedly entered the roadway without looking, posing an immediate collision risk.',
+    explanation: 'Dutch traffic law requires immediate braking when a pedestrian has unexpectedly entered the roadway without looking, posing an immediate collision risk.',
     subject: 'Hazard Perception',
   },
   {

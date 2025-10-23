@@ -3,26 +3,26 @@ import type { Question } from '../types';
 export const roundaboutRulesQuestions: Question[] = [
   {
     id: 'q-rr-1',
-    text: 'You are approaching a roundabout. What should you do before entering?',
+    text: 'According to Dutch traffic rules, you are approaching a roundabout. What should you do before entering?',
     options: [
       { id: 'q-rr-1o1', text: 'Give way to traffic already in the roundabout' },
       { id: 'q-rr-1o2', text: 'Enter immediately if no cars are visible' },
       { id: 'q-rr-1o3', text: 'Stop completely before entering' }
     ],
     correctAnswerId: 'q-rr-1o1',
-    explanation: 'Before entering a roundabout, you must give way to traffic already in the roundabout, including cyclists and pedestrians.',
+    explanation: 'Dutch traffic law requires you to give way to traffic already in the roundabout, including cyclists and pedestrians, before entering.',
     subject: 'Roundabout Rules'
   },
   {
     id: 'q-rr-2',
-    text: 'You are in a roundabout and want to exit. What should you do?',
+    text: 'According to Dutch traffic rules, you are in a roundabout and want to exit. What should you do?',
     options: [
       { id: 'q-rr-2o1', text: 'Signal right before exiting' },
       { id: 'q-rr-2o2', text: 'Signal left before exiting' },
       { id: 'q-rr-2o3', text: 'No need to signal when exiting' }
     ],
     correctAnswerId: 'q-rr-2o1',
-    explanation: 'When exiting a roundabout, you must signal right to indicate your intention to leave the roundabout.',
+    explanation: 'Dutch traffic law requires you to signal right when exiting a roundabout to indicate your intention to leave.',
     subject: 'Roundabout Rules'
   },
   {
