@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useLanguage } from '../contexts/LanguageContext';
 import { aiCoach, type AIInsight } from '../services/aiCoach';
@@ -35,8 +35,8 @@ export const NewDashboard: React.FC = () => {
   const navigate = useNavigate();
   const { t_nested } = useLanguage();
 
-  // Function to get translated test name
-  const getTranslatedTestName = (testId: string): string => {
+  // Function to get translated test name (memoized to fix dependency warning)
+  const getTranslatedTestName = useCallback((testId: string): string => {
     const testNameMap: Record<string, string> = {
       'traffic-lights-signals': t_nested('testNames.trafficLightsSignals'),
       'priority-rules': t_nested('testNames.priorityRules'),
@@ -62,14 +62,14 @@ export const NewDashboard: React.FC = () => {
       'traffic-rules-signs': t_nested('testNames.trafficLightsSignals'),
     };
     return testNameMap[testId] || TEST_METADATA[testId]?.name || testId;
-  };
+  }, [t_nested]);
   const [userProgress, setUserProgress] = useState({
     averageScore: 0,
     totalQuestions: 0,
     correctAnswers: 0,
     studyTime: 0,
   });
-  const [aiInsights, setAiInsights] = useState<AIInsight[]>([]);
+  // Removed unused aiInsights state - insights are calculated on-demand
   const [weakAreas, setWeakAreas] = useState<Array<{ testId: string; name: string; score: number }>>([]);
   const [strongAreas, setStrongAreas] = useState<Array<{ testId: string; name: string; score: number }>>([]);
   const [recommendedTests, setRecommendedTests] = useState<Array<{ testId: string; name: string }>>([]);
@@ -104,9 +104,7 @@ export const NewDashboard: React.FC = () => {
       studyTime: studyTime || 0,
     });
 
-    // Get AI insights
-    const insights = aiCoach.getAIInsights(t_nested);
-    setAiInsights(insights);
+    // AI insights are calculated on-demand when needed
 
     // Get test scores
     const testScores = aiCoach.getTestScores();
@@ -172,7 +170,7 @@ export const NewDashboard: React.FC = () => {
       name: recommendation.testName
     };
     setRecommendedTests([topRecommendation]);
-  }, [t_nested]);
+  }, [t_nested, getTranslatedTestName]);
 
   const formatStudyTime = (hours: number): string => {
     const totalSeconds = Math.floor(hours * 3600);
@@ -186,7 +184,6 @@ export const NewDashboard: React.FC = () => {
   useEffect(() => {
     const interval = setInterval(() => {
       const currentTime = studyTimeTracker.getStudyTimeHours();
-      const timeRemaining = studyTimeTracker.getTimeRemaining();
       
       setUserProgress(prev => ({
         ...prev,

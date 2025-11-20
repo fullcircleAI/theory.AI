@@ -55,6 +55,7 @@
     ]
   },
   "devDependencies": {
-    "@testing-library/jest-dom": "^6.9.1"
+    "@testing-library/jest-dom": "^6.9.1",
+    "vercel": "^48.10.4"
   }
 }
