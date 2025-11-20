@@ -673,11 +673,9 @@ class AICoachService {
   getSmartStudyPlan(translate?: (key: string) => string) {
     const testScores = this.getTestScores();
     const averageScore = this.getCombinedAverage();
-    const examDate = localStorage.getItem('examDate');
     
-    // Calculate days remaining
-    const daysRemaining = examDate ? 
-      Math.ceil((new Date(examDate).getTime() - new Date().getTime()) / (1000 * 60 * 60 * 24)) : 0;
+    // Days remaining is no longer used (exam date selection removed)
+    const daysRemaining = 0;
     
     // Find weak areas (scores below 60%)
     const weakAreas = Object.entries(testScores)

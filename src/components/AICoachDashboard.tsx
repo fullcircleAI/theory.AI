@@ -158,7 +158,6 @@ export const AICoachDashboard: React.FC = () => {
 
   const [aiInsights, setAiInsights] = useState<AIInsight[]>([]);
   const [showAITutor, setShowAITutor] = useState(false);
-  const [examDate, setExamDate] = useState<string | null>(null);
   const [smartStudyPlan, setSmartStudyPlan] = useState<any>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [achievements, setAchievements] = useState<Achievement[]>([]);
@@ -289,12 +288,6 @@ export const AICoachDashboard: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    // Load exam date if set
-    const savedExamDate = localStorage.getItem('examDate');
-    if (savedExamDate) {
-      setExamDate(savedExamDate);
-    }
-
     loadDashboardData();
   }, [loadDashboardData]);
 
@@ -468,11 +461,6 @@ export const AICoachDashboard: React.FC = () => {
                 <div className="stat-number">{getExamReadiness}%</div>
                 <div className="stat-label">
                   {t_nested('dashboard.examReadiness')}
-                  {examDate && (
-                    <div className="exam-date-display">
-                      {new Date(examDate).toLocaleDateString()}
-                    </div>
-                  )}
                 </div>
                 <div className="progress-bar-bg">
                   <div className="progress-bar-fill" 
