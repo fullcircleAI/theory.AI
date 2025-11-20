@@ -29,9 +29,9 @@ export const OfficialExam: React.FC = () => {
 
   // Mock exam configurations - moved inside useEffect to avoid dependency issues
   const getExamConfigs = () => ({
-    'mock-exam1': { questions: 25, timeLimit: 30, passRate: 52, difficulty: 'mock-exam1' },
-    'mock-exam2': { questions: 25, timeLimit: 30, passRate: 52, difficulty: 'mock-exam2' },
-    'mock-exam3': { questions: 25, timeLimit: 30, passRate: 52, difficulty: 'mock-exam3' }
+    'mock-exam1': { questions: 50, timeLimit: 30, passRate: 88, difficulty: 'mock-exam1' },
+    'mock-exam2': { questions: 50, timeLimit: 30, passRate: 88, difficulty: 'mock-exam2' },
+    'mock-exam3': { questions: 50, timeLimit: 30, passRate: 88, difficulty: 'mock-exam3' }
   });
 
   const [questions, setQuestions] = useState<Question[]>([]);
@@ -77,7 +77,7 @@ export const OfficialExam: React.FC = () => {
     ).length;
     
     const percentage = Math.round((correctAnswers / questions.length) * 100);
-    const passed = percentage >= (examConfig?.passRate || 52);
+    const passed = percentage >= (examConfig?.passRate || 88);
 
     // Save results
     if (examConfig) {

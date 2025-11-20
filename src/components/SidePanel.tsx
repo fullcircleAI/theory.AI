@@ -59,7 +59,7 @@ export const SidePanel: React.FC = () => {
     <aside className="side-panel" style={{ zIndex: 10000 }}>
       <div className="side-panel-content">
         {navItems.map((item) => (
-          <button
+          <button 
             key={item.id}
             type="button"
             className={`side-panel-item ${isActive(item.path) ? 'active' : ''}`}

@@ -86,8 +86,8 @@
 @media (min-width: 769px) {
   .side-panel {
     display: flex !important;
-  }
-  
+}
+
   /* Add margin to main content for sidebar */
   .main-content {
     margin-left: 240px;
@@ -97,8 +97,8 @@
 /* Smooth transitions */
 .side-panel-item {
   transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
+  }
+  
 .side-panel-item:active {
   transform: translateX(2px) scale(0.98);
-}
+  }

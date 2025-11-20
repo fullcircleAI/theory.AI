@@ -29,20 +29,22 @@ export interface RealExamStats {
 class RealExamService {
   private realExamSessions: RealExamSession[] = [];
   
-  // Get a full mock exam (25 questions like the official exam)
+  // Get a full mock exam (50 questions like the official 2025 CBR exam)
   getFullMockExam(): RealExamQuestion[] {
-    return getRandomRealExamQuestions(25);
+    return getRandomRealExamQuestions(50);
   }
   
   // Get real exam questions by difficulty
   getRealExamByDifficulty(difficulty: 'easy' | 'medium' | 'hard'): RealExamQuestion[] {
     const questions = realExamQuestions.filter(q => q.difficulty === difficulty);
-    return questions.slice(0, 25); // Limit to 25 questions
+    return questions.slice(0, 50); // Limit to 50 questions (2025 CBR format)
   }
   
   // Get hardest real exam questions (lowest pass rate)
-  getHardestRealExamQuestions(count: number = 25): RealExamQuestion[] {
-    return getHardestRealExamQuestions(50).slice(0, count);
+  getHardestRealExamQuestions(count: number = 50): RealExamQuestion[] {
+    // Get hardest questions (low pass rate) and return top count
+    const hardest = getHardestRealExamQuestions(60); // Get questions with pass rate < 60%
+    return hardest.slice(0, count);
   }
   
   // Start a real exam session

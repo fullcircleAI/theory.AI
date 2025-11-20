@@ -269,7 +269,7 @@ export const PracticeTest: React.FC = () => {
         case 'mock-test':
           // Use real exam questions for mock test
           try {
-            questions = getRandomRealExamQuestions(25);
+            questions = getRandomRealExamQuestions(50);
           } catch (error) {
             console.error('Error loading mock test questions:', error);
             questions = [];

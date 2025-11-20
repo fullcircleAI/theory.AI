@@ -934,18 +934,18 @@ export const mockExamImageQuestions: RealExamQuestion[] = [
   }
 ];
 
-// Get random real exam questions for practice
-export const getRandomRealExamQuestions = (count: number = 25) => {
+// Get random real exam questions for practice (2025 CBR format: 50 questions)
+export const getRandomRealExamQuestions = (count: number = 50) => {
   // Mix regular questions with image questions for mock exams
   const regularQuestions = [...realExamQuestions].filter(q => !q.imageUrl);
   const imageQuestions = [...mockExamImageQuestions];
   
-  // Take 15 regular questions and 10 image questions for mock exams
+  // Take 30 regular questions and 20 image questions for mock exams (2025 CBR format)
   const shuffledRegular = [...regularQuestions].sort(() => 0.5 - Math.random());
   const shuffledImages = [...imageQuestions].sort(() => 0.5 - Math.random());
   
-  const selectedRegular = shuffledRegular.slice(0, 15);
-  const selectedImages = shuffledImages.slice(0, 10);
+  const selectedRegular = shuffledRegular.slice(0, 30);
+  const selectedImages = shuffledImages.slice(0, 20);
   
   // Combine and shuffle the final selection
   const combined = [...selectedRegular, ...selectedImages].sort(() => 0.5 - Math.random());

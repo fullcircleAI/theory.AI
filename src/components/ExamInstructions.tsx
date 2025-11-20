@@ -47,14 +47,14 @@ export const ExamInstructions: React.FC = () => {
                       <div className="info-icon"></div>
                       <div className="info-text">
                         <h3>Time Limit</h3>
-                        <p>30 minutes to complete 25 questions</p>
+                        <p>30 minutes to complete 50 questions</p>
                       </div>
                     </div>
                     <div className="info-item">
                       <div className="info-icon"></div>
                       <div className="info-text">
                         <h3>Pass Rate</h3>
-                        <p>You need 52% (13 correct answers) to pass</p>
+                        <p>You need 88% (44 correct answers) to pass</p>
                       </div>
                     </div>
                     <div className="info-item">

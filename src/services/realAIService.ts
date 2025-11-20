@@ -287,12 +287,12 @@ Give helpful, accurate answer. Be conversational. Under 100 words.`;
     
     // Exam cost questions
     if (lowerMessage.includes('how much') || lowerMessage.includes('cost') || lowerMessage.includes('price')) {
-      return `The driving theory exam costs €39.50. Book online at the official website. You need 13/25 correct (52%) to pass. Practical exam costs €47.50 separately.`;
+      return `The driving theory exam costs €37.50. Book online at the official website. You need 44/50 correct (88%) to pass (2025 format). Practical exam costs €110 separately.`;
     }
     
     // Exam format questions
     if (lowerMessage.includes('exam format') || lowerMessage.includes('how many questions')) {
-      return `25 multiple choice questions in 30 minutes. Pass mark is 13/25 (52%). Computer-based at test centers. Covers traffic rules, road signs, priority, speed limits, and vehicle knowledge.`;
+      return `50 multiple choice questions in 30 minutes (2025 format). Pass mark is 44/50 (88%). Computer-based at test centers. Covers traffic rules, road signs, priority, speed limits, and vehicle knowledge. Some questions include animation videos.`;
     }
     
     // Dutch traffic rules
@@ -326,7 +326,7 @@ Give helpful, accurate answer. Be conversational. Under 100 words.`;
     // CBR exam cost questions
     if (lowerMessage.includes('how much') || lowerMessage.includes('cost') || lowerMessage.includes('price')) {
       return {
-        message: `The CBR theory exam costs **€37.50** (as of 2024). Here's the breakdown:\n\n💰 **Exam Fee**: €37.50\n📅 **Booking**: Online at cbr.nl\n⏰ **Duration**: 30 minutes\n📝 **Questions**: 25 multiple choice\n🎯 **Pass Mark**: 13/25 correct (52%)\n\n**Pro Tip**: Book early - slots fill up quickly! You can reschedule up to 24 hours before your exam.\n\n**Additional Costs**:\n• Resit fee: €37.50 (if you fail)\n• Practical exam: €110 (separate cost)\n• Theory book: €15-25 (optional but recommended)`,
+        message: `The CBR theory exam costs **€37.50** (as of 2025). Here's the breakdown:\n\n💰 **Exam Fee**: €37.50\n📅 **Booking**: Online at cbr.nl\n⏰ **Duration**: 30 minutes\n📝 **Questions**: 50 multiple choice (2025 format)\n🎯 **Pass Mark**: 44/50 correct (88%)\n\n**Pro Tip**: Book early - slots fill up quickly! You can reschedule up to 24 hours before your exam.\n\n**Additional Costs**:\n• Resit fee: €37.50 (if you fail)\n• Practical exam: €110 (separate cost)\n• Theory book: €15-25 (optional but recommended)`,
         tone: 'supportive',
         actionItems: ['Book your exam at cbr.nl', 'Check available dates', 'Prepare thoroughly'],
         nextSteps: ['Study consistently', 'Take practice tests', 'Build confidence']
@@ -336,9 +336,9 @@ Give helpful, accurate answer. Be conversational. Under 100 words.`;
     // CBR exam format questions
     if (lowerMessage.includes('cbr exam') || lowerMessage.includes('exam format') || lowerMessage.includes('how many questions')) {
       return {
-        message: `The CBR theory exam format is straightforward:\n\n📝 **25 Multiple Choice Questions**\n⏰ **30 Minutes Total** (1.2 minutes per question)\n🎯 **Pass Mark**: 13/25 correct (52%)\n🖥️ **Computer-based** at CBR test centers\n\n**Question Types**:\n• Traffic rules and regulations\n• Road signs and markings\n• Priority and right of way\n• Speed limits and safety\n• Vehicle knowledge\n\n**Pro Tip**: Don't overthink! You have 1.2 minutes per question - trust your first instinct. Dutch driving theory is logical and consistent.`,
+        message: `The CBR theory exam format (2025):\n\n📝 **50 Multiple Choice Questions**\n⏰ **30 Minutes Total** (36 seconds per question)\n🎯 **Pass Mark**: 44/50 correct (88%)\n🖥️ **Computer-based** at CBR test centers\n\n**Question Types**:\n• Traffic rules and regulations\n• Road signs and markings\n• Priority and right of way\n• Speed limits and safety\n• Vehicle knowledge\n• Some questions include animation videos\n\n**Pro Tip**: Manage your time! You have 36 seconds per question - read carefully but don't overthink. Dutch driving theory is logical and consistent.`,
         tone: 'encouraging',
-        actionItems: ['Practice with 25-question tests', 'Time yourself', 'Review all question types'],
+        actionItems: ['Practice with 50-question tests', 'Time yourself', 'Review all question types'],
         nextSteps: ['Take mock exams', 'Build exam confidence', 'Book when ready']
       };
     }
@@ -355,7 +355,7 @@ Give helpful, accurate answer. Be conversational. Under 100 words.`;
     
     // Default response
     return {
-      message: `I'm your AI Dutch driving theory coach! I can help with:\n\n• **CBR Exam**: Cost (€37.50), format (25 questions, 30 min), booking\n• **Dutch Traffic Rules**: Priority, lights, roundabouts, speed limits\n• **Road Signs**: All Dutch traffic signs and meanings\n• **Study Tips**: How to prepare effectively\n\nWhat would you like to know about Dutch driving theory or the CBR exam?`,
+      message: `I'm your AI Dutch driving theory coach! I can help with:\n\n• **CBR Exam**: Cost (€37.50), format (50 questions, 30 min, 2025), booking\n• **Dutch Traffic Rules**: Priority, lights, roundabouts, speed limits\n• **Road Signs**: All Dutch traffic signs and meanings\n• **Study Tips**: How to prepare effectively\n\nWhat would you like to know about Dutch driving theory or the CBR exam?`,
       tone: 'supportive',
       actionItems: ['Ask about CBR exam', 'Learn traffic rules', 'Get study help'],
       nextSteps: ['Start practicing', 'Take a test', 'Build your knowledge']

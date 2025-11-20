@@ -16,30 +16,30 @@ export const MockExamSelection: React.FC = () => {
     {
       id: 'mock-exam1',
       name: 'Mock Exam 1',
-      description: 'Authentic exam interface - 25 questions',
-      questions: 25,
+      description: 'Authentic exam interface - 50 questions (2025 CBR format)',
+      questions: 50,
       time: 30,
-      passRate: 52,
+      passRate: 88,
       difficulty: 'mock-exam',
       isOfficial: true
     },
     {
       id: 'mock-exam2',
       name: 'Mock Exam 2',
-      description: 'Authentic exam interface - 25 questions',
-      questions: 25,
+      description: 'Authentic exam interface - 50 questions (2025 CBR format)',
+      questions: 50,
       time: 30,
-      passRate: 52,
+      passRate: 88,
       difficulty: 'mock-exam',
       isOfficial: true
     },
     {
       id: 'mock-exam3',
       name: 'Mock Exam 3',
-      description: 'Authentic exam interface - 25 questions',
-      questions: 25,
+      description: 'Authentic exam interface - 50 questions (2025 CBR format)',
+      questions: 50,
       time: 30,
-      passRate: 52,
+      passRate: 88,
       difficulty: 'mock-exam',
       isOfficial: true
     }

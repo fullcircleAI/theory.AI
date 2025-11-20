@@ -250,7 +250,7 @@ Provide a helpful explanation with tips.`;
           lowerMessage.includes('fee') || lowerMessage.includes('money') || lowerMessage.includes('euro') || 
           lowerMessage.includes('€') || lowerMessage.includes('cbr exam cost') || lowerMessage.includes('exam price')) {
         return {
-          message: "💰 CBR Exam Cost & Pricing:\n\n**Theory Exam Cost:**\n• **€37.50** (2024 price)\n• Pay online when booking\n• No additional fees\n\n**What's Included:**\n• 25 multiple choice questions\n• 30 minutes exam time\n• Immediate results\n• Certificate valid for 1.5 years\n\n**Payment Methods:**\n• Credit card (Visa, Mastercard)\n• Debit card (Maestro)\n• iDEAL (Dutch online banking)\n• PayPal\n\n**Retake Costs:**\n• Each retake: €37.50\n• No limit on retakes\n• Wait 2 weeks between attempts\n\n**Pro Tip**: Book early to get your preferred date - popular slots fill up quickly!",
+          message: "💰 CBR Exam Cost & Pricing:\n\n**Theory Exam Cost:**\n• **€37.50** (2025 price)\n• Pay online when booking\n• No additional fees\n\n**What's Included:**\n• 50 multiple choice questions (2025 format)\n• 30 minutes exam time\n• Immediate results\n• Certificate valid for 1.5 years\n\n**Payment Methods:**\n• Credit card (Visa, Mastercard)\n• Debit card (Maestro)\n• iDEAL (Dutch online banking)\n• PayPal\n\n**Retake Costs:**\n• Each retake: €37.50\n• No limit on retakes\n• Wait 2 weeks between attempts\n\n**Pro Tip**: Book early to get your preferred date - popular slots fill up quickly!",
           tone: 'encouraging',
           actionItems: ['Check cbr.nl for current prices', 'Prepare payment method', 'Book your preferred date'],
           nextSteps: ['Book your exam', 'Continue practicing', 'Prepare for success']
@@ -261,9 +261,9 @@ Provide a helpful explanation with tips.`;
       if (lowerMessage.includes('cbr exam') || lowerMessage.includes('exam format') || lowerMessage.includes('how many questions') || 
           lowerMessage.includes('exam time') || lowerMessage.includes('pass mark') || lowerMessage.includes('exam structure')) {
         return {
-          message: "📋 CBR Theory Exam Format:\n\n**Structure:**\n• 25 multiple choice questions\n• 30 minutes total time\n• Computer-based at CBR test center\n\n**Pass Requirements:**\n• Need 13+ correct answers (52%+)\n• But aim for 80%+ for confidence!\n\n**Question Types:**\n• Traffic rules & regulations\n• Road signs & markings\n• Priority & right of way\n• Safety & hazard perception\n\n**Tips:**\n• Read questions carefully\n• Use elimination method\n• Don't rush - you have time\n• Trust your preparation!",
+          message: "📋 CBR Theory Exam Format (2025):\n\n**Structure:**\n• 50 multiple choice questions\n• 30 minutes total time\n• Computer-based at CBR test center\n\n**Pass Requirements:**\n• Need 44+ correct answers (88%+)\n• But aim for 90%+ for confidence!\n\n**Question Types:**\n• Traffic rules & regulations\n• Road signs & markings\n• Priority & right of way\n• Safety & hazard perception\n• Some questions include animation videos\n\n**Tips:**\n• Read questions carefully\n• Use elimination method\n• Manage your time - 36 seconds per question\n• Trust your preparation!",
           tone: 'encouraging',
-          actionItems: ['Practice with 25-question tests', 'Time yourself on practice tests', 'Review all question types'],
+          actionItems: ['Practice with 50-question tests', 'Time yourself on practice tests', 'Review all question types'],
           nextSteps: ['Take mock exams', 'Build exam confidence', 'Book your real exam when ready']
         };
       }
@@ -702,9 +702,9 @@ Provide a helpful explanation with tips.`;
     if (lowerMessage.includes('cbr exam') || lowerMessage.includes('exam format') || lowerMessage.includes('how many questions') || 
         lowerMessage.includes('exam time') || lowerMessage.includes('pass mark') || lowerMessage.includes('exam structure')) {
       return {
-        message: "📋 CBR Theory Exam Format:\n\n**Structure:**\n• 25 multiple choice questions\n• 30 minutes total time\n• Computer-based at CBR test center\n\n**Pass Requirements:**\n• Need 13+ correct answers (52%+)\n• But aim for 80%+ for confidence!\n\n**Question Types:**\n• Traffic rules & regulations\n• Road signs & markings\n• Priority & right of way\n• Safety & hazard perception\n\n**Tips:**\n• Read questions carefully\n• Use elimination method\n• Don't rush - you have time\n• Trust your preparation!",
+        message: "📋 CBR Theory Exam Format (2025):\n\n**Structure:**\n• 50 multiple choice questions\n• 30 minutes total time\n• Computer-based at CBR test center\n\n**Pass Requirements:**\n• Need 44+ correct answers (88%+)\n• But aim for 90%+ for confidence!\n\n**Question Types:**\n• Traffic rules & regulations\n• Road signs & markings\n• Priority & right of way\n• Safety & hazard perception\n• Some questions include animation videos\n\n**Tips:**\n• Read questions carefully\n• Use elimination method\n• Manage your time - 36 seconds per question\n• Trust your preparation!",
         tone: 'encouraging',
-        actionItems: ['Practice with 25-question tests', 'Time yourself on practice tests', 'Review all question types'],
+        actionItems: ['Practice with 50-question tests', 'Time yourself on practice tests', 'Review all question types'],
         nextSteps: ['Take mock exams', 'Build exam confidence', 'Book your real exam when ready']
       };
     }
@@ -747,7 +747,7 @@ Provide a helpful explanation with tips.`;
     if (lowerMessage.includes('difficult') || lowerMessage.includes('hard') || lowerMessage.includes('challenging') || 
         lowerMessage.includes('struggle')) {
       return {
-        message: "💪 CBR Exam Difficulty - You Can Do This!\n\n**Why It Feels Hard:**\n• New concepts and rules to learn\n• Different from your home country\n• Pressure of timed exam\n• Fear of failure\n\n**Success Strategies:**\n• Start with basics - don't rush\n• Practice daily - consistency is key\n• Learn from mistakes - don't repeat them\n• Build confidence gradually\n\n**Remember:**\n• 25 questions in 30 minutes = 1.2 minutes per question\n• You have time to think\n• Most questions are logical\n• Trust your preparation!\n\n**Your Progress:** Keep practicing and you'll get there!",
+        message: "💪 CBR Exam Difficulty - You Can Do This!\n\n**Why It Feels Hard:**\n• New concepts and rules to learn\n• Different from your home country\n• Pressure of timed exam\n• Fear of failure\n\n**Success Strategies:**\n• Start with basics - don't rush\n• Practice daily - consistency is key\n• Learn from mistakes - don't repeat them\n• Build confidence gradually\n\n**Remember:**\n• 50 questions in 30 minutes = 36 seconds per question (2025 format)\n• You have time to think\n• Most questions are logical\n• Trust your preparation!\n\n**Your Progress:** Keep practicing and you'll get there!",
         tone: 'encouraging',
         actionItems: ['Start with easier topics', 'Practice daily', 'Review mistakes'],
         nextSteps: ['Build confidence gradually', 'Take practice tests', 'Do not give up']
@@ -824,7 +824,7 @@ Provide a helpful explanation with tips.`;
     
     // ChatGPT-style response for any question
     return {
-      message: `I'm your AI driving theory coach! I can help with:\n\n• **CBR Exam Questions**: Cost (€37.50), format (25 questions, 30 min), booking process\n• **Dutch Traffic Rules**: Priority rules, traffic lights, roundabouts, speed limits\n• **Road Signs & Markings**: All Dutch traffic signs and their meanings\n• **Exam Preparation**: Study strategies, mock exams, readiness assessment\n• **General Driving Theory**: Any driving-related question you have\n\nWhat would you like to know about Dutch driving theory or the CBR exam?`,
+      message: `I'm your AI driving theory coach! I can help with:\n\n• **CBR Exam Questions**: Cost (€37.50), format (50 questions, 30 min, 2025), booking process\n• **Dutch Traffic Rules**: Priority rules, traffic lights, roundabouts, speed limits\n• **Road Signs & Markings**: All Dutch traffic signs and their meanings\n• **Exam Preparation**: Study strategies, mock exams, readiness assessment\n• **General Driving Theory**: Any driving-related question you have\n\nWhat would you like to know about Dutch driving theory or the CBR exam?`,
       tone: 'supportive',
       actionItems: ['Ask about CBR exam details', 'Learn Dutch traffic rules', 'Get study tips'],
       nextSteps: ['Take practice tests', 'Study specific topics', 'Prepare for your exam']

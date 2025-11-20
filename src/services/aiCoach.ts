@@ -208,13 +208,13 @@ class AICoachService {
       // - OR Not practiced yet (score = 0, but we'll handle this separately)
       const isWeak = (score > 0 && score < 60) || (mastery > 0 && mastery < 60);
       
-      weakAreas.push({
-        testId,
+        weakAreas.push({
+          testId,
         score,
         mastery,
         ignoreCount: ignores[testId] || 0,
         isWeak
-      });
+        });
     });
 
     // STEP 2: Separate weak areas from other tests
@@ -244,10 +244,10 @@ class AICoachService {
         }
         
         // Third: by ignore count (less ignored = higher priority)
-        if (a.ignoreCount !== b.ignoreCount) {
-          return a.ignoreCount - b.ignoreCount;
-        }
-        
+      if (a.ignoreCount !== b.ignoreCount) {
+        return a.ignoreCount - b.ignoreCount;
+      }
+
         // Tie-breaker: prefer tests with actual scores over unpracticed
         if (a.score > 0 && b.score === 0) return -1;
         if (a.score === 0 && b.score > 0) return 1;
@@ -280,7 +280,7 @@ class AICoachService {
         
         // Then by score (lower first, even if >= 60)
         if (a.score !== b.score) {
-          return a.score - b.score;
+      return a.score - b.score;
         }
         
         // Then by ignore count
@@ -312,7 +312,7 @@ class AICoachService {
       // WEAK AREA - Always critical priority
       priority = 'critical';
       if (topRecommendation.score < 40 || topRecommendation.mastery < 40) {
-        reason = 'Critical weakness - focus here first';
+      reason = 'Critical weakness - focus here first';
       } else if (topRecommendation.score < 60 || topRecommendation.mastery < 60) {
         reason = 'Weak area - improve this before moving on';
       } else {
@@ -324,11 +324,11 @@ class AICoachService {
         priority = 'high';
         reason = 'Start here - essential for exam success';
       } else if (topRecommendation.score < 88) {
-        priority = 'high';
-        reason = 'Almost ready - one more practice';
-      } else {
-        priority = 'medium';
-        reason = 'Good progress - maintain skills';
+      priority = 'high';
+      reason = 'Almost ready - one more practice';
+    } else {
+      priority = 'medium';
+      reason = 'Good progress - maintain skills';
       }
     }
 
@@ -579,13 +579,13 @@ class AICoachService {
       return studyTimeTracker.getStudyTimeHours();
     } catch (error) {
       // Fallback: estimate from questions if tracker not available
-      const history = this.getTestHistory();
-      const mockExamResults = this.getMockExamResults();
-      const practiceQuestions = history.reduce((sum, result) => sum + result.totalQuestions, 0);
-      const mockExamQuestions = mockExamResults.reduce((sum, result) => sum + result.totalQuestions, 0);
-      const totalQuestions = practiceQuestions + mockExamQuestions;
+    const history = this.getTestHistory();
+    const mockExamResults = this.getMockExamResults();
+    const practiceQuestions = history.reduce((sum, result) => sum + result.totalQuestions, 0);
+    const mockExamQuestions = mockExamResults.reduce((sum, result) => sum + result.totalQuestions, 0);
+    const totalQuestions = practiceQuestions + mockExamQuestions;
       const hours = totalQuestions / 40; // 1.5 min per Q = 40 Q per hour
-      return parseFloat(hours.toFixed(1));
+    return parseFloat(hours.toFixed(1));
     }
   }
 
@@ -651,13 +651,13 @@ class AICoachService {
     return this.getMockExamResults().length;
   }
 
-  // Get mock exam pass rate (simplified - all exams use 52% pass mark)
+  // Get mock exam pass rate (2025 CBR format - all exams use 88% pass mark, 44/50 correct)
   getMockExamPassRate(): number {
     const mockExamResults = this.getMockExamResults();
     if (mockExamResults.length === 0) return 0;
     
-    // All mock exams use 52% pass mark (13/25 questions)
-    const passedExams = mockExamResults.filter(result => result.percentage >= 52).length;
+    // All mock exams use 88% pass mark (44/50 questions) - 2025 CBR format
+    const passedExams = mockExamResults.filter(result => result.percentage >= 88).length;
     
     return Math.round((passedExams / mockExamResults.length) * 100);
   }

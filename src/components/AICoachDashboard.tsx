@@ -148,7 +148,7 @@ export const AICoachDashboard: React.FC = () => {
   });
 
   // Constants for better maintainability
-  const MOCK_EXAM_PASS_THRESHOLD = 52;
+  const MOCK_EXAM_PASS_THRESHOLD = 88; // 2025 CBR format: 44/50 correct (88%)
   const TOTAL_MOCK_EXAMS = 3;
   
   // Mobile-specific state

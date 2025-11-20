@@ -1,7 +1,7 @@
 // Dynamic Mock Exam Service
 // Generates personalized mock exams based on user performance
 // IMPORTANT: Only uses REAL CBR questions - no generation, only filtering
-// MAINTAINS CBR STRUCTURE: 25 questions (15 regular + 10 image), 30 minutes total
+// MAINTAINS CBR STRUCTURE (2025 Format): 50 questions (30 regular + 20 image), 30 minutes total, 44 correct to pass (88%)
 
 import { TestResult } from './aiCoach';
 import { realExamQuestions, mockExamImageQuestions, RealExamQuestion } from '../question_data/realExamQuestions';
@@ -47,14 +47,16 @@ export interface DynamicExamConfig {
 }
 
 class DynamicMockExamService {
-  // CBR Exam Structure Constants
+  // CBR Exam Structure Constants - Updated to 2025 Format
   private readonly CBR_STRUCTURE = {
-    TOTAL_QUESTIONS: 25,
-    REGULAR_QUESTIONS: 15,
-    IMAGE_QUESTIONS: 10,
+    TOTAL_QUESTIONS: 50,
+    REGULAR_QUESTIONS: 30,
+    IMAGE_QUESTIONS: 20,
     TOTAL_TIME_SECONDS: 1800, // 30 minutes
-    AVERAGE_TIME_PER_QUESTION: 72, // seconds
-    MAX_TIME_PER_QUESTION: 90 // seconds
+    AVERAGE_TIME_PER_QUESTION: 36, // seconds (30 min / 50 questions)
+    MAX_TIME_PER_QUESTION: 60, // seconds
+    PASS_MARK: 44, // 44/50 correct (88%)
+    PASS_PERCENTAGE: 88
   };
 
   // Map practice test IDs to real exam subjects
@@ -79,6 +81,27 @@ class DynamicMockExamService {
     'fatigue-rest': 'Fatigue & Rest',
     'emergency-procedures': 'Emergency Procedures',
   };
+
+  // Major CBR themes that must be represented in every mock exam
+  // These are the core official CBR exam topics
+  private readonly MAJOR_CBR_THEMES: string[] = [
+    'Hazard Perception',
+    'Priority Rules',
+    'Speed Limits',
+    'Traffic Lights',
+    'Traffic Signs',
+    'Warning Signs',
+    'Prohibitory Signs',
+    'Road Markings',
+    'Roundabout Rules',
+    'Overtaking',
+    'Pedestrian Crossings',
+    'Construction Zones',
+    'Weather Conditions',
+    'Safety Rules',
+    'Lane Changing',
+    // Note: Some themes may be grouped (e.g., "Traffic Signs" covers multiple sign types)
+  ];
 
   // Get question history for user (prevents repeats)
   private getQuestionHistory(userId?: string): QuestionHistory[] {
@@ -348,7 +371,7 @@ class DynamicMockExamService {
   }
 
   // Generate personalized mock exam FROM REAL CBR QUESTIONS ONLY
-  // MAINTAINS CBR STRUCTURE: 25 questions (15 regular + 10 image)
+  // MAINTAINS CBR STRUCTURE (2025 Format): 50 questions (30 regular + 20 image), 44 correct to pass (88%)
   generatePersonalizedExam(
     examId: string,
     userHistory: TestResult[],
@@ -439,10 +462,10 @@ class DynamicMockExamService {
     }
     // else 50% if 4+ weak areas (balanced)
     
-    // Calculate distribution maintaining CBR structure (15 regular + 10 image)
+    // Calculate distribution maintaining CBR structure (30 regular + 20 image = 50 total)
     const totalWeakCount = Math.floor(this.CBR_STRUCTURE.TOTAL_QUESTIONS * weakPercentage);
     
-    // Distribute weak area questions: 60% regular, 40% image (maintains CBR ratio)
+    // Distribute weak area questions: 60% regular, 40% image (maintains CBR ratio: 30/20 = 60/40)
     const regularFromWeakCount = Math.floor(totalWeakCount * 0.6);
     const imageFromWeakCount = totalWeakCount - regularFromWeakCount;
     
@@ -457,7 +480,7 @@ class DynamicMockExamService {
       .slice(0, imageFromWeakCount)
       .map(wq => wq.question);
 
-    // Step 10: Fill remaining slots to maintain CBR structure (15 regular + 10 image = 25 total)
+    // Step 10: Fill remaining slots to maintain CBR structure (30 regular + 20 image = 50 total)
     const regularNeeded = this.CBR_STRUCTURE.REGULAR_QUESTIONS - regularFromWeak.length;
     const imageNeeded = this.CBR_STRUCTURE.IMAGE_QUESTIONS - imageFromWeak.length;
     
@@ -484,7 +507,7 @@ class DynamicMockExamService {
       finalQuestions = this.balanceDifficulty(finalQuestions, adjustedDifficulty);
     }
 
-    // Step 12: Ensure CBR structure is maintained (15 regular + 10 image = 25 total)
+    // Step 12: Ensure CBR structure is maintained (30 regular + 20 image = 50 total)
     // Re-verify structure after difficulty balancing
     const finalRegular = finalQuestions.filter(q => !q.imageUrl);
     const finalImage = finalQuestions.filter(q => q.imageUrl);
@@ -510,16 +533,19 @@ class DynamicMockExamService {
         finalQuestions = [...finalQuestions, ...fillImage];
       }
       
-      // Limit to exactly 25
+      // Limit to exactly 50
       finalQuestions = finalQuestions.slice(0, this.CBR_STRUCTURE.TOTAL_QUESTIONS);
     }
 
-    // Step 13: Shuffle to randomize order (maintains CBR structure)
+    // Step 13: Ensure theme diversity (all major CBR themes represented)
+    finalQuestions = this.ensureThemeDiversity(finalQuestions, availableQuestions, focusAreas);
+
+    // Step 14: Shuffle to randomize order (maintains CBR structure)
     finalQuestions = this.shuffleArray(finalQuestions);
 
     // Calculate personalization level
     const personalizationLevel = Math.min(100, 
-      Math.round((regularFromWeak.length + imageFromWeak.length) / 25 * 100)
+      Math.round((regularFromWeak.length + imageFromWeak.length) / 50 * 100)
     );
 
     // Create config
@@ -534,7 +560,264 @@ class DynamicMockExamService {
     return { questions: finalQuestions, config };
   }
 
-  // Balance difficulty distribution (MAINTAINS CBR STRUCTURE: 15 regular + 10 image)
+  // Ensure all major CBR themes are represented in the exam
+  // Maintains weak area focus while ensuring theme diversity
+  private ensureThemeDiversity(
+    questions: RealExamQuestion[],
+    availableQuestions: RealExamQuestion[],
+    focusAreas: string[] // Weak areas that should be prioritized
+  ): RealExamQuestion[] {
+    // Get currently represented themes
+    const representedThemes = new Set<string>();
+    questions.forEach(q => {
+      const subject = q.subject || '';
+      if (subject) {
+        representedThemes.add(subject);
+        // Also check for grouped themes (e.g., "Traffic Signs" covers "Warning Signs", "Prohibitory Signs")
+        if (subject.includes('Sign')) {
+          if (subject.includes('Warning')) representedThemes.add('Warning Signs');
+          if (subject.includes('Prohibitory')) representedThemes.add('Prohibitory Signs');
+          if (subject.includes('Traffic')) representedThemes.add('Traffic Signs');
+        }
+      }
+    });
+
+    // Find missing themes
+    const missingThemes: string[] = [];
+    this.MAJOR_CBR_THEMES.forEach(theme => {
+      // Check if theme is represented (exact match or partial)
+      const isRepresented = Array.from(representedThemes).some(represented => {
+        // Exact match
+        if (represented === theme) return true;
+        // Partial match (case insensitive)
+        if (represented.toLowerCase().includes(theme.toLowerCase()) ||
+            theme.toLowerCase().includes(represented.toLowerCase())) {
+          return true;
+        }
+        // Special handling for sign types
+        if (theme.includes('Sign') && represented.includes('Sign')) {
+          return true;
+        }
+        return false;
+      });
+
+      if (!isRepresented) {
+        missingThemes.push(theme);
+      }
+    });
+
+    // If no missing themes, return as is
+    if (missingThemes.length === 0) {
+      return questions;
+    }
+
+    // Replace questions to include missing themes
+    // Strategy: Replace non-weak-area questions first, then least important weak-area questions
+    let updatedQuestions = [...questions];
+    const regularQuestions = updatedQuestions.filter(q => !q.imageUrl);
+    const imageQuestions = updatedQuestions.filter(q => q.imageUrl);
+
+    // Helper to find questions matching a theme
+    const findQuestionsForTheme = (theme: string, isImage: boolean): RealExamQuestion[] => {
+      return availableQuestions.filter(q => {
+        if (isImage && !q.imageUrl) return false;
+        if (!isImage && q.imageUrl) return false;
+        if (updatedQuestions.includes(q)) return false; // Already selected
+
+        const subject = q.subject || '';
+        // Exact match
+        if (subject === theme) return true;
+        // Partial match
+        if (subject.toLowerCase().includes(theme.toLowerCase()) ||
+            theme.toLowerCase().includes(subject.toLowerCase())) {
+          return true;
+        }
+        // Special handling for sign types
+        if (theme.includes('Sign') && subject.includes('Sign')) {
+          return true;
+        }
+        return false;
+      });
+    };
+
+    // Replace questions to cover missing themes
+    // Priority: Replace from non-weak areas first, maintain structure
+    for (const missingTheme of missingThemes) {
+      // Try to find a question for this theme
+      // Prefer regular questions first (easier to maintain structure)
+      let replacement: RealExamQuestion | null = null;
+      let questionToReplace: RealExamQuestion | null = null;
+
+      // First, try to find a regular question for the missing theme
+      const regularForTheme = findQuestionsForTheme(missingTheme, false);
+      if (regularForTheme.length > 0) {
+        // Find a non-weak-area regular question to replace
+        const found = regularQuestions.find(q => {
+          const subject = q.subject || '';
+          return !focusAreas.some(area => 
+            subject === area ||
+            subject.toLowerCase().includes(area.toLowerCase()) ||
+            area.toLowerCase().includes(subject.toLowerCase())
+          );
+        });
+        if (found) {
+          questionToReplace = found;
+          replacement = regularForTheme[0];
+        }
+      }
+
+      // If no regular replacement found, try image questions
+      if (!replacement) {
+        const imageForTheme = findQuestionsForTheme(missingTheme, true);
+        if (imageForTheme.length > 0) {
+          // Find a non-weak-area image question to replace
+          const found = imageQuestions.find(q => {
+            const subject = q.subject || '';
+            return !focusAreas.some(area => 
+              subject === area ||
+              subject.toLowerCase().includes(area.toLowerCase()) ||
+              area.toLowerCase().includes(subject.toLowerCase())
+            );
+          });
+          if (found) {
+            questionToReplace = found;
+            replacement = imageForTheme[0];
+          }
+        }
+      }
+
+      // If still no replacement, replace from weak areas (last resort)
+      if (!replacement) {
+        const anyForTheme = findQuestionsForTheme(missingTheme, false).concat(
+          findQuestionsForTheme(missingTheme, true)
+        );
+        if (anyForTheme.length > 0) {
+          // Replace the least important weak-area question
+          const found = updatedQuestions.find(q => {
+            const subject = q.subject || '';
+            return focusAreas.some(area => 
+              subject === area ||
+              subject.toLowerCase().includes(area.toLowerCase()) ||
+              area.toLowerCase().includes(subject.toLowerCase())
+            );
+          });
+          if (found) {
+            questionToReplace = found;
+            replacement = anyForTheme[0];
+          }
+        }
+      }
+
+      // Perform replacement
+      if (replacement && questionToReplace) {
+        const index = updatedQuestions.indexOf(questionToReplace);
+        if (index !== -1) {
+          updatedQuestions[index] = replacement;
+          // Update regular/image arrays
+          if (questionToReplace.imageUrl) {
+            const imgIndex = imageQuestions.indexOf(questionToReplace);
+            if (imgIndex !== -1) imageQuestions[imgIndex] = replacement;
+          } else {
+            const regIndex = regularQuestions.indexOf(questionToReplace);
+            if (regIndex !== -1) regularQuestions[regIndex] = replacement;
+          }
+        }
+      }
+    }
+
+    // Final verification: ensure structure is maintained
+    const finalRegular = updatedQuestions.filter(q => !q.imageUrl);
+    const finalImage = updatedQuestions.filter(q => q.imageUrl);
+
+    if (finalRegular.length !== this.CBR_STRUCTURE.REGULAR_QUESTIONS ||
+        finalImage.length !== this.CBR_STRUCTURE.IMAGE_QUESTIONS) {
+      // Structure broken, rebuild while maintaining theme diversity
+      const allRegular = availableQuestions.filter(q => !q.imageUrl);
+      const allImage = availableQuestions.filter(q => q.imageUrl);
+
+      // Build new selection ensuring theme coverage
+      const newRegular: RealExamQuestion[] = [];
+      const newImage: RealExamQuestion[] = [];
+      const coveredThemes = new Set<string>();
+
+      // First, add questions from weak areas (prioritized)
+      for (const focusArea of focusAreas) {
+        const matching = allRegular.filter(q => {
+          const subject = q.subject || '';
+          return subject === focusArea ||
+            subject.toLowerCase().includes(focusArea.toLowerCase()) ||
+            focusArea.toLowerCase().includes(subject.toLowerCase());
+        });
+        if (matching.length > 0 && newRegular.length < this.CBR_STRUCTURE.REGULAR_QUESTIONS) {
+          newRegular.push(matching[0]);
+          coveredThemes.add(focusArea);
+        }
+      }
+
+      // Then, ensure all major themes are covered
+      for (const theme of this.MAJOR_CBR_THEMES) {
+        if (coveredThemes.has(theme)) continue;
+
+        const matching = allRegular.filter(q => {
+          if (newRegular.includes(q)) return false;
+          const subject = q.subject || '';
+          return subject === theme ||
+            subject.toLowerCase().includes(theme.toLowerCase()) ||
+            theme.toLowerCase().includes(subject.toLowerCase());
+        });
+        if (matching.length > 0 && newRegular.length < this.CBR_STRUCTURE.REGULAR_QUESTIONS) {
+          newRegular.push(matching[0]);
+          coveredThemes.add(theme);
+        }
+      }
+
+      // Fill remaining regular slots
+      const remainingRegular = allRegular
+        .filter(q => !newRegular.includes(q))
+        .slice(0, this.CBR_STRUCTURE.REGULAR_QUESTIONS - newRegular.length);
+      newRegular.push(...remainingRegular);
+
+      // Same for image questions
+      for (const focusArea of focusAreas) {
+        const matching = allImage.filter(q => {
+          const subject = q.subject || '';
+          return subject === focusArea ||
+            subject.toLowerCase().includes(focusArea.toLowerCase()) ||
+            focusArea.toLowerCase().includes(subject.toLowerCase());
+        });
+        if (matching.length > 0 && newImage.length < this.CBR_STRUCTURE.IMAGE_QUESTIONS) {
+          newImage.push(matching[0]);
+        }
+      }
+
+      for (const theme of this.MAJOR_CBR_THEMES) {
+        if (newImage.length >= this.CBR_STRUCTURE.IMAGE_QUESTIONS) break;
+
+        const matching = allImage.filter(q => {
+          if (newImage.includes(q)) return false;
+          const subject = q.subject || '';
+          return subject === theme ||
+            subject.toLowerCase().includes(theme.toLowerCase()) ||
+            theme.toLowerCase().includes(subject.toLowerCase());
+        });
+        if (matching.length > 0) {
+          newImage.push(matching[0]);
+        }
+      }
+
+      const remainingImage = allImage
+        .filter(q => !newImage.includes(q))
+        .slice(0, this.CBR_STRUCTURE.IMAGE_QUESTIONS - newImage.length);
+      newImage.push(...remainingImage);
+
+      return [...newRegular.slice(0, this.CBR_STRUCTURE.REGULAR_QUESTIONS), 
+              ...newImage.slice(0, this.CBR_STRUCTURE.IMAGE_QUESTIONS)];
+    }
+
+    return updatedQuestions.slice(0, this.CBR_STRUCTURE.TOTAL_QUESTIONS);
+  }
+
+  // Balance difficulty distribution (MAINTAINS CBR STRUCTURE: 30 regular + 20 image = 50 total)
   private balanceDifficulty(
     questions: RealExamQuestion[],
     difficultyLevel: number
@@ -548,36 +831,36 @@ class DynamicMockExamService {
     const hardImage = questions.filter(q => q.difficulty === 'hard' && q.imageUrl);
 
     // Target distribution based on difficulty level
-    // Always maintain: 15 regular + 10 image = 25 total
+    // Always maintain: 30 regular + 20 image = 50 total
     let targetEasyRegular = 0, targetEasyImage = 0;
     let targetMediumRegular = 0, targetMediumImage = 0;
     let targetHardRegular = 0, targetHardImage = 0;
 
     if (difficultyLevel <= 3) {
       // Beginner: More easy questions
-      targetEasyRegular = 8; targetEasyImage = 4; // 12 easy total
-      targetMediumRegular = 7; targetMediumImage = 6; // 13 medium total
+      targetEasyRegular = 16; targetEasyImage = 8; // 24 easy total
+      targetMediumRegular = 14; targetMediumImage = 12; // 26 medium total
       targetHardRegular = 0; targetHardImage = 0; // 0 hard
     } else if (difficultyLevel <= 6) {
       // Intermediate: Balanced
-      targetEasyRegular = 3; targetEasyImage = 2; // 5 easy total
-      targetMediumRegular = 9; targetMediumImage = 6; // 15 medium total
-      targetHardRegular = 3; targetHardImage = 2; // 5 hard total
+      targetEasyRegular = 6; targetEasyImage = 4; // 10 easy total
+      targetMediumRegular = 18; targetMediumImage = 12; // 30 medium total
+      targetHardRegular = 6; targetHardImage = 4; // 10 hard total
     } else if (difficultyLevel <= 8) {
       // Advanced: More hard questions
-      targetEasyRegular = 1; targetEasyImage = 1; // 2 easy total
-      targetMediumRegular = 6; targetMediumImage = 6; // 12 medium total
-      targetHardRegular = 8; targetHardImage = 3; // 11 hard total
+      targetEasyRegular = 2; targetEasyImage = 2; // 4 easy total
+      targetMediumRegular = 12; targetMediumImage = 12; // 24 medium total
+      targetHardRegular = 16; targetHardImage = 6; // 22 hard total
     } else {
       // Expert: Mostly hard
       targetEasyRegular = 0; targetEasyImage = 0; // 0 easy
-      targetMediumRegular = 4; targetMediumImage = 3; // 7 medium total
-      targetHardRegular = 11; targetHardImage = 7; // 18 hard total
+      targetMediumRegular = 8; targetMediumImage = 6; // 14 medium total
+      targetHardRegular = 22; targetHardImage = 14; // 36 hard total
     }
 
     const selected: RealExamQuestion[] = [];
     
-    // Select maintaining CBR structure (15 regular + 10 image)
+    // Select maintaining CBR structure (30 regular + 20 image)
     selected.push(...this.shuffleArray(easyRegular).slice(0, Math.min(targetEasyRegular, easyRegular.length)));
     selected.push(...this.shuffleArray(easyImage).slice(0, Math.min(targetEasyImage, easyImage.length)));
     selected.push(...this.shuffleArray(mediumRegular).slice(0, Math.min(targetMediumRegular, mediumRegular.length)));
@@ -606,7 +889,7 @@ class DynamicMockExamService {
       selected.push(...this.shuffleArray(allImage).slice(0, imageNeeded));
     }
 
-    // Final check: ensure exactly 15 regular + 10 image
+    // Final check: ensure exactly 30 regular + 20 image
     const finalRegular = selected.filter(q => !q.imageUrl);
     const finalImage = selected.filter(q => q.imageUrl);
     
@@ -616,7 +899,7 @@ class DynamicMockExamService {
       const allAvailable = [...easyRegular, ...easyImage, ...mediumRegular, ...mediumImage, ...hardRegular, ...hardImage]
         .filter(q => !selected.includes(q));
       
-      // Take first 15 regular and 10 image from available
+      // Take first 30 regular and 20 image from available
       const neededRegular = this.CBR_STRUCTURE.REGULAR_QUESTIONS - finalRegular.length;
       const neededImage = this.CBR_STRUCTURE.IMAGE_QUESTIONS - finalImage.length;
       

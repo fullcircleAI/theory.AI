@@ -39,14 +39,14 @@ export const MockExam: React.FC = () => {
   };
   // Translation removed since we're using real exam questions directly
 
-  // Mock exam configurations - Official exam format
+  // Mock exam configurations - Official 2025 CBR exam format
   const examConfigs: Record<string, MockExamConfig> = {
-    'exam1': { questions: 25, timeLimit: 30, passRate: 52, difficulty: 'exam1' }, // 13/25 (52%)
-    'exam2': { questions: 25, timeLimit: 30, passRate: 52, difficulty: 'exam2' }, // 13/25 (52%)
-    'exam3': { questions: 25, timeLimit: 30, passRate: 52, difficulty: 'exam3' }, // 13/25 (52%)
-    'mock-exam1': { questions: 25, timeLimit: 30, passRate: 52, difficulty: 'exam1' }, // 13/25 (52%)
-    'mock-exam2': { questions: 25, timeLimit: 30, passRate: 52, difficulty: 'exam2' }, // 13/25 (52%)
-    'mock-exam3': { questions: 25, timeLimit: 30, passRate: 52, difficulty: 'exam3' } // 13/25 (52%)
+    'exam1': { questions: 50, timeLimit: 30, passRate: 88, difficulty: 'exam1' }, // 44/50 (88%)
+    'exam2': { questions: 50, timeLimit: 30, passRate: 88, difficulty: 'exam2' }, // 44/50 (88%)
+    'exam3': { questions: 50, timeLimit: 30, passRate: 88, difficulty: 'exam3' }, // 44/50 (88%)
+    'mock-exam1': { questions: 50, timeLimit: 30, passRate: 88, difficulty: 'exam1' }, // 44/50 (88%)
+    'mock-exam2': { questions: 50, timeLimit: 30, passRate: 88, difficulty: 'exam2' }, // 44/50 (88%)
+    'mock-exam3': { questions: 50, timeLimit: 30, passRate: 88, difficulty: 'exam3' } // 44/50 (88%)
   };
 
   const [questions, setQuestions] = useState<Question[]>([]);
@@ -108,7 +108,7 @@ export const MockExam: React.FC = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [examId, navigate]);
 
-  // Create formatted exam - 25 questions: 15 real exam + 10 image questions
+  // Create formatted exam - 50 questions: 30 regular + 20 image questions (2025 CBR format)
   const createFormattedExam = (): Question[] => {
     try {
       // Check if exam should be personalized
@@ -141,20 +141,20 @@ export const MockExam: React.FC = () => {
         return personalizedQuestions;
       } else {
         // Use random real exam questions (default)
-        const exam = getRandomRealExamQuestions(25);
-        
+      const exam = getRandomRealExamQuestions(50);
+      
         console.log(`Mock exam ${examId} using random real questions:`, { 
-          total: exam.length,
-          realExamQuestions: exam.filter(q => !q.imageUrl).length,
-          imageQuestions: exam.filter(q => q.imageUrl).length
-        });
-        
-        return exam;
+        total: exam.length,
+        realExamQuestions: exam.filter(q => !q.imageUrl).length,
+        imageQuestions: exam.filter(q => q.imageUrl).length
+      });
+      
+      return exam;
       }
     } catch (error) {
       console.error('Error loading exam questions:', error);
       // Fallback to generic questions if real exam questions fail
-      return questionData.trafficLightsSignalsQuestions.slice(0, 25);
+      return questionData.trafficLightsSignalsQuestions.slice(0, 50);
     }
   };
 
@@ -304,7 +304,7 @@ export const MockExam: React.FC = () => {
               <div className="rules-list">
                 <div className="rule-item">
                   <span className="rule-number">1.</span>
-                  <span className="rule-text">You must answer all 25 questions within 30 minutes</span>
+                  <span className="rule-text">You must answer all 50 questions within 30 minutes</span>
                 </div>
                 <div className="rule-item">
                   <span className="rule-number">2.</span>
