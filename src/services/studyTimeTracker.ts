@@ -3,6 +3,8 @@
 // Timer starts when user enters dashboard, pauses when app closes, resumes when user returns
 // IMPORTANT: AI uses PERFORMANCE (not time) for recommendations
 
+import { logger } from '../utils/logger';
+
 const TWENTY_FOUR_HOURS_SECONDS = 24 * 60 * 60; // 86,400 seconds
 const STORAGE_KEY = 'studyTimeTracker';
 
@@ -60,7 +62,7 @@ class StudyTimeTrackerService {
         this.saveToStorage();
       }
     } catch (error) {
-      console.error('Error loading study time:', error);
+      logger.error('Error loading study time:', error);
       this.reset();
     }
   }
@@ -71,7 +73,7 @@ class StudyTimeTrackerService {
       try {
         localStorage.setItem(STORAGE_KEY, JSON.stringify(this.currentData));
       } catch (error) {
-        console.error('Error saving study time:', error);
+        logger.error('Error saving study time:', error);
       }
     }
   }

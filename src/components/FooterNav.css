@@ -25,7 +25,8 @@
   border: none;
   padding: 0.5rem 1rem;
   cursor: pointer !important;
-  transition: all 0.2s ease;
+  transition: background-color 0.1s ease, transform 0.05s ease;
+  will-change: auto;
   pointer-events: auto !important;
   position: relative;
   z-index: 99999 !important;
@@ -39,7 +40,8 @@
 .footer-nav-icon {
   font-size: 1.5rem;
   margin-bottom: 0.25rem;
-  transition: transform 0.2s ease;
+  transition: transform 0.1s ease;
+  will-change: auto;
 }
 
 .footer-nav-btn.active .footer-nav-icon {

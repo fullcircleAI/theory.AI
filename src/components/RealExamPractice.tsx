@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useLanguage } from '../contexts/LanguageContext';
+import { getTranslation } from '../utils/translationHelpers';
 import { realExamService, RealExamSession } from '../services/realExamService';
 import { RealExamQuestion } from '../question_data/realExamQuestions';
 import { lightHaptic, successHaptic, errorHaptic } from '../utils/haptics';
@@ -15,7 +16,7 @@ interface RealExamPracticeProps {
 
 const RealExamPractice: React.FC<RealExamPracticeProps> = ({ onComplete, onClose }) => {
   const navigate = useNavigate();
-  const { t } = useLanguage();
+  const { t, t_nested } = useLanguage();
   const [session, setSession] = useState<RealExamSession | null>(null);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null);
@@ -178,10 +179,10 @@ const RealExamPractice: React.FC<RealExamPracticeProps> = ({ onComplete, onClose
                       setScore(0);
                       setTestComplete(false);
                     }}>
-                      Retry Test
+                      {getTranslation(t_nested, 'practice.retryTest', 'Retry Test')}
                     </button>
                     <button className="practice-nav-btn" onClick={() => navigate('/')}>
-                      Back to Dashboard
+                      {getTranslation(t_nested, 'practice.goToDashboard', 'Back to Dashboard')}
                     </button>
                   </>
                 )}
@@ -197,15 +198,15 @@ const RealExamPractice: React.FC<RealExamPracticeProps> = ({ onComplete, onClose
                       setScore(0);
                       setTestComplete(false);
                     }}>
-                      Retry Test (Recommended)
+                      {getTranslation(t_nested, 'practice.retryTest', 'Retry Test')} ({getTranslation(t_nested, 'practice.recommended', 'Recommended')})
                     </button>
                     <button className="practice-nav-btn" onClick={() => {
                       window.location.href = `/practice/${nextTest.id}`;
                     }}>
-                      Next: {nextTest.name}
+                      {getTranslation(t_nested, 'practice.next', 'Next')}: {nextTest.name}
                     </button>
                     <button className="practice-nav-btn" onClick={() => navigate('/')}>
-                      Back to Dashboard
+                      {getTranslation(t_nested, 'practice.goToDashboard', 'Back to Dashboard')}
                     </button>
                   </>
                 )}
@@ -228,14 +229,14 @@ const RealExamPractice: React.FC<RealExamPracticeProps> = ({ onComplete, onClose
                           boxShadow: '0 4px 12px rgba(26, 62, 122, 0.3)'
                         }}
                       >
-                        Start Mock Exam
+                        {getTranslation(t_nested, 'results.startMockExam', 'Start Mock Exam')}
                       </button>
                     )}
                     
                     <button className="practice-nav-btn next-test primary" onClick={() => {
                       window.location.href = `/practice/${nextTest.id}`;
                     }}>
-                      Next: {nextTest.name}
+                      {getTranslation(t_nested, 'practice.next', 'Next')}: {nextTest.name}
                     </button>
                     <button className="practice-nav-btn" onClick={() => {
                       setCurrentQuestionIndex(0);
@@ -245,10 +246,10 @@ const RealExamPractice: React.FC<RealExamPracticeProps> = ({ onComplete, onClose
                       setScore(0);
                       setTestComplete(false);
                     }}>
-                      Retry Test
+                      {getTranslation(t_nested, 'practice.retryTest', 'Retry Test')}
                     </button>
                     <button className="practice-nav-btn" onClick={() => navigate('/')}>
-                      Back to Dashboard
+                      {getTranslation(t_nested, 'practice.goToDashboard', 'Back to Dashboard')}
                     </button>
                   </>
                 )}
@@ -360,7 +361,9 @@ const RealExamPractice: React.FC<RealExamPracticeProps> = ({ onComplete, onClose
                 className="practice-nav-btn"
                 onClick={nextQuestion}
               >
-                {currentQuestionIndex < session.questions.length - 1 ? 'Next' : 'Finish'}
+                {currentQuestionIndex < session.questions.length - 1 
+                  ? getTranslation(t_nested, 'practice.next', 'Next')
+                  : getTranslation(t_nested, 'practice.finishTest', 'Finish')}
               </button>
             </div>
           )}

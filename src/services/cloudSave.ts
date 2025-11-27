@@ -3,6 +3,7 @@
 
 import { createClient } from '@supabase/supabase-js';
 import { userAuth } from './userAuth';
+import { logger } from '../utils/logger';
 
 // Your Supabase project details
 const supabaseUrl = 'https://cwwqvrcfsaahytkxqdck.supabase.co';
@@ -54,10 +55,10 @@ class CloudSaveService {
         await this.syncToCloud();
       }
 
-      console.log('💾 Progress saved locally for user:', userId);
+      logger.debug('Progress saved locally for user:', userId);
       return true;
     } catch (error) {
-      console.error('❌ Error saving progress:', error);
+      logger.error('Error saving progress:', error);
       return false;
     }
   }
@@ -68,12 +69,12 @@ class CloudSaveService {
       const saved = localStorage.getItem(`userProgress_${userId}`);
       if (saved) {
         const progress = JSON.parse(saved);
-        console.log('📱 Progress loaded for user:', userId);
+        logger.debug('Progress loaded for user:', userId);
         return progress;
       }
       return null;
     } catch (error) {
-      console.error('❌ Error loading progress:', error);
+      logger.error('Error loading progress:', error);
       return null;
     }
   }
@@ -101,12 +102,12 @@ class CloudSaveService {
         .upsert(progressData, { onConflict: 'user_id' });
 
       if (error) {
-        console.error('❌ Supabase sync error:', error);
+        logger.error('Supabase sync error:', error);
       } else {
-        console.log('☁️ Progress synced to Supabase successfully');
+        logger.debug('Progress synced to Supabase successfully');
       }
     } catch (error) {
-      console.error('❌ Cloud sync error:', error);
+      logger.error('Cloud sync error:', error);
     }
   }
 
@@ -124,7 +125,7 @@ class CloudSaveService {
   // Clear all progress (for testing)
   clearProgress(userId: string): void {
     localStorage.removeItem(`userProgress_${userId}`);
-    console.log('🗑️ Progress cleared for user:', userId);
+    logger.debug('Progress cleared for user:', userId);
   }
 }
 

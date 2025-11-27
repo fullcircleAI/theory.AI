@@ -1,4 +1,6 @@
 // Translation Feedback System
+import { logger } from '../utils/logger';
+
 export interface TranslationFeedback {
   id: string;
   key: string;
@@ -68,7 +70,7 @@ class TranslationFeedbackService {
     this.updateAnalytics();
     
     // Log feedback
-    console.log(`Translation feedback submitted: ${key} (${language}) - Rating: ${rating}/5`);
+    logger.debug(`Translation feedback submitted: ${key} (${language}) - Rating: ${rating}/5`);
     
     return feedback.id;
   }
@@ -203,6 +205,9 @@ class TranslationFeedbackService {
 }
 
 export const translationFeedback = new TranslationFeedbackService();
+
+
+
 
 
 

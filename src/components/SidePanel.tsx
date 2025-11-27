@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useLanguage } from '../contexts/LanguageContext';
+import { logger } from '../utils/logger';
 import './SidePanel.css';
 
 interface NavItem {
@@ -9,12 +10,13 @@ interface NavItem {
   path: string;
 }
 
-export const SidePanel: React.FC = () => {
+const SidePanelComponent: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { t_nested } = useLanguage();
 
-  const navItems: NavItem[] = [
+  // Memoize navItems to prevent re-creation on every render
+  const navItems: NavItem[] = useMemo(() => [
     {
       id: 'new-dashboard',
       label: t_nested('navigation.dashboard') || 'Dashboard',
@@ -35,7 +37,7 @@ export const SidePanel: React.FC = () => {
       label: t_nested('navigation.settings') || 'Settings',
       path: '/settings',
     }
-  ];
+  ], [t_nested]);
 
   const isActive = (path: string) => {
     if (path === '/') {
@@ -44,14 +46,16 @@ export const SidePanel: React.FC = () => {
     return location.pathname.startsWith(path);
   };
 
-  const handleClick = (path: string) => {
-    console.log('Side panel navigation clicked:', path);
-    console.log('Current location:', location.pathname);
+  const handleClick = (e: React.MouseEvent<HTMLButtonElement>, path: string) => {
+    e.preventDefault();
+    e.stopPropagation();
+    logger.debug('Side panel navigation:', { path, currentLocation: location.pathname });
     try {
-      navigate(path);
-      console.log('Navigation successful to:', path);
+      if (location.pathname !== path) {
+        navigate(path);
+      }
     } catch (error) {
-      console.error('Navigation error:', error);
+      logger.error('Navigation error:', error);
     }
   };
 
@@ -63,7 +67,7 @@ export const SidePanel: React.FC = () => {
             key={item.id}
             type="button"
             className={`side-panel-item ${isActive(item.path) ? 'active' : ''}`}
-            onClick={() => handleClick(item.path)}
+            onClick={(e) => handleClick(e, item.path)}
             aria-label={item.label}
             style={{ 
               WebkitTapHighlightColor: 'transparent',
@@ -80,3 +84,7 @@ export const SidePanel: React.FC = () => {
     </aside>
   );
 };
+
+SidePanelComponent.displayName = 'SidePanel';
+
+export const SidePanel = React.memo(SidePanelComponent);

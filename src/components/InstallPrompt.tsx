@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useLanguage } from '../contexts/LanguageContext';
+import { getTranslation } from '../utils/translationHelpers';
+import { logger } from '../utils/logger';
 import './InstallPrompt.css';
 
 interface BeforeInstallPromptEvent extends Event {
@@ -52,7 +54,7 @@ export const InstallPrompt: React.FC = () => {
     const { outcome } = await deferredPrompt.userChoice;
 
     if (outcome === 'accepted') {
-      console.log('User accepted the install prompt');
+      logger.info('User accepted the install prompt');
     }
 
     setDeferredPrompt(null);
@@ -76,7 +78,7 @@ export const InstallPrompt: React.FC = () => {
         
         <div className="install-content">
           <div className="install-mascot">
-            <img src="/images/mascot.png" alt="Theory Coach AI Mascot" className="mascot-image" />
+            <img src="/images/mascot.png" alt="Theory.AI Mascot" className="mascot-image" />
           </div>
         
         <h3 className="install-title">{t_nested('install.title')}</h3>
@@ -90,10 +92,10 @@ export const InstallPrompt: React.FC = () => {
         
           <div className="install-actions">
             <button className="install-btn primary" onClick={handleInstall}>
-              {t_nested('install.installNow')}
+              {getTranslation(t_nested, 'install.installNow', 'Install Now')}
             </button>
             <button className="install-btn secondary" onClick={handleDismiss}>
-              {t_nested('install.maybeLater')}
+              {getTranslation(t_nested, 'install.maybeLater', 'Maybe Later')}
             </button>
           </div>
         </div>

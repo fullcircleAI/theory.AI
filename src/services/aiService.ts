@@ -1,5 +1,6 @@
 // AI Service - Real AI-powered features using OpenAI
 import OpenAI from 'openai';
+import { logger } from '../utils/logger';
 
 // Initialize OpenAI client
 const openai = new OpenAI({
@@ -95,7 +96,7 @@ Format as JSON with keys: explanation, personalizedTips (array), relatedConcepts
         return JSON.parse(content);
       }
     } catch (error) {
-      console.error('AI explanation error:', error);
+      logger.error('AI explanation error:', error);
     }
 
     return this.getFallbackExplanation(explanation);
@@ -135,7 +136,7 @@ Format as JSON with keys: personalizedPath, estimatedTimeToPass, dailyGoals, foc
         return JSON.parse(content);
       }
     } catch (error) {
-      console.error('AI study plan error:', error);
+      logger.error('AI study plan error:', error);
     }
 
     return this.getFallbackStudyPlan();
@@ -177,7 +178,7 @@ Format as JSON with all the above keys
         return JSON.parse(content);
       }
     } catch (error) {
-      console.error('AI analytics error:', error);
+      logger.error('AI analytics error:', error);
     }
 
     return this.getFallbackAnalytics();
@@ -217,7 +218,7 @@ Format as JSON with keys: message, tone, actionItems, nextSteps
         return JSON.parse(content);
       }
     } catch (error) {
-      console.error('AI tutor error:', error);
+      logger.error('AI tutor error:', error);
     }
 
     return this.getFallbackTutorResponse();

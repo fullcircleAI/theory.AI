@@ -1,4 +1,6 @@
 // Translation Quality Metrics and Analytics
+import { logger } from '../utils/logger';
+
 export interface TranslationQuality {
   key: string;
   language: string;
@@ -132,7 +134,7 @@ class TranslationMetricsService {
       this.updateUserSatisfaction();
       
       // Log feedback
-      console.log(`User feedback for ${key} (${language}): ${rating}/5 - ${comment || 'No comment'}`);
+      logger.debug(`User feedback for ${key} (${language}): ${rating}/5 - ${comment || 'No comment'}`);
     }
   }
 
@@ -265,6 +267,9 @@ class TranslationMetricsService {
 }
 
 export const translationMetrics = new TranslationMetricsService();
+
+
+
 
 
 

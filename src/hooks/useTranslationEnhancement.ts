@@ -3,6 +3,7 @@ import { translationAPI, TranslationResult } from '../services/translationAPI';
 import { translationMetrics } from '../services/translationMetrics';
 import { translationFeedback } from '../services/translationFeedback';
 import { aiTranslationEnhancer } from '../services/aiTranslationEnhancer';
+import { logger } from '../utils/logger';
 
 export interface TranslationEnhancementHook {
   // Translation functions
@@ -74,7 +75,7 @@ export const useTranslationEnhancement = (): TranslationEnhancementHook => {
           quality.translatedText
         );
         
-        console.log('Translation enhanced:', enhancement);
+        logger.debug('Translation enhanced:', enhancement);
         // Here you would update the actual translation in your strings.ts file
       }
     } catch (err) {
@@ -103,7 +104,7 @@ export const useTranslationEnhancement = (): TranslationEnhancementHook => {
         comment
       );
     } catch (err) {
-      console.error('Failed to submit feedback:', err);
+      logger.error('Failed to submit feedback:', err);
     }
   }, []);
 
@@ -112,7 +113,7 @@ export const useTranslationEnhancement = (): TranslationEnhancementHook => {
     try {
       translationFeedback.voteOnFeedback(feedbackId, vote);
     } catch (err) {
-      console.error('Failed to vote on feedback:', err);
+      logger.error('Failed to vote on feedback:', err);
     }
   }, []);
 
@@ -138,6 +139,9 @@ export const useTranslationEnhancement = (): TranslationEnhancementHook => {
     lastTranslation
   };
 };
+
+
+
 
 
 

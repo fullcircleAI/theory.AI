@@ -84,6 +84,7 @@ export interface LanguageStrings {
     youGotThis: string;
     firstWin: string;
     examReadiness: string;
+    yourJourney: string;
     studyTime: string;
     timeRemaining: string;
     yourProgress: string;
@@ -112,6 +113,19 @@ export interface LanguageStrings {
   noWeakAreas: string;
   maintainStrength: string;
   completeTestsForStrength: string;
+  aiAdaptive: string;
+  weakAreaFocus: string;
+  aiPersonalized: string;
+  goalAchieved: string;
+  goalProgress: string;
+  aiIdentifiedWeakArea: string;
+  aiRecommendsFocus: string;
+  currentScore: string;
+  targetScore: string;
+  toGo: string;
+  personalizedExamInfo: string;
+  examFocusedOn: string;
+  examTailored: string;
   };
   
   settings: {

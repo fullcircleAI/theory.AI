@@ -2,6 +2,7 @@
 // Handles Google, Apple, Facebook login
 
 import { createClient } from '@supabase/supabase-js';
+import { logger } from '../utils/logger';
 
 const supabaseUrl = 'https://cwwqvrcfsaahytkxqdck.supabase.co';
 const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImN3d3F2cmNmc2FhaHl0a3hxZGNrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjA5NDkwMzcsImV4cCI6MjA3NjUyNTAzN30.NVGa5rSEMJ9ZGMLZtISHh2h9soQvBzGkNrcnESHg-Ec';
@@ -28,7 +29,7 @@ class SupabaseAuthService {
       });
 
       if (error) {
-        console.error('Google sign-in error:', error);
+        logger.error('Google sign-in error:', error);
         return null;
       }
 
@@ -36,7 +37,7 @@ class SupabaseAuthService {
       // The actual user data comes from the auth state change
       return null; // Will be handled by onAuthStateChange
     } catch (error) {
-      console.error('Google sign-in error:', error);
+      logger.error('Google sign-in error:', error);
       return null;
     }
   }
@@ -52,13 +53,13 @@ class SupabaseAuthService {
       });
 
       if (error) {
-        console.error('Apple sign-in error:', error);
+        logger.error('Apple sign-in error:', error);
         return null;
       }
 
       return null; // Will be handled by onAuthStateChange
     } catch (error) {
-      console.error('Apple sign-in error:', error);
+      logger.error('Apple sign-in error:', error);
       return null;
     }
   }
@@ -74,13 +75,13 @@ class SupabaseAuthService {
       });
 
       if (error) {
-        console.error('Facebook sign-in error:', error);
+        logger.error('Facebook sign-in error:', error);
         return null;
       }
 
       return null; // Will be handled by onAuthStateChange
     } catch (error) {
-      console.error('Facebook sign-in error:', error);
+      logger.error('Facebook sign-in error:', error);
       return null;
     }
   }

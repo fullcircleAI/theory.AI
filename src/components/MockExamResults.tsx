@@ -1,5 +1,8 @@
 import React from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
+import { useLanguage } from '../contexts/LanguageContext';
+import { getTranslation } from '../utils/translationHelpers';
+import { logger } from '../utils/logger';
 import './PracticeResult.css';
 
 interface ResultsData {
@@ -16,11 +19,11 @@ interface ResultsData {
 export const MockExamResults: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
+  const { t_nested } = useLanguage();
   const resultsData = location.state as ResultsData;
 
-  // Debug logging for results verification
-  console.log('=== MOCK EXAM RESULTS DEBUG ===');
-  console.log('Results data received:', resultsData);
+  // Results verification (development only)
+  logger.debug('Mock exam results:', resultsData);
 
   if (!resultsData) {
     navigate('/mock-exam');
@@ -49,8 +52,8 @@ export const MockExamResults: React.FC = () => {
         <div className="result-content-main">
           <div className="result-card">
             <div className="result-header">
-              <h1>Mock Exam Complete!</h1>
-              <h2>{getDifficultyLabel(resultsData.difficulty)} Level</h2>
+              <h1>{t_nested('results.mockExamComplete')}</h1>
+              <h2>{getDifficultyLabel(resultsData.difficulty)} {t_nested('results.level')}</h2>
             </div>
             
             <div className="result-score">
@@ -63,7 +66,7 @@ export const MockExamResults: React.FC = () => {
             </div>
 
             <div className={`result-message ${resultsData.passed ? 'excellent' : 'practice'}`}>
-              {resultsData.passed ? 'Excellent Work!' : 'Keep Practicing!'}
+              {resultsData.passed ? t_nested('results.excellentWork') : t_nested('results.keepPracticing')}
             </div>
 
             <div className="result-actions">
@@ -71,31 +74,30 @@ export const MockExamResults: React.FC = () => {
                 className="practice-nav-btn primary"
                 onClick={() => navigate(`/mock-exam/${resultsData.examId}`)}
               >
-                Retake Exam
+                {getTranslation(t_nested, 'results.retakeExam', 'Retake Exam')}
               </button>
               {nextExamId ? (
                 <button 
                   className="practice-nav-btn"
                   onClick={() => navigate(`/mock-exam/${nextExamId}`)}
                 >
-                  Start Mock Exam {nextExamId.replace('mock-exam', '')}
+                  {getTranslation(t_nested, 'results.startMockExam', 'Start Mock Exam')} {nextExamId.replace('mock-exam', '')}
                 </button>
               ) : (
                 <button 
                   className="practice-nav-btn"
                   onClick={() => navigate('/mock-exam')}
                 >
-                  Mock Exam Dashboard
+                  {getTranslation(t_nested, 'results.mockExamDashboard', 'Mock Exam Dashboard')}
                 </button>
               )}
               <button 
                 className="practice-nav-btn"
                 onClick={() => {
-                  console.log('Navigating to dashboard...');
                   navigate('/');
                 }}
               >
-                Dashboard
+                {getTranslation(t_nested, 'results.dashboard', 'Dashboard')}
               </button>
             </div>
           </div>

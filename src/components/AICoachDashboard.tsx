@@ -3,8 +3,10 @@ import { useNavigate } from 'react-router-dom';
 import { useLanguage } from '../contexts/LanguageContext';
 import { PullToRefresh } from './PullToRefresh';
 import AITutor from './AITutor';
+import { RoadProgress } from './RoadProgress';
 import { aiCoach } from '../services/aiCoach';
 import type { AIInsight } from '../services/aiCoach';
+import { logger } from '../utils/logger';
 import './AICoachDashboard.css';
 import '../mobile-optimizations.css';
 
@@ -25,53 +27,6 @@ interface Achievement {
   color: string;
 }
 
-interface ReadinessStatus {
-  status: string;
-  color: string;
-  emoji: string;
-  message: string;
-}
-
-
-// Utility functions for exam readiness calculation
-const calculateVariance = (scores: number[]): number => {
-  if (scores.length === 0) return 0;
-  const mean = scores.reduce((a, b) => a + b, 0) / scores.length;
-  const variance = scores.reduce((sum, score) => sum + Math.pow(score - mean, 2), 0) / scores.length;
-  return variance;
-};
-
-const calculateImprovementTrend = (tests: any[]): number => {
-  if (tests.length < 3) return 0;
-  const scores = tests.map(t => t.percentage);
-  const firstHalf = scores.slice(0, Math.floor(scores.length / 2));
-  const secondHalf = scores.slice(Math.floor(scores.length / 2));
-  
-  const firstAvg = firstHalf.reduce((a, b) => a + b, 0) / firstHalf.length;
-  const secondAvg = secondHalf.reduce((a, b) => a + b, 0) / secondHalf.length;
-  
-  return (secondAvg - firstAvg) / firstAvg;
-};
-
-const calculateDifficultyBonus = (testHistory: any[]): number => {
-  const difficultTopics = ['hazard-perception', 'priority-rules', 'motorway-rules'];
-  const completedDifficult = testHistory.filter(test => 
-    difficultTopics.includes(test.testId) && test.percentage >= 70
-  ).length;
-  
-  return Math.min(5, completedDifficult * 2);
-};
-
-const calculateTimeBonus = (testHistory: any[]): number => {
-  const sevenDaysAgo = new Date();
-  sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
-  
-  const recentTests = testHistory.filter(test => 
-    new Date(test.date) > sevenDaysAgo
-  );
-  
-  return Math.min(3, recentTests.length);
-};
 
 // Achievement definitions - now using translation function
 const getAchievementDefinitions = (t_nested: (key: string) => string) => ({
@@ -209,6 +164,52 @@ export const AICoachDashboard: React.FC = () => {
     }
   }, [achievements, userProgress, t_nested]);
 
+  // Calculate Journey Progress (based on completed practice tests and mock exams with minimum scores)
+  const journeyProgress = useMemo(() => {
+    const TEST_METADATA: Record<string, { name: string; category: string }> = {
+      'traffic-lights-signals': { name: 'Traffic Lights & Signals', category: 'signals' },
+      'priority-rules': { name: 'Priority & Right of Way', category: 'rules' },
+      'hazard-perception': { name: 'Hazard Perception', category: 'safety' },
+      'speed-safety': { name: 'Speed & Safety', category: 'safety' },
+      'bicycle-interactions': { name: 'Bicycle Interactions', category: 'interactions' },
+      'roundabout-rules': { name: 'Roundabout Rules', category: 'rules' },
+      'tram-interactions': { name: 'Tram Interactions', category: 'interactions' },
+      'pedestrian-crossings': { name: 'Pedestrian Crossings', category: 'interactions' },
+      'construction-zones': { name: 'Construction Zones', category: 'zones' },
+      'weather-conditions': { name: 'Weather Conditions', category: 'safety' },
+      'road-signs': { name: 'Road Signs', category: 'signs' },
+      'motorway-rules': { name: 'Motorway Rules', category: 'rules' },
+      'vehicle-knowledge': { name: 'Vehicle Knowledge', category: 'vehicles' },
+      'parking-rules': { name: 'Parking Rules', category: 'rules' },
+      'environmental': { name: 'Environmental Zones', category: 'zones' },
+      'technology-safety': { name: 'Technology & Safety', category: 'technology' },
+      'alcohol-drugs': { name: 'Alcohol & Drugs', category: 'safety' },
+      'fatigue-rest': { name: 'Fatigue & Rest', category: 'safety' },
+      'emergency-procedures': { name: 'Emergency Procedures', category: 'safety' },
+      'insight-practice': { name: 'Insight Practice', category: 'advanced' },
+      'traffic-rules-signs': { name: 'Traffic Rules & Signs', category: 'rules' },
+    };
+    
+    const PRACTICE_TEST_MIN_SCORE = 80;
+    const MOCK_EXAM_MIN_SCORE = 88;
+    const TOTAL_PRACTICE_TESTS = Object.keys(TEST_METADATA).length;
+    const TOTAL_MOCK_EXAMS = 3;
+    
+    const testScores = aiCoach.getTestScores();
+    const completedPracticeTests = Object.entries(testScores).filter(([testId, data]) => {
+      return TEST_METADATA[testId] && data.average >= PRACTICE_TEST_MIN_SCORE;
+    }).length;
+    
+    const mockExamResults = aiCoach.getMockExamResults();
+    const completedMockExams = mockExamResults.filter(result => result.percentage >= MOCK_EXAM_MIN_SCORE).length;
+    
+    const practiceProgress = (completedPracticeTests / TOTAL_PRACTICE_TESTS) * 50;
+    const mockExamProgress = (completedMockExams / TOTAL_MOCK_EXAMS) * 50;
+    const totalProgress = Math.min(100, Math.round(practiceProgress + mockExamProgress));
+    
+    return { progress: totalProgress, practiceTests: completedPracticeTests, mockExams: completedMockExams };
+  }, [userProgress.averageScore, userProgress.totalQuestions]);
+
   // Data loading function - extracted for reusability (Optimized with error handling)
   const loadDashboardData = useCallback(async () => {
     setIsLoading(true);
@@ -232,7 +233,7 @@ export const AICoachDashboard: React.FC = () => {
         try {
           smartPlan = aiCoach.getSmartStudyPlan(t_nested);
         } catch (smartPlanError) {
-          console.error('Error loading smart study plan:', smartPlanError);
+          logger.error('Error loading smart study plan:', smartPlanError);
         }
 
         // Batch state updates for better performance
@@ -243,7 +244,7 @@ export const AICoachDashboard: React.FC = () => {
         // Check for achievements after data is loaded (debounced)
         setTimeout(checkAchievements, 1000);
       } catch (error) {
-        console.error('Error loading dashboard data:', error);
+        logger.error('Error loading dashboard data:', error);
         // Set fallback data
         setUserProgress({
           averageScore: 0,
@@ -298,130 +299,23 @@ export const AICoachDashboard: React.FC = () => {
   }, [loadDashboardData]);
 
 
-  // Calculate Exam Readiness - Memoized for performance
-  const getExamReadiness = useMemo(() => {
-    const { averageScore, studyTime, totalQuestions } = userProgress;
-    
-    // Study time bonus: +1% per hour, max +15%
-    const studyBonus = Math.min(15, studyTime);
-    
-    // Practice bonus: +1% per 50 questions, max +10%
-    const practiceBonus = Math.min(10, Math.floor(totalQuestions / 50));
-    
-    // Mock exam bonus: +5% per passed exam, max +15%
-    const mockExamResults = aiCoach.getMockExamResults();
-    const passedMockExams = mockExamResults.filter(result => result.percentage >= MOCK_EXAM_PASS_THRESHOLD).length;
-    const mockExamBonus = Math.min(15, passedMockExams * 5);
-    
-    // Consistency bonus - reward consistent performance
-    const testHistory = aiCoach.getTestHistory();
-    const recentTests = testHistory.slice(-5);
-    let consistencyBonus = 0;
-    
-    if (recentTests.length >= 3) {
-      const allAbove70 = recentTests.every(test => test.percentage >= 70);
-      const allAbove80 = recentTests.every(test => test.percentage >= 80);
-      const variance = calculateVariance(recentTests.map(t => t.percentage));
-      
-      if (allAbove80) {
-        consistencyBonus = 8;
-      } else if (allAbove70 && variance < 100) {
-        consistencyBonus = 5;
-      } else if (allAbove70) {
-        consistencyBonus = 3;
-      }
-    }
-    
-    // Recent improvement bonus
-    let recentImprovement = 0;
-    if (recentTests.length >= 3) {
-      const improvementTrend = calculateImprovementTrend(recentTests);
-      if (improvementTrend > 0.1) {
-        recentImprovement = 5;
-      } else if (improvementTrend > 0.05) {
-        recentImprovement = 3;
-      }
-    }
-    
-    const difficultyBonus = calculateDifficultyBonus(testHistory);
-    const timeBonus = calculateTimeBonus(testHistory);
-    
-    const readiness = Math.min(100, 
-      averageScore + studyBonus + practiceBonus + mockExamBonus + 
-      consistencyBonus + recentImprovement + difficultyBonus + timeBonus
-    );
-    
-    return Math.round(readiness);
-  }, [userProgress]);
-
-  const getReadinessStatus = useCallback((confidence: number): ReadinessStatus => {
-    const mockExamResults = aiCoach.getMockExamResults();
-    const totalMockExams = TOTAL_MOCK_EXAMS;
-    const passedMockExams = mockExamResults.filter(result => result.percentage >= MOCK_EXAM_PASS_THRESHOLD).length;
-    
-    if (passedMockExams < totalMockExams) {
-      return { 
-        status: '', 
-        color: '#ef4444', 
-        emoji: '',
-        message: ''
-      };
-    }
-    
-    if (confidence >= 85) {
-      return { 
-        status: t_nested('dashboard.examReady'), 
-        color: '#10b981', 
-        emoji: '',
-        message: t_nested('dashboard.confidentToPass')
-      };
-    } else if (confidence >= 70) {
-      return { 
-        status: t_nested('dashboard.almostReady'), 
-        color: '#f59e0b', 
-        emoji: '',
-        message: t_nested('dashboard.keepPracticing')
-      };
-    } else if (confidence >= 50) {
-      return { 
-        status: t_nested('dashboard.makingProgress'), 
-        color: '#3b82f6', 
-        emoji: '',
-        message: t_nested('dashboard.focusOnWeakAreas')
-      };
-    } else {
-      return { 
-        status: t_nested('dashboard.needMorePractice'), 
-        color: '#ef4444', 
-        emoji: '',
-        message: t_nested('dashboard.startWithBasics')
-      };
-    }
-  }, [t_nested]);
 
 
 
 
   const navigateToRecommendedTest = useCallback((insight: AIInsight) => {
-    console.log('=== START BUTTON CLICKED ===');
-    console.log('Insight:', insight);
-    console.log('Test ID:', insight.testId);
-    console.log('Navigate function:', typeof navigate);
+    logger.debug('Start button clicked:', { insight, testId: insight.testId });
     
     try {
       if (insight.testId === 'mock-exam') {
-        console.log('Navigating to mock exam');
         navigate('/mock-exam');
       } else {
         const testId = insight.testId || 'traffic-rules-signs';
-        console.log('Navigating to practice test:', testId);
         navigate(`/practice/${testId}`);
       }
-      console.log('Navigation successful');
     } catch (error) {
-      console.error('Navigation error:', error);
+      logger.error('Navigation error:', error);
     }
-    console.log('=== END START BUTTON ===');
   }, [navigate]);
 
   if (isLoading) {
@@ -457,25 +351,14 @@ export const AICoachDashboard: React.FC = () => {
           {/* Summarized Learning Progress */}
           <div className="dashboard-summary">
             <div className="summary-stats">
+              {/* Journey Progress - Road with Car */}
               <div className="summary-stat">
-                <div className="stat-number">{getExamReadiness}%</div>
-                <div className="stat-label">
-                  {t_nested('dashboard.examReadiness')}
-                </div>
-                <div className="progress-bar-bg">
-                  <div className="progress-bar-fill" 
-                       style={{ 
-                         width: `${getExamReadiness}%`,
-                         backgroundColor: getReadinessStatus(getExamReadiness).color
-                       }}></div>
-                </div>
-                <div className="readiness-status">
-                  <span className="status-text">{getReadinessStatus(getExamReadiness).status}</span>
-                </div>
-                <div className="readiness-message">
-                  {getReadinessStatus(getExamReadiness).message}
-                </div>
+                <RoadProgress 
+                  progress={journeyProgress.progress}
+                  showLabel={false}
+                />
               </div>
+              
               <div className="summary-stat combined-progress">
                 <div className="digital-watch-container">
                   <div className="digital-watch-display">
@@ -564,7 +447,6 @@ export const AICoachDashboard: React.FC = () => {
                         <button 
                           className="start-practice-btn"
                           onClick={() => {
-                            console.log('Start button clicked in UI');
                             navigateToRecommendedTest(insight);
                           }}
                         >

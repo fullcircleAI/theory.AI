@@ -1,6 +1,6 @@
 {
-  "short_name": "AI Coach",
-  "name": "AI Coach - Theory Master",
+  "short_name": "Theory.AI",
+  "name": "Theory.AI",
   "description": "Master Dutch Driving Theory with AI-powered coaching, 297 practice questions and multilingual support",
   "icons": [
     {
@@ -93,7 +93,7 @@
   /* iOS PWA specific configurations */
   "apple-mobile-web-app-capable": "yes",
   "apple-mobile-web-app-status-bar-style": "default",
-  "apple-mobile-web-app-title": "AI Coach",
+  "apple-mobile-web-app-title": "Theory.AI",
   
   /* Android PWA specific configurations */
   "mobile-web-app-capable": "yes",
@@ -103,7 +103,7 @@
   /* Enhanced PWA features */
   "related_applications": [],
   "prefer_related_applications": false,
-  "id": "ai-coach-theory-master",
+  "id": "theory-ai",
   "start_url": "/?source=pwa",
   "display_override": ["window-controls-overlay", "standalone", "minimal-ui"],
   "shortcuts": [

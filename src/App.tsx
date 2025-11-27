@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, memo } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { useLanguage } from './contexts/LanguageContext';
 import { SplashScreen } from './components/SplashScreen';
@@ -22,6 +22,12 @@ import UserAuth from './components/UserAuth';
 import { userAuth, User } from './services/userAuth';
 import './App.css';
 
+// Memoize global components to prevent unnecessary re-renders
+const MemoizedInstallPrompt = memo(InstallPrompt);
+const MemoizedOfflineIndicator = memo(OfflineIndicator);
+const MemoizedSidePanel = memo(SidePanel);
+const MemoizedFooterNav = memo(FooterNav);
+
 // AppContent component that manages the app flow
 function AppContent() {
   const { currentLanguage } = useLanguage();
@@ -44,6 +50,11 @@ function AppContent() {
       setCurrentUser(savedUser);
       setShowLogin(false);
     }
+    
+    // Add loaded class after initial render to enable smooth scrolling
+    requestAnimationFrame(() => {
+      document.body.classList.add('loaded');
+    });
   }, []);
 
   useEffect(() => {
@@ -55,14 +66,23 @@ function AppContent() {
     }
   }, [showSplash]);
 
+  // Optimize RTL/LTR updates to prevent flickering
   useEffect(() => {
-    // Add RTL support for Arabic
-    if (currentLanguage === 'ar') {
-      document.documentElement.setAttribute('dir', 'rtl');
-      document.documentElement.setAttribute('lang', 'ar');
-    } else {
-      document.documentElement.setAttribute('dir', 'ltr');
-      document.documentElement.setAttribute('lang', currentLanguage || 'en');
+    if (!currentLanguage) return;
+    
+    const html = document.documentElement;
+    const isRTL = currentLanguage === 'ar';
+    const targetDir = isRTL ? 'rtl' : 'ltr';
+    const currentDir = html.getAttribute('dir');
+    const currentLang = html.getAttribute('lang');
+    
+    // Only update if actually needed (prevent unnecessary DOM updates)
+    if (currentDir !== targetDir || currentLang !== currentLanguage) {
+      // Use requestAnimationFrame to batch DOM updates
+      requestAnimationFrame(() => {
+        html.setAttribute('dir', targetDir);
+        html.setAttribute('lang', currentLanguage);
+      });
     }
   }, [currentLanguage]);
 
@@ -98,11 +118,11 @@ function AppContent() {
   // Finally show the main app
   return (
     <div className="App">
-      {/* Global Components */}
-      <InstallPrompt />
-      <OfflineIndicator />
-      <SidePanel />
-      <FooterNav />
+      {/* Global Components - Memoized to prevent unnecessary re-renders */}
+      <MemoizedInstallPrompt />
+      <MemoizedOfflineIndicator />
+      <MemoizedSidePanel />
+      <MemoizedFooterNav />
       
       <Routes>
         <Route path="/" element={<AICoachDashboard />} />

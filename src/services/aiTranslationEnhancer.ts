@@ -1,4 +1,6 @@
 // AI-Powered Translation Enhancement Service
+import { logger } from '../utils/logger';
+
 export interface TranslationEnhancement {
   key: string;
   language: string;
@@ -52,7 +54,7 @@ class AITranslationEnhancer {
 
       return enhancement;
     } catch (error) {
-      console.error('AI translation enhancement failed:', error);
+      logger.error('AI translation enhancement failed:', error);
       throw error;
     }
   }
@@ -128,7 +130,7 @@ Respond in JSON format:
     try {
       return JSON.parse(content);
     } catch (error) {
-      console.error('Failed to parse AI response:', content);
+      logger.error('Failed to parse AI response:', content);
       throw new Error('Invalid AI response format');
     }
   }
@@ -161,7 +163,7 @@ Respond in JSON format:
         const batchResults = await Promise.all(batchPromises);
         enhancements.push(...batchResults);
       } catch (error) {
-        console.error(`Batch enhancement failed for batch ${i}-${i + batchSize}:`, error);
+        logger.error(`Batch enhancement failed for batch ${i}-${i + batchSize}:`, error);
         // Continue with next batch
       }
     }
@@ -197,7 +199,7 @@ Provide analysis in JSON format:
       const response = await this.callAI(prompt);
       return response;
     } catch (error) {
-      console.error('Quality analysis failed:', error);
+      logger.error('Quality analysis failed:', error);
       return {
         qualityScore: 0.5,
         issues: ['Analysis failed'],
@@ -251,7 +253,7 @@ Respond in JSON format:
       const response = await this.callAI(prompt);
       return response.suggestions || [];
     } catch (error) {
-      console.error('Suggestion generation failed:', error);
+      logger.error('Suggestion generation failed:', error);
       return [];
     }
   }
@@ -268,6 +270,9 @@ Respond in JSON format:
 }
 
 export const aiTranslationEnhancer = new AITranslationEnhancer();
+
+
+
 
 
 

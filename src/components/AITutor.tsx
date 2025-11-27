@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { useLanguage } from '../contexts/LanguageContext';
 import { realAIService, AITutorResponse } from '../services/realAIService';
 import { aiCoach } from '../services/aiCoach';
+import { logger } from '../utils/logger';
 import './AITutor.css';
 
 interface AITutorProps {
@@ -52,7 +53,7 @@ const AITutor: React.FC<AITutorProps> = ({ userProgress, currentTest, onClose })
   }, []);
 
   const handleSendMessage = async () => {
-    console.log('Send button clicked!', { inputMessage, isLoading });
+    logger.debug('Send button clicked:', { inputMessage, isLoading });
     if (!inputMessage.trim() || isLoading) return;
 
     // Remove the 3-question limit for better user experience
@@ -111,9 +112,8 @@ const AITutor: React.FC<AITutorProps> = ({ userProgress, currentTest, onClose })
         setIsLoading(false);
         setIsTyping(false);
       }, 1500);
-
     } catch (error) {
-      console.error('AI Tutor error:', error);
+      logger.error('AI Tutor error:', error);
       const errorMessage: ChatMessage = {
         id: (Date.now() + 1).toString(),
         type: 'ai',

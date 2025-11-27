@@ -1,24 +1,33 @@
 import React, { useState, useEffect } from 'react';
+import { useLanguage } from '../contexts/LanguageContext';
 import './OfflineIndicator.css';
 
 export const OfflineIndicator: React.FC = () => {
+  const { t_nested } = useLanguage();
   const [isOnline, setIsOnline] = useState(navigator.onLine);
   const [showIndicator, setShowIndicator] = useState(false);
 
   useEffect(() => {
     const handleOnline = () => {
-      setIsOnline(true);
-      setShowIndicator(true);
+      // Use requestAnimationFrame to batch state updates
+      requestAnimationFrame(() => {
+        setIsOnline(true);
+        setShowIndicator(true);
+      });
       
       // Hide "Back online" message after 3 seconds
       setTimeout(() => {
-        setShowIndicator(false);
+        requestAnimationFrame(() => {
+          setShowIndicator(false);
+        });
       }, 3000);
     };
 
     const handleOffline = () => {
-      setIsOnline(false);
-      setShowIndicator(true);
+      requestAnimationFrame(() => {
+        setIsOnline(false);
+        setShowIndicator(true);
+      });
     };
 
     window.addEventListener('online', handleOnline);
@@ -26,7 +35,9 @@ export const OfflineIndicator: React.FC = () => {
 
     // Show indicator on mount if offline
     if (!navigator.onLine) {
-      setShowIndicator(true);
+      requestAnimationFrame(() => {
+        setShowIndicator(true);
+      });
     }
 
     return () => {
@@ -46,11 +57,11 @@ export const OfflineIndicator: React.FC = () => {
           {isOnline ? '✅' : '📡'}
         </span>
         <div className="offline-text">
-          <strong>{isOnline ? 'Back Online' : 'No Internet Connection'}</strong>
+          <strong>{isOnline ? t_nested('offline.backOnline') : t_nested('offline.noInternetConnection')}</strong>
           <span className="offline-subtext">
             {isOnline 
-              ? 'Data will sync automatically' 
-              : 'You can still practice offline'}
+              ? t_nested('offline.dataWillSync')
+              : t_nested('offline.canPracticeOffline')}
           </span>
         </div>
       </div>

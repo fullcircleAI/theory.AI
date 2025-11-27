@@ -1,8 +1,7 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import React, { createContext, useContext, useState, useEffect, useMemo, useCallback } from 'react';
 import { strings } from '../i18n/strings';
 import type { Language, LanguageStrings } from '../types_i18n';
 import { translationMetrics } from '../services/translationMetrics';
-import { translationAPI } from '../services/translationAPI';
 
 interface LanguageContextType {
   currentLanguage: Language | null;
@@ -31,15 +30,13 @@ interface LanguageProviderProps {
 export const LanguageProvider: React.FC<LanguageProviderProps> = ({ children }) => {
   const [currentLanguage, setCurrentLanguage] = useState<Language | null>(null);
 
-  console.log('LanguageProvider: Initial currentLanguage =', currentLanguage);
-
   // Get nested object value by path (e.g., "dashboard.welcomeMessage")
-  const getNestedValue = (obj: any, path: string): string => {
+  const getNestedValue = useCallback((obj: any, path: string): string => {
     return path.split('.').reduce((current, key) => current?.[key], obj) || path;
-  };
+  }, []);
 
-  // Enhanced translation function with quality tracking
-  const t = (key: string): string => {
+  // Enhanced translation function with quality tracking (memoized)
+  const t = useCallback((key: string): string => {
     if (!currentLanguage) {
       return key; // Return the key if no language is set
     }
@@ -58,19 +55,19 @@ export const LanguageProvider: React.FC<LanguageProviderProps> = ({ children }) 
     }
     
     return translatedText;
-  };
+  }, [currentLanguage]);
 
-  // Nested translation function
-  const t_nested = (path: string): string => {
+  // Nested translation function (memoized)
+  const t_nested = useCallback((path: string): string => {
     if (!currentLanguage) {
       return path; // Return the path if no language is set
     }
     const langStrings = strings[currentLanguage];
     return getNestedValue(langStrings, path) || path;
-  };
+  }, [currentLanguage, getNestedValue]);
 
-  // Get voice commands for speech recognition
-  const getVoiceCommands = () => {
+  // Get voice commands for speech recognition (memoized)
+  const getVoiceCommands = useCallback(() => {
     if (!currentLanguage) {
       return {}; // Return empty object if no language is set
     }
@@ -89,10 +86,10 @@ export const LanguageProvider: React.FC<LanguageProviderProps> = ({ children }) 
       [commands.three]: 2,
       [commands.four]: 3,
     };
-  };
+  }, [currentLanguage]);
 
-  // Get speech language code
-  const getSpeechLang = (): string => {
+  // Get speech language code (memoized)
+  const getSpeechLang = useCallback((): string => {
     switch (currentLanguage) {
       case 'nl':
         return 'nl-NL';
@@ -101,10 +98,10 @@ export const LanguageProvider: React.FC<LanguageProviderProps> = ({ children }) 
       default:
         return 'en-US';
     }
-  };
+  }, [currentLanguage]);
 
-  // Get preferred speech voice
-  const getSpeechVoice = (): string => {
+  // Get preferred speech voice (memoized)
+  const getSpeechVoice = useCallback((): string => {
     const voices = window.speechSynthesis.getVoices();
     const langCode = getSpeechLang();
     
@@ -153,32 +150,28 @@ export const LanguageProvider: React.FC<LanguageProviderProps> = ({ children }) 
     
     // Final fallback to default
     return '';
-  };
+  }, [getSpeechLang]);
 
-  const setLanguage = (language: Language) => {
-    console.log('LanguageProvider: Setting language to', language);
+  const setLanguage = useCallback((language: Language) => {
     setCurrentLanguage(language);
     // Store in localStorage for persistence
     localStorage.setItem('preferredLanguage', language);
-  };
-
-  // Load saved language preference on mount
-  useEffect(() => {
-    console.log('LanguageProvider: Loading saved language preference');
-    const savedLanguage = localStorage.getItem('preferredLanguage') as Language;
-    console.log('LanguageProvider: Saved language from localStorage =', savedLanguage);
-    if (savedLanguage && (savedLanguage === 'en' || savedLanguage === 'nl' || savedLanguage === 'ar')) {
-      console.log('LanguageProvider: Setting saved language', savedLanguage);
-      setCurrentLanguage(savedLanguage);
-    } else {
-      console.log('LanguageProvider: No valid saved language found, keeping null to show language selection');
-      // Don't set a default language - let the user choose
-    }
   }, []);
 
-  console.log('LanguageProvider: Final currentLanguage =', currentLanguage);
+  // Load saved language preference on mount (only once)
+  // Use requestAnimationFrame to prevent flickering on initial load
+  useEffect(() => {
+    requestAnimationFrame(() => {
+      const savedLanguage = localStorage.getItem('preferredLanguage') as Language;
+      if (savedLanguage && (savedLanguage === 'en' || savedLanguage === 'nl' || savedLanguage === 'ar')) {
+        setCurrentLanguage(savedLanguage);
+      }
+      // Don't set a default language - let the user choose
+    });
+  }, []);
 
-  const value: LanguageContextType = {
+  // Memoize context value to prevent unnecessary re-renders
+  const value: LanguageContextType = useMemo(() => ({
     currentLanguage,
     setLanguage,
     t,
@@ -186,7 +179,7 @@ export const LanguageProvider: React.FC<LanguageProviderProps> = ({ children }) 
     getVoiceCommands,
     getSpeechLang,
     getSpeechVoice,
-  };
+  }), [currentLanguage, setLanguage, t, t_nested, getVoiceCommands, getSpeechLang, getSpeechVoice]);
 
   return (
     <LanguageContext.Provider value={value}>

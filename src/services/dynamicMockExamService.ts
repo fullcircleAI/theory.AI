@@ -6,6 +6,7 @@
 import { TestResult } from './aiCoach';
 import { realExamQuestions, mockExamImageQuestions, RealExamQuestion } from '../question_data/realExamQuestions';
 import { adaptiveDifficultyService } from './adaptiveDifficultyService';
+import { logger } from '../utils/logger';
 
 export interface WeakArea {
   topic: string;
@@ -117,7 +118,7 @@ class DynamicMockExamService {
         }));
       }
     } catch (error) {
-      console.error('Error loading question history:', error);
+      logger.error('Error loading question history:', error);
     }
     return [];
   }
@@ -128,7 +129,7 @@ class DynamicMockExamService {
       const key = userId ? `questionHistory_${userId}` : 'questionHistory';
       localStorage.setItem(key, JSON.stringify(history));
     } catch (error) {
-      console.error('Error saving question history:', error);
+      logger.error('Error saving question history:', error);
     }
   }
 

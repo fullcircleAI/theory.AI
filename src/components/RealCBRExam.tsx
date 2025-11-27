@@ -4,6 +4,10 @@ import { lightHaptic, impactHaptic } from '../utils/haptics';
 import './RealCBRExam.css';
 import './TestsPage.css';
 import { getRandomRealExamQuestions } from '../question_data/realExamQuestions';
+import { dynamicMockExamService } from '../services/dynamicMockExamService';
+import { aiCoach } from '../services/aiCoach';
+import { adaptiveDifficultyService } from '../services/adaptiveDifficultyService';
+import { logger } from '../utils/logger';
 
 interface Question {
   id: string;
@@ -44,6 +48,8 @@ export const OfficialExam: React.FC = () => {
   const [answers, setAnswers] = useState<Record<number, string>>({});
   const [isExamStarted, setIsExamStarted] = useState(false);
   const [showInstructions, setShowInstructions] = useState(true);
+  const [isPersonalized, setIsPersonalized] = useState(false);
+  const [focusAreas, setFocusAreas] = useState<string[]>([]);
 
   // Hide mobile footer during exam
   useEffect(() => {
@@ -53,6 +59,15 @@ export const OfficialExam: React.FC = () => {
     };
   }, []);
 
+  // Helper function to get user ID
+  const getUserId = (): string | undefined => {
+    try {
+      return localStorage.getItem('userId') || undefined;
+    } catch {
+      return undefined;
+    }
+  };
+
   // Load exam configuration and questions
   useEffect(() => {
     const examConfigs = getExamConfigs();
@@ -61,9 +76,43 @@ export const OfficialExam: React.FC = () => {
       setExamConfig(config);
       setTimeLeft(config.timeLimit * 60); // Convert minutes to seconds
       
-      // Load real exam questions
-      const realQuestions = getRandomRealExamQuestions(config.questions);
-      setQuestions(realQuestions);
+      // Check if exam should be personalized
+      const personalizationPref = localStorage.getItem('mockExamPersonalization');
+      const shouldPersonalize = personalizationPref !== 'false' && aiCoach.shouldPersonalizeMockExam();
+      const testHistory = aiCoach.getTestHistory();
+      
+      if (shouldPersonalize && testHistory.length > 0) {
+        // Generate personalized exam from real CBR questions
+        const difficultyLevel = adaptiveDifficultyService.calculateDifficultyLevel(testHistory);
+        const userId = getUserId();
+        const { questions: personalizedQuestions, config: examConfig } = dynamicMockExamService.generatePersonalizedExam(
+          examId,
+          testHistory,
+          difficultyLevel,
+          userId
+        );
+        
+        setIsPersonalized(true);
+        setFocusAreas(examConfig.focusAreas);
+        
+        logger.debug(`Mock exam ${examId} using personalized questions:`, {
+          total: personalizedQuestions.length,
+          focusAreas: examConfig.focusAreas,
+          personalizationLevel: examConfig.personalizationLevel,
+          difficultyDistribution: examConfig.difficultyDistribution
+        });
+        
+        setQuestions(personalizedQuestions);
+      } else {
+        // Use random real exam questions (default)
+        const realQuestions = getRandomRealExamQuestions(config.questions);
+        logger.debug(`Mock exam ${examId} using random real questions:`, { 
+          total: realQuestions.length,
+          realExamQuestions: realQuestions.filter(q => !q.imageUrl).length,
+          imageQuestions: realQuestions.filter(q => q.imageUrl).length
+        });
+        setQuestions(realQuestions);
+      }
     }
   }, [examId]);
 
@@ -80,9 +129,9 @@ export const OfficialExam: React.FC = () => {
     const passed = percentage >= (examConfig?.passRate || 88);
 
     // Save results
-    if (examConfig) {
+    if (examConfig && examId) {
       const result = {
-        testId: examId || 'mock-exam',
+        testId: examId,
         testName: 'Rules',
         score: correctAnswers,
         totalQuestions: questions.length,
@@ -92,16 +141,31 @@ export const OfficialExam: React.FC = () => {
       };
 
       // Save to localStorage and AI Coach
-      const aiCoach = (window as any).aiCoach;
-      if (aiCoach) {
-        aiCoach.saveTestResult(result);
-      }
+      aiCoach.saveTestResult(result);
+      
+      // Update question history (prevent repeats in future mocks)
+      const userId = getUserId();
+      const questionIds = questions.map(q => q.id);
+      dynamicMockExamService.updateQuestionHistory(questionIds, examId, userId);
+      
+      // Save results to localStorage for results page
+      const resultsData = {
+        examId,
+        score: correctAnswers,
+        percentage,
+        passed,
+        totalQuestions: questions.length,
+        timeUsed: (examConfig.timeLimit * 60) - timeLeft,
+        difficulty: examConfig.difficulty,
+        passRate: examConfig.passRate
+      };
+      localStorage.setItem(`mockExamResults_${examId}`, JSON.stringify(resultsData));
     }
-  }, [answers, questions, examConfig, examId]);
+  }, [answers, questions, examConfig, examId, timeLeft]);
 
   // Timer countdown
   useEffect(() => {
-    if (!isExamStarted || isFinished || timeLeft <= 0) return;
+    if (!isExamStarted || isFinished) return;
 
     const timer = setInterval(() => {
       setTimeLeft(prev => {
@@ -114,7 +178,8 @@ export const OfficialExam: React.FC = () => {
     }, 1000);
 
     return () => clearInterval(timer);
-  }, [isExamStarted, isFinished, timeLeft, finishExam]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isExamStarted, isFinished]);
 
   const startExam = () => {
     setIsExamStarted(true);
@@ -267,7 +332,23 @@ export const OfficialExam: React.FC = () => {
     <div className="cbr-exam-container">
       {/* Header */}
       <div className="cbr-exam-header">
-        <h1 className="cbr-exam-title">Mock Exam {examId?.replace('mock-exam', '') || '1'}</h1>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+          <h1 className="cbr-exam-title">Mock Exam {examId?.replace('mock-exam', '') || '1'}</h1>
+          {isPersonalized && focusAreas.length > 0 && (
+            <span style={{
+              fontSize: '0.7rem',
+              fontWeight: 600,
+              color: '#2563eb',
+              background: 'linear-gradient(135deg, rgba(59, 130, 246, 0.15) 0%, rgba(37, 99, 235, 0.15) 100%)',
+              padding: '0.3rem 0.6rem',
+              borderRadius: '8px',
+              border: '1px solid rgba(59, 130, 246, 0.3)',
+              whiteSpace: 'nowrap'
+            }}>
+              AI Personalized
+            </span>
+          )}
+        </div>
         <div className={`cbr-exam-timer ${timeLeft < 300 ? 'warning' : ''}`}>
           {formatTime(timeLeft)}
         </div>

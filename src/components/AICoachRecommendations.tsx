@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useLanguage } from '../contexts/LanguageContext';
+import { getTranslation } from '../utils/translationHelpers';
 import { Mascot } from './Mascot';
 import './AICoachRecommendations.css';
 
@@ -21,6 +23,7 @@ interface LearningStyle {
 
 export const AICoachRecommendations: React.FC = () => {
   const navigate = useNavigate();
+  const { t_nested } = useLanguage();
   const [recommendations, setRecommendations] = useState<StudyRecommendation[]>([]);
   const [learningStyle, setLearningStyle] = useState<LearningStyle | null>(null);
   const [studyPlan, setStudyPlan] = useState<string[]>([]);
@@ -95,9 +98,9 @@ export const AICoachRecommendations: React.FC = () => {
 
   const getPriorityLabel = (priority: string) => {
     switch (priority) {
-      case 'high': return '🔥 High Priority';
-      case 'medium': return '⚡ Medium Priority';
-      case 'low': return '✅ Low Priority';
+      case 'high': return t_nested('recommendations.highPriority');
+      case 'medium': return t_nested('recommendations.mediumPriority');
+      case 'low': return t_nested('recommendations.lowPriority');
       default: return priority;
     }
   };
@@ -112,7 +115,7 @@ export const AICoachRecommendations: React.FC = () => {
                 <Mascot size={60} />
               </div>
               <div className="header-text">
-                <h1>📚 AI Study Recommendations</h1>
+                <h1>📚 {t_nested('recommendations.title')}</h1>
                 <p>Personalized study plan based on your learning patterns</p>
               </div>
             </div>
@@ -120,7 +123,7 @@ export const AICoachRecommendations: React.FC = () => {
               className="back-button"
               onClick={() => navigate('/')}
             >
-              × Close
+              × {getTranslation(t_nested, 'recommendations.close', 'Close')}
             </button>
           </div>
 
@@ -130,17 +133,17 @@ export const AICoachRecommendations: React.FC = () => {
               <h2>🧠 Your Learning Style</h2>
               <div className="learning-style-content">
                 <div className="learning-type">
-                  <div className="type-label">{learningStyle.type}</div>
+                  <div className="type-label">{learningStyle.type === 'Visual Learner' ? t_nested('recommendations.visualLearner') : learningStyle.type}</div>
                   <div className="effectiveness">{learningStyle.effectiveness}% Effective</div>
                 </div>
-                <p>{learningStyle.description}</p>
+                <p>{learningStyle.description === 'You learn 40% faster with visual content like diagrams, videos, and interactive examples' ? t_nested('recommendations.learningStyleDescription') : learningStyle.description}</p>
               </div>
             </div>
           )}
 
           {/* Study Plan Overview */}
           <div className="study-plan-card">
-            <h2>📅 Your AI Study Plan</h2>
+            <h2>📅 {t_nested('recommendations.studyPlan')}</h2>
             <div className="study-plan-list">
               {studyPlan.map((item, index) => (
                 <div key={index} className="plan-item">
@@ -169,15 +172,15 @@ export const AICoachRecommendations: React.FC = () => {
                 <div className="recommendation-details">
                   <div className="detail-grid">
                     <div className="detail-item">
-                      <div className="detail-label">Time Needed</div>
-                      <div className="detail-value">{rec.timeNeeded} hours</div>
+                      <div className="detail-label">{t_nested('recommendations.timeNeeded')}</div>
+                      <div className="detail-value">{rec.timeNeeded} {t_nested('recommendations.hours')}</div>
                     </div>
                     <div className="detail-item">
-                      <div className="detail-label">Readiness</div>
+                      <div className="detail-label">{t_nested('recommendations.readiness')}</div>
                       <div className="detail-value">{rec.readiness}%</div>
                     </div>
                     <div className="detail-item">
-                      <div className="detail-label">Method</div>
+                      <div className="detail-label">{t_nested('recommendations.method')}</div>
                       <div className="detail-value">{rec.method}</div>
                     </div>
                   </div>
@@ -187,7 +190,7 @@ export const AICoachRecommendations: React.FC = () => {
                   </div>
                   
                   <div className="recommendation-resources">
-                    <strong>Resources:</strong>
+                    <strong>{t_nested('recommendations.resources')}:</strong>
                     <div className="resources-list">
                       {rec.resources.map((resource, idx) => (
                         <span key={idx} className="resource-tag">{resource}</span>
@@ -205,13 +208,13 @@ export const AICoachRecommendations: React.FC = () => {
               className="action-button"
               onClick={() => navigate('/')}
             >
-              View Dashboard
+              {getTranslation(t_nested, 'recommendations.viewDashboard', 'View Dashboard')}
             </button>
             <button 
               className="action-button secondary"
               onClick={() => navigate('/')}
             >
-              View Dashboard
+              {getTranslation(t_nested, 'recommendations.viewDashboard', 'View Dashboard')}
             </button>
           </div>
         </div>

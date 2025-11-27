@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useLanguage } from '../contexts/LanguageContext';
+import { logger } from '../utils/logger';
 import './FooterNav.css';
 
 interface NavItem {
@@ -10,12 +11,13 @@ interface NavItem {
   icon: string;
 }
 
-export const FooterNav: React.FC = () => {
+const FooterNavComponent: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { t_nested } = useLanguage();
 
-  const navItems: NavItem[] = [
+  // Memoize navItems to prevent re-creation on every render
+  const navItems: NavItem[] = useMemo(() => [
     {
       id: 'new-dashboard',
       label: t_nested('navigation.dashboard') || 'Dashboard',
@@ -40,7 +42,7 @@ export const FooterNav: React.FC = () => {
       path: '/settings',
       icon: '⚙️',
     }
-  ];
+  ], [t_nested]);
 
   const isActive = (path: string) => {
     if (path === '/') {
@@ -49,12 +51,16 @@ export const FooterNav: React.FC = () => {
     return location.pathname.startsWith(path);
   };
 
-  const handleClick = (path: string) => {
-    console.log('Footer navigation clicked:', path);
+  const handleClick = (e: React.MouseEvent<HTMLButtonElement> | React.TouchEvent<HTMLButtonElement>, path: string) => {
+    e.preventDefault();
+    e.stopPropagation();
+    logger.debug('Footer navigation:', path);
     try {
-      navigate(path);
+      if (location.pathname !== path) {
+        navigate(path);
+      }
     } catch (error) {
-      console.error('Navigation error:', error);
+      logger.error('Navigation error:', error);
     }
   };
 
@@ -65,8 +71,11 @@ export const FooterNav: React.FC = () => {
           key={item.id}
           type="button"
           className={`footer-nav-btn ${isActive(item.path) ? 'active' : ''}`}
-          onClick={() => handleClick(item.path)}
-          onTouchStart={() => handleClick(item.path)}
+          onClick={(e) => handleClick(e, item.path)}
+          onTouchStart={(e) => {
+            e.preventDefault();
+            handleClick(e, item.path);
+          }}
           aria-label={item.label}
           style={{ 
             WebkitTapHighlightColor: 'transparent',
@@ -79,5 +88,9 @@ export const FooterNav: React.FC = () => {
     </div>
   );
 };
+
+FooterNavComponent.displayName = 'FooterNav';
+
+export const FooterNav = React.memo(FooterNavComponent);
 
 

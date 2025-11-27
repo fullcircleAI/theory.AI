@@ -1,5 +1,7 @@
 // 📱 Service Worker Registration for Mobile Optimization
 
+import { logger } from './utils/logger';
+
 const isLocalhost = Boolean(
   window.location.hostname === 'localhost' ||
   window.location.hostname === '[::1]' ||
@@ -26,7 +28,7 @@ export function register(config?: Config) {
       if (isLocalhost) {
         checkValidServiceWorker(swUrl, config);
         navigator.serviceWorker.ready.then(() => {
-          console.log('📱 Service Worker: Ready in localhost');
+          logger.debug('Service Worker: Ready in localhost');
         });
       } else {
         registerValidSW(swUrl, config);
@@ -39,7 +41,7 @@ function registerValidSW(swUrl: string, config?: Config) {
   navigator.serviceWorker
     .register(swUrl)
     .then((registration) => {
-      console.log('📱 Service Worker: Registered successfully');
+      logger.debug('Service Worker: Registered successfully');
       
       registration.onupdatefound = () => {
         const installingWorker = registration.installing;
@@ -49,12 +51,12 @@ function registerValidSW(swUrl: string, config?: Config) {
         installingWorker.onstatechange = () => {
           if (installingWorker.state === 'installed') {
             if (navigator.serviceWorker.controller) {
-              console.log('📱 Service Worker: New content available');
+              logger.info('Service Worker: New content available');
               if (config && config.onUpdate) {
                 config.onUpdate(registration);
               }
             } else {
-              console.log('📱 Service Worker: Content cached for offline use');
+              logger.info('Service Worker: Content cached for offline use');
               if (config && config.onSuccess) {
                 config.onSuccess(registration);
               }
@@ -64,7 +66,7 @@ function registerValidSW(swUrl: string, config?: Config) {
       };
     })
     .catch((error) => {
-      console.error('📱 Service Worker: Registration failed', error);
+      logger.error('Service Worker: Registration failed', error);
     });
 }
 
@@ -88,7 +90,7 @@ function checkValidServiceWorker(swUrl: string, config?: Config) {
       }
     })
     .catch(() => {
-      console.log('📱 Service Worker: No internet connection found');
+      logger.warn('Service Worker: No internet connection found');
     });
 }
 
@@ -99,7 +101,7 @@ export function unregister() {
         registration.unregister();
       })
       .catch((error) => {
-        console.error('📱 Service Worker: Unregistration failed', error);
+        logger.error('Service Worker: Unregistration failed', error);
       });
   }
 }
@@ -109,7 +111,7 @@ let deferredPrompt: any;
 
 export function registerInstallPrompt() {
   window.addEventListener('beforeinstallprompt', (e) => {
-    console.log('📱 PWA: Install prompt triggered');
+    logger.debug('PWA: Install prompt triggered');
     e.preventDefault();
     deferredPrompt = e;
     
@@ -122,9 +124,9 @@ export function registerInstallPrompt() {
           deferredPrompt.prompt();
           deferredPrompt.userChoice.then((choiceResult: any) => {
             if (choiceResult.outcome === 'accepted') {
-              console.log('📱 PWA: User accepted install');
+              logger.info('PWA: User accepted install');
             } else {
-              console.log('📱 PWA: User dismissed install');
+              logger.debug('PWA: User dismissed install');
             }
             deferredPrompt = null;
           });
@@ -134,7 +136,7 @@ export function registerInstallPrompt() {
   });
 
   window.addEventListener('appinstalled', () => {
-    console.log('📱 PWA: App installed successfully');
+    logger.info('PWA: App installed successfully');
     deferredPrompt = null;
   });
 }

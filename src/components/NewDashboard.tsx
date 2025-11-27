@@ -1,9 +1,12 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useMemo, useRef, startTransition } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useLanguage } from '../contexts/LanguageContext';
 import { aiCoach, type AIInsight } from '../services/aiCoach';
 import { studyTimeTracker } from '../services/studyTimeTracker';
+import { RoadProgress } from './RoadProgress';
 import './AICoachDashboard.css';
+import { getTranslation } from '../utils/translationHelpers';
+import { logger } from '../utils/logger';
 import '../mobile-optimizations.css';
 
 // Test metadata (same as in aiCoach.ts)
@@ -33,7 +36,7 @@ const TEST_METADATA: Record<string, { name: string; category: string }> = {
 
 export const NewDashboard: React.FC = () => {
   const navigate = useNavigate();
-  const { t_nested } = useLanguage();
+  const { t_nested, currentLanguage } = useLanguage();
 
   // Function to get translated test name (memoized to fix dependency warning)
   const getTranslatedTestName = useCallback((testId: string): string => {
@@ -74,6 +77,23 @@ export const NewDashboard: React.FC = () => {
   const [strongAreas, setStrongAreas] = useState<Array<{ testId: string; name: string; score: number }>>([]);
   const [recommendedTests, setRecommendedTests] = useState<Array<{ testId: string; name: string }>>([]);
   const [allTestsCompleted, setAllTestsCompleted] = useState(false);
+  const [journeyProgress, setJourneyProgress] = useState(0);
+  const [completedCounts, setCompletedCounts] = useState({ practiceTests: 0, mockExams: 0 });
+  // Separate state for study time to prevent unnecessary re-renders
+  const [currentStudyTime, setCurrentStudyTime] = useState(0);
+  
+  // Use ref to track if data has been loaded to prevent unnecessary re-runs
+  const dataLoadedRef = useRef(false);
+  const lastLanguageRef = useRef<string | null>(null);
+  // Store latest functions in refs to avoid dependency issues
+  const tNestedRef = useRef(t_nested);
+  const getTranslatedTestNameRef = useRef(getTranslatedTestName);
+  
+  // Update refs when functions change
+  useEffect(() => {
+    tNestedRef.current = t_nested;
+    getTranslatedTestNameRef.current = getTranslatedTestName;
+  }, [t_nested, getTranslatedTestName]);
 
   useEffect(() => {
     // Initialize study time tracker (starts timer when dashboard is entered)
@@ -87,114 +107,201 @@ export const NewDashboard: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    // Load user progress from aiCoach
-    const testHistory = aiCoach.getTestHistory();
-    // Use actual tracked time (not estimated from questions)
-    const studyTime = studyTimeTracker.getStudyTimeHours();
-    const averageScore = aiCoach.getCombinedAverage();
+    // Only reload data if language actually changed, not on every render
+    const shouldReload = !dataLoadedRef.current || lastLanguageRef.current !== currentLanguage;
     
-    // Calculate total questions and correct answers from test history
-    const totalQuestions = testHistory.reduce((sum, test) => sum + test.totalQuestions, 0);
-    const correctAnswers = testHistory.reduce((sum, test) => sum + test.score, 0);
+    if (!shouldReload && dataLoadedRef.current) {
+      return; // Skip if data already loaded and language hasn't changed
+    }
     
-    setUserProgress({
-      averageScore: averageScore || 0,
-      totalQuestions,
-      correctAnswers,
-      studyTime: studyTime || 0,
-    });
+    // Mark as loaded and update language ref
+    dataLoadedRef.current = true;
+    lastLanguageRef.current = currentLanguage || null;
+    
+    // Batch all state updates using startTransition to prevent flickering
+    // This marks updates as non-urgent, allowing React to batch them smoothly
+    startTransition(() => {
+      // Load user progress from aiCoach
+      const testHistory = aiCoach.getTestHistory();
+      // Use actual tracked time (not estimated from questions)
+      const studyTime = studyTimeTracker.getStudyTimeHours();
+      const averageScore = aiCoach.getCombinedAverage();
+      
+      // Calculate total questions and correct answers from test history
+      const totalQuestions = testHistory.reduce((sum, test) => sum + test.totalQuestions, 0);
+      const correctAnswers = testHistory.reduce((sum, test) => sum + test.score, 0);
+      
+      const newProgress = {
+        averageScore: averageScore || 0,
+        totalQuestions,
+        correctAnswers,
+        studyTime: studyTime || 0,
+      };
+      
+      // Only update if values actually changed (prevents unnecessary re-renders)
+      setUserProgress(prev => {
+        if (prev.averageScore !== newProgress.averageScore ||
+            prev.totalQuestions !== newProgress.totalQuestions ||
+            prev.correctAnswers !== newProgress.correctAnswers ||
+            prev.studyTime !== newProgress.studyTime) {
+          return newProgress;
+        }
+        return prev;
+      });
+      
+      // Initialize currentStudyTime from loaded studyTime
+      setCurrentStudyTime(prev => {
+        const newTime = studyTime || 0;
+        return Math.abs(prev - newTime) > 0.001 ? newTime : prev;
+      });
 
-    // AI insights are calculated on-demand when needed
-
-    // Get test scores
-    const testScores = aiCoach.getTestScores();
-    const allTestIds = Object.keys(TEST_METADATA);
-    
-    // Check if all tests are completed
-    // A test is considered completed if it exists in testScores (has been taken at least once)
-    const completedTestIds = Object.keys(testScores);
-    const allCompleted = allTestIds.length > 0 && allTestIds.every(testId => {
-      // Check if this test has been completed (exists in testScores)
-      return completedTestIds.includes(testId);
-    });
-    
-    // Debug logging (can be removed later)
-    if (process.env.NODE_ENV === 'development') {
-      console.log('Dashboard completion check:', {
+      // Get test scores
+      const testScores = aiCoach.getTestScores();
+      const allTestIds = Object.keys(TEST_METADATA);
+      
+      // Check if all tests are completed
+      const completedTestIds = Object.keys(testScores);
+      const allCompleted = allTestIds.length > 0 && allTestIds.every(testId => {
+        return completedTestIds.includes(testId);
+      });
+      
+      logger.debug('Dashboard completion check:', {
         totalTests: allTestIds.length,
         completedTests: completedTestIds.length,
         allCompleted,
         missingTests: allTestIds.filter(id => !completedTestIds.includes(id))
       });
-    }
-    
-    setAllTestsCompleted(allCompleted);
+      
+      setAllTestsCompleted(allCompleted);
 
-    // Get the MOST IMPORTANT weak area (only one - worst score)
-    let topWeakArea: { testId: string; name: string; score: number } | null = null;
-    Object.entries(testScores).forEach(([testId, data]) => {
-      if (data.average < 60 && TEST_METADATA[testId]) {
-        if (!topWeakArea || data.average < topWeakArea.score) {
-          const testName = getTranslatedTestName(testId);
-          topWeakArea = {
-            testId,
-            name: testName,
-            score: Math.round(data.average)
+      // Calculate Journey Progress
+      const PRACTICE_TEST_MIN_SCORE = 80;
+      const MOCK_EXAM_MIN_SCORE = 88;
+      const TOTAL_PRACTICE_TESTS = allTestIds.length;
+      const TOTAL_MOCK_EXAMS = 3;
+      
+      const completedPracticeTests = Object.entries(testScores).filter(([testId, data]) => {
+        return TEST_METADATA[testId] && data.average >= PRACTICE_TEST_MIN_SCORE;
+      }).length;
+      
+      const mockExamResults = aiCoach.getMockExamResults();
+      const completedMockExams = mockExamResults.filter(result => result.percentage >= MOCK_EXAM_MIN_SCORE).length;
+      
+      const practiceProgress = (completedPracticeTests / TOTAL_PRACTICE_TESTS) * 50;
+      const mockExamProgress = (completedMockExams / TOTAL_MOCK_EXAMS) * 50;
+      const totalProgress = Math.min(100, Math.round(practiceProgress + mockExamProgress));
+      
+      setJourneyProgress(prev => prev !== totalProgress ? totalProgress : prev);
+      setCompletedCounts(prev => {
+        if (prev.practiceTests !== completedPracticeTests || prev.mockExams !== completedMockExams) {
+          return { 
+            practiceTests: completedPracticeTests, 
+            mockExams: completedMockExams 
           };
         }
-      }
-    });
-    setWeakAreas(topWeakArea ? [topWeakArea] : []);
+        return prev;
+      });
 
-    // Get the MOST IMPORTANT strong area (only one - best score)
-    let topStrongArea: { testId: string; name: string; score: number } | null = null;
-    Object.entries(testScores).forEach(([testId, data]) => {
-      if (data.average >= 80 && TEST_METADATA[testId]) {
-        if (!topStrongArea || data.average > topStrongArea.score) {
-          const testName = getTranslatedTestName(testId);
-          topStrongArea = {
-            testId,
-            name: testName,
-            score: Math.round(data.average)
-          };
+      // Get the MOST IMPORTANT weak area (only one - worst score)
+      let topWeakArea: { testId: string; name: string; score: number } | null = null;
+      Object.entries(testScores).forEach(([testId, data]) => {
+        if (data.average < 60 && TEST_METADATA[testId]) {
+          if (!topWeakArea || data.average < topWeakArea.score) {
+            const testName = getTranslatedTestNameRef.current(testId);
+            topWeakArea = {
+              testId,
+              name: testName,
+              score: Math.round(data.average)
+            };
+          }
         }
-      }
+      });
+      setWeakAreas(prev => {
+        const newWeakArea = topWeakArea ? [topWeakArea] : [];
+        if (prev.length === 0 && newWeakArea.length === 0) return prev;
+        if (prev.length === 0 || newWeakArea.length === 0) return newWeakArea;
+        if (prev[0].testId !== newWeakArea[0].testId || prev[0].score !== newWeakArea[0].score) {
+          return newWeakArea;
+        }
+        return prev;
+      });
+
+      // Get the MOST IMPORTANT strong area (only one - best score)
+      let topStrongArea: { testId: string; name: string; score: number } | null = null;
+      Object.entries(testScores).forEach(([testId, data]) => {
+        if (data.average >= 80 && TEST_METADATA[testId]) {
+          if (!topStrongArea || data.average > topStrongArea.score) {
+            const testName = getTranslatedTestNameRef.current(testId);
+            topStrongArea = {
+              testId,
+              name: testName,
+              score: Math.round(data.average)
+            };
+          }
+        }
+      });
+      setStrongAreas(prev => {
+        const newStrongArea = topStrongArea ? [topStrongArea] : [];
+        if (prev.length === 0 && newStrongArea.length === 0) return prev;
+        if (prev.length === 0 || newStrongArea.length === 0) return newStrongArea;
+        if (prev[0].testId !== newStrongArea[0].testId || prev[0].score !== newStrongArea[0].score) {
+          return newStrongArea;
+        }
+        return prev;
+      });
+
+      // Get the MOST IMPORTANT recommended test using ADAPTIVE LEARNING
+      const recommendation = aiCoach.getTopRecommendation(tNestedRef.current);
+      const topRecommendation: { testId: string; name: string } = {
+        testId: recommendation.testId,
+        name: recommendation.testName
+      };
+      setRecommendedTests(prev => {
+        if (prev.length === 0 || prev[0].testId !== topRecommendation.testId) {
+          return [topRecommendation];
+        }
+        return prev;
+      });
     });
-    setStrongAreas(topStrongArea ? [topStrongArea] : []);
+  }, [currentLanguage]); // Only depend on language changes - functions accessed via refs
 
-    // Get the MOST IMPORTANT recommended test using ADAPTIVE LEARNING
-    // This uses the same method as TestsPage and PracticeTest for consistency
-    const recommendation = aiCoach.getTopRecommendation(t_nested);
-    const topRecommendation: { testId: string; name: string } = {
-      testId: recommendation.testId,
-      name: recommendation.testName
-    };
-    setRecommendedTests([topRecommendation]);
-  }, [t_nested, getTranslatedTestName]);
+  // Memoize translated strings to prevent re-renders
+  const studyTimeLabel = useMemo(() => t_nested('dashboard.studyTime') || 'Study Time', [t_nested]);
+  const timeRemainingLabel = useMemo(() => t_nested('dashboard.timeRemaining') || 'Time Remaining', [t_nested]);
+  const yourProgressLabel = useMemo(() => t_nested('dashboard.yourProgress') || 'Your Progress', [t_nested]);
 
-  const formatStudyTime = (hours: number): string => {
+  const formatStudyTime = useCallback((hours: number): string => {
     const totalSeconds = Math.floor(hours * 3600);
     const h = Math.floor(totalSeconds / 3600);
     const m = Math.floor((totalSeconds % 3600) / 60);
     const s = totalSeconds % 60;
     return `${h.toString().padStart(2, '0')}:${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
-  };
+  }, []);
 
-  // Update study time display every second (for live countdown)
+  // Update study time display every 15 seconds (reduced frequency to prevent flickering)
+  // Use separate state to avoid re-rendering entire component
   useEffect(() => {
+    // Initial load
+    const currentTime = studyTimeTracker.getStudyTimeHours();
+    setCurrentStudyTime(currentTime);
+    
+    // Update every 15 seconds (less frequent to reduce flickering)
     const interval = setInterval(() => {
-      const currentTime = studyTimeTracker.getStudyTimeHours();
-      
-      setUserProgress(prev => ({
-        ...prev,
-        studyTime: currentTime
-      }));
-    }, 1000);
+      const newTime = studyTimeTracker.getStudyTimeHours();
+      // Use startTransition to mark as non-urgent update
+      startTransition(() => {
+        setCurrentStudyTime(prev => {
+          const roundedPrev = Math.round(prev * 3600);
+          const roundedNew = Math.round(newTime * 3600);
+          // Return new value only if changed
+          return roundedPrev !== roundedNew ? newTime : prev;
+        });
+      });
+    }, 15000); // 15 seconds to reduce flickering
 
     return () => clearInterval(interval);
   }, []);
 
-  const getExamReadiness = Math.min(100, Math.round((userProgress.averageScore / 100) * 100));
 
   return (
     <div className={`main-layout`}>
@@ -202,43 +309,38 @@ export const NewDashboard: React.FC = () => {
         <div className="dashboard">
           <div className="dashboard-summary">
             <div className="summary-stats">
+              {/* Journey Progress - Road with Car */}
               <div className="summary-stat">
-                <div className="stat-number">{getExamReadiness}%</div>
-                <div className="stat-label">
-                  {t_nested('dashboard.examReadiness') || 'Exam Readiness'}
-                </div>
-                <div className="progress-bar-bg">
-                  <div 
-                    className="progress-bar-fill"
-                    style={{
-                      width: `${getExamReadiness}%`,
-                      backgroundColor: getExamReadiness >= 80 ? '#10b981' : getExamReadiness >= 60 ? '#f59e0b' : '#ef4444'
-                    }}
-                  ></div>
-                </div>
+                <RoadProgress 
+                  progress={journeyProgress}
+                  showLabel={false}
+                />
               </div>
-
+              
               <div className="summary-stat combined-progress">
                 <div className="digital-watch-container">
                   <div className="digital-watch-display">
                     <div className="time-section">
-                      <span className="time-label">{t_nested('dashboard.studyTime') || 'Study Time'}</span>
-                      <span className="time-value">{formatStudyTime(userProgress.studyTime)}</span>
+                      <span className="time-label">{studyTimeLabel}</span>
+                      <span className="time-value">{formatStudyTime(currentStudyTime)}</span>
                     </div>
                     <div className="progress-section">
                       <div className="progress-bar-bg">
                         <div 
                           className="progress-bar-fill"
                           style={{
-                            width: `${(userProgress.studyTime / 24) * 100}%`,
-                            backgroundColor: '#10b981'
+                            width: `${Math.min(100, (currentStudyTime / 24) * 100)}%`,
+                            background: currentStudyTime >= 24 
+                              ? 'linear-gradient(90deg, #10b981 0%, #059669 100%)'
+                              : 'linear-gradient(90deg, #10b981 0%, #34d399 100%)',
+                            transition: 'width 0.5s ease-out' // Slower, smoother transition
                           }}
                         ></div>
                       </div>
                     </div>
                     <div className="time-section">
-                      <span className="time-label">{t_nested('dashboard.timeRemaining') || 'Time Remaining'}</span>
-                      <span className="time-value">{formatStudyTime(studyTimeTracker.getTimeRemaining() / 3600)}</span>
+                      <span className="time-label">{timeRemainingLabel}</span>
+                      <span className="time-value">{formatStudyTime(Math.max(0, 24 - currentStudyTime))}</span>
                     </div>
                   </div>
                 </div>
@@ -247,7 +349,7 @@ export const NewDashboard: React.FC = () => {
           </div>
 
           <div className="ai-insights-summary">
-            <h3>{t_nested('dashboard.yourProgress') || 'Your Progress'}</h3>
+            <h3>{yourProgressLabel}</h3>
             <div className="insights-grid">
               {/* Red Box - Recommendation or Mock Exams */}
               <div className="insight-card red">
@@ -259,7 +361,7 @@ export const NewDashboard: React.FC = () => {
                   </h4>
                   {allTestsCompleted ? (
                     <>
-                      <p className="insight-explanation">
+                      <p className="insight-explanation" style={{ fontSize: '0.9rem', fontWeight: 600 }}>
                         {t_nested('dashboard.allTestsCompleted') || 'All practice tests completed! You can now take mock exams.'}
                       </p>
                       <div className="insight-action">
@@ -267,7 +369,7 @@ export const NewDashboard: React.FC = () => {
                           className="start-practice-btn"
                           onClick={() => navigate('/mock-exam')}
                         >
-                          {t_nested('dashboard.startPractice') || 'Start'}
+                          {getTranslation(t_nested, 'dashboard.startPractice', 'Start')}
                         </button>
                       </div>
                     </>
@@ -275,7 +377,30 @@ export const NewDashboard: React.FC = () => {
                     <>
                       {recommendedTests.length > 0 ? (
                         <>
-                          <p className="insight-explanation">
+                          {weakAreas.length > 0 && (
+                            <div style={{ 
+                              display: 'flex', 
+                              alignItems: 'center', 
+                              gap: '0.5rem',
+                              marginBottom: '0.75rem',
+                              justifyContent: 'center'
+                            }}>
+                              <span style={{
+                                background: 'linear-gradient(135deg, #f59e0b 0%, #d97706 100%)',
+                                color: 'white',
+                                fontSize: '0.6rem',
+                                fontWeight: 700,
+                                padding: '0.2rem 0.4rem',
+                                borderRadius: '4px',
+                                textTransform: 'uppercase',
+                                letterSpacing: '0.5px',
+                                boxShadow: '0 2px 4px rgba(245, 158, 11, 0.3)'
+                              }}>
+                                Weak Area
+                              </span>
+                            </div>
+                          )}
+                          <p className="insight-explanation practice-test-name" style={{ marginBottom: '0.75rem' }}>
                             {recommendedTests[0].name}
                           </p>
                           <div className="insight-action">
@@ -283,13 +408,13 @@ export const NewDashboard: React.FC = () => {
                               className="start-practice-btn"
                               onClick={() => navigate(`/practice/${recommendedTests[0].testId}`)}
                             >
-                              {t_nested('dashboard.startPractice') || 'Start'}
+                              {getTranslation(t_nested, 'dashboard.startPractice', 'Start')}
                             </button>
                           </div>
                         </>
                       ) : (
                         <>
-                          <p className="insight-explanation">
+                          <p className="insight-explanation" style={{ fontSize: '0.9rem', fontWeight: 600 }}>
                             {t_nested('dashboard.startFirstTest') || 'Start with your first practice test!'}
                           </p>
                           <div className="insight-action">
@@ -297,7 +422,7 @@ export const NewDashboard: React.FC = () => {
                               className="start-practice-btn"
                               onClick={() => navigate('/tests')}
                             >
-                              {t_nested('dashboard.startPractice') || 'Start'}
+                              {getTranslation(t_nested, 'dashboard.startPractice', 'Start')}
                             </button>
                           </div>
                         </>
@@ -308,15 +433,24 @@ export const NewDashboard: React.FC = () => {
               </div>
 
               {/* Yellow/Amber Card - Focus (Most Important Weak Area) */}
-              <div className="insight-card amber">
+              <div className="insight-card amber" key={`amber-${weakAreas.length > 0 ? weakAreas[0].testId : 'empty'}`}>
                 <div className="insight-content">
-                  <h4>{t_nested('dashboard.focus') || 'Focus'}</h4>
+                  <h4 style={{ marginBottom: '0.75rem', textAlign: 'left' }}>
+                    {t_nested('dashboard.focus') || 'Focus'}
+                  </h4>
                   {weakAreas.length > 0 ? (
-                    <p className="insight-explanation">
-                      {weakAreas[0].name} - {weakAreas[0].score}%
+                    <p className="insight-explanation practice-test-name" style={{ 
+                      textAlign: 'center',
+                      color: weakAreas[0].score < 50 ? '#dc2626' : '#d97706'
+                    }}>
+                      {weakAreas[0].name}
+                      <br />
+                      <span style={{ fontSize: '0.85rem', fontWeight: 700, marginTop: '0.25rem', display: 'block' }}>
+                        {weakAreas[0].score}%
+                      </span>
                     </p>
                   ) : (
-                    <p className="insight-explanation">
+                    <p className="insight-explanation" style={{ fontSize: '0.9rem', textAlign: 'center' }}>
                       {t_nested('dashboard.noWeakAreas') || 'No weak areas identified yet. Keep practicing!'}
                     </p>
                   )}
@@ -324,20 +458,24 @@ export const NewDashboard: React.FC = () => {
               </div>
 
               {/* Green Card - Strength (Most Important Strong Area) */}
-              <div className="insight-card green">
+              <div className="insight-card green" key={`green-${strongAreas.length > 0 ? strongAreas[0].testId : 'empty'}`}>
                 <div className="insight-content">
-                  <h4>{t_nested('dashboard.strength') || 'Strength'}</h4>
+                  <h4 style={{ marginBottom: '0.75rem', textAlign: 'left' }}>
+                    {t_nested('dashboard.strength') || 'Strength'}
+                  </h4>
                   {strongAreas.length > 0 ? (
-                    <>
-                      <p className="insight-explanation">
-                        {strongAreas[0].name} - {strongAreas[0].score}%
-                      </p>
-                      <p className="insight-explanation" style={{ fontSize: '0.7rem', marginTop: '0.5rem' }}>
-                        {t_nested('dashboard.maintainStrength') || 'Keep maintaining this strength!'}
-                      </p>
-                    </>
+                    <p className="insight-explanation practice-test-name" style={{ 
+                      textAlign: 'center',
+                      color: '#059669'
+                    }}>
+                      {strongAreas[0].name}
+                      <br />
+                      <span style={{ fontSize: '0.85rem', fontWeight: 700, marginTop: '0.25rem', display: 'block' }}>
+                        {strongAreas[0].score}%
+                      </span>
+                    </p>
                   ) : (
-                    <p className="insight-explanation">
+                    <p className="insight-explanation" style={{ fontSize: '0.9rem', textAlign: 'center' }}>
                       {t_nested('dashboard.completeTestsForStrength') || 'Complete practice tests to see your strong areas.'}
                     </p>
                   )}

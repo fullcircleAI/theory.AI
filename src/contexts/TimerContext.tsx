@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { userAuth } from '../services/userAuth';
+import { logger } from '../utils/logger';
 
 interface TimerContextType {
   timeRemaining: number;
@@ -66,7 +67,7 @@ export const TimerProvider: React.FC<{ children: ReactNode }> = ({ children }) =
           resetTimer();
         }
       } catch (error) {
-        console.warn('Timer: Could not check user status:', error);
+        logger.warn('Timer: Could not check user status:', error);
       }
     };
 

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useLanguage } from '../contexts/LanguageContext';
+import { logger } from '../utils/logger';
 import './ExamDateSelection.css';
 
 interface ExamDateSelectionProps {
@@ -83,7 +84,7 @@ export const ExamDateSelection: React.FC<ExamDateSelectionProps> = ({ onComplete
       // Complete the flow
       onComplete();
     } catch (error) {
-      console.error('Error saving exam date:', error);
+      logger.error('Error saving exam date:', error);
     } finally {
       setIsLoading(false);
     }

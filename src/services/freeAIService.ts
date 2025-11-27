@@ -1,6 +1,8 @@
 // Free AI Service - No credit card required!
 // Uses Hugging Face Inference API (completely free)
 
+import { logger } from '../utils/logger';
+
 export interface AIExplanation {
   explanation: string;
   personalizedTips: string[];
@@ -114,7 +116,7 @@ Provide a helpful explanation with tips.`;
         difficulty: 'medium'
       };
     } catch (error) {
-      console.error('Free AI explanation error:', error);
+      logger.error('Free AI explanation error:', error);
       return this.getFallbackExplanation(explanation);
     }
   }
@@ -137,7 +139,7 @@ Provide a helpful explanation with tips.`;
         motivation: aiResponse || 'You\'re making great progress! Keep practicing to learn Dutch driving theory.'
       };
     } catch (error) {
-      console.error('Free AI study plan error:', error);
+      logger.error('Free AI study plan error:', error);
       return this.getFallbackStudyPlan();
     }
   }
@@ -283,7 +285,7 @@ Provide a helpful explanation with tips.`;
       return smartResponse;
       
     } catch (error) {
-      console.error('Free AI tutor error:', error);
+      logger.error('Free AI tutor error:', error);
       return this.getSmartFallbackResponse(userMessage, context?.currentTest || 'dashboard', context?.userProgress || {});
     }
   }
@@ -299,7 +301,7 @@ Provide a helpful explanation with tips.`;
       return await this.tryHuggingFaceModel(this.fallbackModel, prompt);
       
     } catch (error) {
-      console.error('Both AI models failed:', error);
+      logger.error('Both AI models failed:', error);
       return '';
     }
   }
@@ -366,7 +368,7 @@ Provide a helpful explanation with tips.`;
       
       return ''; // Return empty if not CBR-related
     } catch (error) {
-      console.error('Hugging Face model failed:', error);
+      logger.error('Hugging Face model failed:', error);
       return ''; // Return empty string to try fallback
     }
   }

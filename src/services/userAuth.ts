@@ -1,6 +1,8 @@
 // Simple User Authentication - No credit card required
 // Uses localStorage for now, can be upgraded to cloud auth later
 
+import { logger } from '../utils/logger';
+
 export interface User {
   id: string;
   email: string;
@@ -30,7 +32,7 @@ class UserAuthService {
     localStorage.setItem('currentUser', JSON.stringify(user));
     this.currentUser = user;
     
-    console.log('✅ User created:', user.name);
+    logger.debug('User created:', user.name);
     return user;
   }
 
@@ -41,7 +43,7 @@ class UserAuthService {
       const user = JSON.parse(savedUser);
       if (user.email === email) {
         this.currentUser = user;
-        console.log('✅ User signed in:', user.name);
+        logger.debug('User signed in:', user.name);
         return user;
       }
     }
@@ -61,7 +63,7 @@ class UserAuthService {
     localStorage.setItem('currentUser', JSON.stringify(guestUser));
     this.currentUser = guestUser;
     
-    console.log('👤 Guest user created');
+    logger.debug('Guest user created');
     return guestUser;
   }
 
@@ -79,7 +81,7 @@ class UserAuthService {
   signOut(): void {
     this.currentUser = null;
     localStorage.removeItem('currentUser');
-    console.log('👋 User signed out');
+    logger.debug('User signed out');
   }
 
   // Load user from storage
@@ -100,7 +102,7 @@ class UserAuthService {
     if (this.currentUser) {
       this.currentUser.name = name;
       localStorage.setItem('currentUser', JSON.stringify(this.currentUser));
-      console.log('👤 Profile updated:', name);
+      logger.debug('Profile updated:', name);
     }
   }
 }

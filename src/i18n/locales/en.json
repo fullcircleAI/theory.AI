@@ -75,7 +75,27 @@
     "of": "of",
     "nextQuestion": "Next Question",
     "finishTest": "Finish Test",
-    "explanation": "Explanation"
+    "explanation": "Explanation",
+    "loadingQuestions": "Loading questions...",
+    "retryTest": "Retry Test",
+    "next": "Next",
+    "goToDashboard": "Go to Dashboard",
+    "recommended": "Recommended",
+    "excellentWork": "Excellent Work!",
+    "correctFeedback": {
+      "excellent": "Excellent!",
+      "perfect": "Perfect!",
+      "great": "Great!",
+      "correct": "Correct!",
+      "wellDone": "Well done!"
+    },
+    "incorrectFeedback": {
+      "tryAgain": "Try again",
+      "notQuite": "Not quite",
+      "incorrect": "Incorrect",
+      "wrongAnswer": "Wrong answer",
+      "keepTrying": "Keep trying"
+    }
   },
   "settings": {
     "title": "Settings",
@@ -87,7 +107,23 @@
     "support": "Support"
   },
   "quiz": {
-    "title": "Mock Exam"
+    "title": "Mock Exam",
+    "start": "Start",
+    "question": "Question",
+    "of": "of",
+    "timeRemaining": "Time Remaining",
+    "examRules": "Exam Rules",
+    "rule1": "You must answer all 50 questions within 30 minutes",
+    "rule2": "Each question has multiple answer options - select the correct one",
+    "rule3": "You cannot go back to previous questions once answered",
+    "rule4": "Your answers are not checked until the exam is complete",
+    "rule5": "A minimum score of {passRate}% is required to pass",
+    "rule6": "The timer will continue even if you close or refresh the page",
+    "aiPersonalizedExam": "AI Personalized Exam",
+    "focusedOnWeakAreas": "Focused on your weak areas:",
+    "tailoredToHelp": "This exam is tailored to help you improve where you need it most",
+    "loadingQuestions": "Loading questions...",
+    "back": "Back"
   },
   "aiTutor": {
     "title": "Coach",
@@ -110,6 +146,47 @@
     "mobileMessage": "Install on mobile for the best experience",
     "installNow": "Install Now",
     "maybeLater": "Maybe Later"
+  },
+  "results": {
+    "mockExamComplete": "Mock Exam Complete!",
+    "level": "Level",
+    "excellentWork": "Excellent Work!",
+    "keepPracticing": "Keep Practicing!",
+    "retakeExam": "Retake Exam",
+    "startMockExam": "Start Mock Exam",
+    "mockExamDashboard": "Mock Exam Dashboard",
+    "dashboard": "Dashboard",
+    "passed": "Passed",
+    "failed": "Failed",
+    "score": "Score",
+    "timeUsed": "Time Used",
+    "minutes": "minutes"
+  },
+  "splash": {
+    "title": "Theory Coach AI",
+    "subtitle": "Learn Dutch Driving Theory in 24 hours"
+  },
+  "offline": {
+    "backOnline": "Back Online",
+    "noInternetConnection": "No Internet Connection",
+    "dataWillSync": "Data will sync automatically",
+    "canPracticeOffline": "You can still practice offline"
+  },
+  "recommendations": {
+    "title": "AI Study Recommendations",
+    "highPriority": "🔥 High Priority",
+    "mediumPriority": "⚡ Medium Priority",
+    "lowPriority": "✅ Low Priority",
+    "visualLearner": "Visual Learner",
+    "learningStyleDescription": "You learn 40% faster with visual content like diagrams, videos, and interactive examples",
+    "studyPlan": "Study Plan",
+    "timeNeeded": "Time Needed",
+    "hours": "hours",
+    "readiness": "Readiness",
+    "method": "Method",
+    "resources": "Resources",
+    "viewDashboard": "View Dashboard",
+    "close": "Close"
   },
   "questions": {
     "alcoholDrugs": {

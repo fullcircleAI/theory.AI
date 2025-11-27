@@ -1639,11 +1639,190 @@ body.practice-page .practice-test {
   border: 1px solid #ffeaa7;
 }
 
+/* Results Page Actions - Context-Aware UI/UX */
+.result-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+  width: 100%;
+  padding-bottom: 0;
+}
+
 .result-actions-row {
   display: flex;
   flex-direction: column;
   gap: 0.75rem;
   margin-top: 1.5rem;
+}
+
+/* Primary Button - Large, Prominent */
+.practice-nav-btn.primary {
+  min-height: 50px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  padding: 12px 18px;
+  border-radius: 12px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Next Test Button - Green (Success/Continue) */
+.practice-nav-btn.primary.next-test-btn {
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  color: white;
+}
+
+.practice-nav-btn.primary.next-test-btn.mastery {
+  background: linear-gradient(135deg, #10b981 0%, #047857 100%);
+  box-shadow: 0 4px 16px rgba(16, 185, 129, 0.4);
+}
+
+.practice-nav-btn.primary.next-test-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(16, 185, 129, 0.4);
+}
+
+.practice-nav-btn.primary.next-test-btn:active {
+  transform: translateY(0);
+}
+
+/* Retry Button - Amber/Red (Warning/Critical) */
+.practice-nav-btn.primary.retry-btn {
+  background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+  color: white;
+}
+
+.practice-nav-btn.primary.retry-btn.critical {
+  background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+  box-shadow: 0 4px 16px rgba(239, 68, 68, 0.4);
+}
+
+.practice-nav-btn.primary.retry-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(245, 158, 11, 0.4);
+}
+
+.practice-nav-btn.primary.retry-btn.critical:hover {
+  box-shadow: 0 6px 20px rgba(239, 68, 68, 0.4);
+}
+
+.practice-nav-btn.primary.retry-btn:active {
+  transform: translateY(0);
+}
+
+/* Dashboard Button - Blue (Neutral) */
+.practice-nav-btn.primary.dashboard-btn {
+  background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+  color: white;
+}
+
+.practice-nav-btn.primary.dashboard-btn.mastery {
+  background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+  box-shadow: 0 4px 16px rgba(59, 130, 246, 0.4);
+}
+
+.practice-nav-btn.primary.dashboard-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4);
+}
+
+.practice-nav-btn.primary.dashboard-btn:active {
+  transform: translateY(0);
+}
+
+/* Secondary Buttons - Outlined, Smaller */
+.practice-nav-btn.secondary {
+  min-height: 44px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  padding: 10px 16px;
+  border-radius: 10px;
+  background: transparent;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid;
+}
+
+.practice-nav-btn.secondary.next-test-btn {
+  border-color: #10b981;
+  color: #10b981;
+}
+
+.practice-nav-btn.secondary.next-test-btn:hover {
+  background: rgba(16, 185, 129, 0.1);
+  transform: translateY(-1px);
+}
+
+.practice-nav-btn.secondary.retry-btn {
+  border-color: #f59e0b;
+  color: #f59e0b;
+}
+
+.practice-nav-btn.secondary.retry-btn:hover {
+  background: rgba(245, 158, 11, 0.1);
+  transform: translateY(-1px);
+}
+
+.practice-nav-btn.secondary.dashboard-btn {
+  border-color: #6b7280;
+  color: #6b7280;
+}
+
+.practice-nav-btn.secondary.dashboard-btn:hover {
+  background: rgba(107, 114, 128, 0.1);
+  transform: translateY(-1px);
+}
+
+.practice-nav-btn.secondary:active {
+  transform: translateY(0);
+}
+
+/* Button Text and Arrow */
+.practice-nav-btn .btn-text {
+  flex: 1;
+  text-align: center;
+}
+
+.practice-nav-btn .btn-arrow {
+  font-size: 1.2rem;
+  transition: transform 0.2s ease;
+}
+
+.practice-nav-btn:hover .btn-arrow {
+  transform: translateX(3px);
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  .result-actions {
+    gap: 0.375rem;
+    padding: 0 1rem 0 1rem;
+    margin-top: 0.5rem;
+  }
+  
+  .practice-nav-btn.primary {
+    min-height: 48px;
+    font-size: 0.9rem;
+    padding: 12px 16px;
+  }
+  
+  .practice-nav-btn.secondary {
+    min-height: 44px;
+    font-size: 0.85rem;
+    padding: 10px 16px;
+  }
 }
 
 .result-btn-emotional.primary {

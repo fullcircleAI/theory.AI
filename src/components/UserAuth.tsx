@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { useLanguage } from '../contexts/LanguageContext';
 import { userAuth, User } from '../services/userAuth';
 import { supabaseAuth } from '../services/supabaseAuth';
+import { Mascot } from './Mascot';
+import { logger } from '../utils/logger';
 import './LoginSignup.css';
 
 interface UserAuthProps {
@@ -85,7 +87,7 @@ export const UserAuth: React.FC<UserAuthProps> = ({ onUserChange }) => {
       } else {
       }
     } catch (error) {
-      console.error('Google sign-in error:', error);
+      logger.error('Google sign-in error:', error);
     }
     setIsLoading(false);
   };
@@ -116,10 +118,10 @@ export const UserAuth: React.FC<UserAuthProps> = ({ onUserChange }) => {
           {/* Header with mascot */}
           <div className="auth-header">
             <div className="auth-mascot">
-              <img src="/images/mascot.png" alt="Mascot" className="mascot-image" />
+              <Mascot size={120} mood="happy" />
             </div>
             <h1 className="auth-title">
-              Theory Coach AI
+              Theory.AI
             </h1>
             <p className="auth-subtitle">
               Learn Dutch Driving Theory in 24 hours

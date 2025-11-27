@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test Dynamic Mock Exam</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .test-section {
+            background: #f5f5f5;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 8px;
+        }
+        .success { color: #10b981; }
+        .warning { color: #f59e0b; }
+        .error { color: #ef4444; }
+        button {
+            background: #1A3E7A;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover { background: #002868; }
+        pre {
+            background: #1e1e1e;
+            color: #d4d4d4;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+    </style>
+</head>
+<body>
+    <h1>🧪 Dynamic Mock Exam Tester</h1>
+    
+    <div class="test-section">
+        <h2>1. Check Test History</h2>
+        <button onclick="checkTestHistory()">Check Test History</button>
+        <div id="history-result"></div>
+    </div>
+    
+    <div class="test-section">
+        <h2>2. Check Personalization Status</h2>
+        <button onclick="checkPersonalization()">Check Personalization</button>
+        <div id="personalization-result"></div>
+    </div>
+    
+    <div class="test-section">
+        <h2>3. Analyze Weak Areas</h2>
+        <button onclick="analyzeWeakAreas()">Analyze Weak Areas</button>
+        <div id="weak-areas-result"></div>
+    </div>
+    
+    <div class="test-section">
+        <h2>4. Simulate Mock Exam Generation</h2>
+        <button onclick="simulateExam()">Simulate Exam Generation</button>
+        <div id="exam-result"></div>
+    </div>
+    
+    <div class="test-section">
+        <h2>5. All LocalStorage Data</h2>
+        <button onclick="showAllData()">Show All Data</button>
+        <div id="all-data-result"></div>
+    </div>
+
+    <script>
+        function checkTestHistory() {
+            try {
+                const history = JSON.parse(localStorage.getItem('testHistory') || '[]');
+                const count = history.length;
+                const canPersonalize = count >= 3;
+                
+                let html = `<h3 class="${canPersonalize ? 'success' : 'warning'}">`;
+                html += canPersonalize ? '✅ Can Personalize' : '⚠️ Need More Tests';
+                html += `</h3>`;
+                html += `<p><strong>Test History Count:</strong> ${count}</p>`;
+                html += `<p><strong>Required:</strong> 3+ tests</p>`;
+                html += `<p><strong>Status:</strong> ${canPersonalize ? 'Ready for dynamic mock exam!' : 'Take ' + (3 - count) + ' more practice tests'}</p>`;
+                
+                if (history.length > 0) {
+                    html += `<h4>Recent Tests:</h4><pre>${JSON.stringify(history.slice(-5), null, 2)}</pre>`;
+                }
+                
+                document.getElementById('history-result').innerHTML = html;
+            } catch (error) {
+                document.getElementById('history-result').innerHTML = 
+                    `<p class="error">Error: ${error.message}</p>`;
+            }
+        }
+        
+        function checkPersonalization() {
+            const pref = localStorage.getItem('mockExamPersonalization');
+            const enabled = pref !== 'false';
+            
+            let html = `<h3 class="${enabled ? 'success' : 'warning'}">`;
+            html += enabled ? '✅ Personalization Enabled' : '⚠️ Personalization Disabled';
+            html += `</h3>`;
+            html += `<p><strong>Setting:</strong> ${pref || 'null (defaults to enabled)'}</p>`;
+            html += `<p><strong>Will Personalize:</strong> ${enabled ? 'Yes' : 'No'}</p>`;
+            
+            document.getElementById('personalization-result').innerHTML = html;
+        }
+        
+        function analyzeWeakAreas() {
+            try {
+                const history = JSON.parse(localStorage.getItem('testHistory') || '[]');
+                
+                if (history.length === 0) {
+                    document.getElementById('weak-areas-result').innerHTML = 
+                        '<p class="warning">No test history found. Take some practice tests first!</p>';
+                    return;
+                }
+                
+                // Calculate weak areas (score < 60%)
+                const topicScores = {};
+                history.forEach(test => {
+                    const testId = test.testId || 'unknown';
+                    if (!topicScores[testId]) {
+                        topicScores[testId] = { total: 0, correct: 0, count: 0 };
+                    }
+                    topicScores[testId].total += test.percentage || 0;
+                    topicScores[testId].count += 1;
+                });
+                
+                const weakAreas = [];
+                Object.entries(topicScores).forEach(([testId, data]) => {
+                    const avg = data.total / data.count;
+                    if (avg < 60) {
+                        weakAreas.push({ topic: testId, score: avg.toFixed(1), count: data.count });
+                    }
+                });
+                
+                weakAreas.sort((a, b) => a.score - b.score);
+                
+                let html = '<h3>Weak Areas Analysis</h3>';
+                if (weakAreas.length === 0) {
+                    html += '<p class="success">✅ No weak areas! All topics are 60%+</p>';
+                } else {
+                    html += `<p><strong>Found ${weakAreas.length} weak area(s):</strong></p>`;
+                    html += '<ul>';
+                    weakAreas.forEach(area => {
+                        html += `<li><strong>${area.topic}:</strong> ${area.score}% (${area.count} tests)</li>`;
+                    });
+                    html += '</ul>';
+                }
+                
+                html += '<h4>All Topic Scores:</h4>';
+                html += '<pre>' + JSON.stringify(topicScores, null, 2) + '</pre>';
+                
+                document.getElementById('weak-areas-result').innerHTML = html;
+            } catch (error) {
+                document.getElementById('weak-areas-result').innerHTML = 
+                    `<p class="error">Error: ${error.message}</p>`;
+            }
+        }
+        
+        function simulateExam() {
+            try {
+                const history = JSON.parse(localStorage.getItem('testHistory') || '[]');
+                const pref = localStorage.getItem('mockExamPersonalization');
+                const enabled = pref !== 'false';
+                const canPersonalize = enabled && history.length >= 3;
+                
+                let html = '<h3>Mock Exam Simulation</h3>';
+                
+                if (canPersonalize) {
+                    html += '<p class="success">✅ Would generate PERSONALIZED exam</p>';
+                    html += '<p><strong>Type:</strong> Dynamic Mock Exam</p>';
+                    html += '<p><strong>Questions:</strong> 50 (30 regular + 20 image)</p>';
+                    html += '<p><strong>Source:</strong> Real CBR questions filtered by weak areas</p>';
+                    html += '<p><strong>Focus:</strong> Your weak areas (score < 60%)</p>';
+                } else {
+                    html += '<p class="warning">⚠️ Would generate RANDOM exam</p>';
+                    html += '<p><strong>Type:</strong> Random Real CBR Questions</p>';
+                    html += '<p><strong>Questions:</strong> 50 (30 regular + 20 image)</p>';
+                    html += '<p><strong>Source:</strong> Random selection from all real CBR questions</p>';
+                    if (history.length < 3) {
+                        html += `<p><strong>Reason:</strong> Need ${3 - history.length} more practice test(s)</p>`;
+                    }
+                    if (pref === 'false') {
+                        html += '<p><strong>Reason:</strong> Personalization disabled in settings</p>';
+                    }
+                }
+                
+                document.getElementById('exam-result').innerHTML = html;
+            } catch (error) {
+                document.getElementById('exam-result').innerHTML = 
+                    `<p class="error">Error: ${error.message}</p>`;
+            }
+        }
+        
+        function showAllData() {
+            const allData = {};
+            for (let i = 0; i < localStorage.length; i++) {
+                const key = localStorage.key(i);
+                try {
+                    const value = localStorage.getItem(key);
+                    // Try to parse as JSON
+                    try {
+                        allData[key] = JSON.parse(value);
+                    } catch {
+                        allData[key] = value;
+                    }
+                } catch (e) {
+                    allData[key] = 'Error reading';
+                }
+            }
+            
+            document.getElementById('all-data-result').innerHTML = 
+                '<pre>' + JSON.stringify(allData, null, 2) + '</pre>';
+        }
+        
+        // Auto-run on load
+        window.onload = function() {
+            checkTestHistory();
+            checkPersonalization();
+        };
+    </script>
+</body>
+</html>
+
+

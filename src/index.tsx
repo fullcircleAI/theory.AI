@@ -7,6 +7,7 @@ import './i18n/config';
 import './mobile-optimizations.css';
 import * as serviceWorker from './serviceWorkerRegistration';
 import { LanguageProvider } from './contexts/LanguageContext';
+import { logger } from './utils/logger';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -22,10 +23,10 @@ root.render(
 // Register service worker for mobile optimization
 serviceWorker.register({
   onSuccess: () => {
-    console.log('📱 App is ready for offline use');
+    logger.info('App is ready for offline use');
   },
   onUpdate: () => {
-    console.log('📱 New content available, please refresh');
+    logger.info('New content available, please refresh');
   }
 });
 

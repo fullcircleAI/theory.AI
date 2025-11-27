@@ -809,6 +809,23 @@
   border: 2px solid #10b981;
 }
 
+/* AI Feature Badges */
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.7;
+    transform: scale(1.05);
+  }
+}
+
+/* Enhanced Focus Card with Progress */
+.insight-card.amber .insight-content {
+  position: relative;
+}
+
 .insight-card.red {
   border-left: 6px solid #ef4444;
   background: #fee2e2;
@@ -872,6 +889,20 @@
     font-weight: 500;
     margin: 0.4rem 0 !important;
     line-height: 1.5 !important;
+  }
+}
+
+/* Practice test name - matches h4 font size */
+.practice-test-name {
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+/* Web only - make larger to match h4 */
+@media (min-width: 1025px) {
+  .practice-test-name {
+    font-size: 1.1rem !important;
+    font-weight: 600;
   }
 }
 

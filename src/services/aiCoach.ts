@@ -4,6 +4,7 @@
 import { cloudSave } from './cloudSave';
 import { userAuth } from './userAuth';
 import { adaptiveDifficultyService } from './adaptiveDifficultyService';
+import { logger } from '../utils/logger';
 
 export interface TestResult {
   testId: string;
@@ -537,7 +538,7 @@ class AICoachService {
             date: new Date().toISOString() // Use current date as approximation
           });
         } catch (error) {
-          console.error(`Error parsing mock exam ${i} result:`, error);
+          logger.error(`Error parsing mock exam ${i} result:`, error);
         }
       }
     }

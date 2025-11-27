@@ -25,8 +25,10 @@ class RealAIService {
   private conversationHistory: Array<{role: 'user' | 'ai', message: string}> = [];
   
   constructor() {
-    // Initialize Hugging Face client (no API key needed for public models)
-    this.hf = new HfInference();
+    // Optional: Set REACT_APP_HUGGINGFACE_API_KEY in .env for better rate limits
+    // Free API key available at: https://huggingface.co/settings/tokens
+    const apiKey = process.env.REACT_APP_HUGGINGFACE_API_KEY;
+    this.hf = apiKey ? new HfInference(apiKey) : new HfInference();
   }
   
   // Check if AI is available

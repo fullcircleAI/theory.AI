@@ -1,4 +1,4 @@
-# AI Coach - Theory Master
+# Theory.AI
 
 An AI-powered coaching app for Dutch driving theory test preparation with 297 questions, smart recommendations, and multilingual support.
 

@@ -57,14 +57,34 @@
     "continuing": "Bezig..."
   },
   "practice": {
-    "title": "Practice",
-    "recommendedForYou": "Recommended for You",
+    "title": "Oefenen",
+    "recommendedForYou": "Aanbevolen voor jou",
     "startTest": "Start",
-    "question": "Question",
-    "of": "of",
-    "nextQuestion": "Next Question",
-    "finishTest": "Finish Test",
-    "explanation": "Explanation"
+    "question": "Vraag",
+    "of": "van",
+    "nextQuestion": "Volgende vraag",
+    "finishTest": "Test voltooien",
+    "explanation": "Uitleg",
+    "loadingQuestions": "Vragen laden...",
+    "retryTest": "Test opnieuw proberen",
+    "next": "Volgende",
+    "goToDashboard": "Naar Dashboard",
+    "recommended": "Aanbevolen",
+    "excellentWork": "Uitstekend werk!",
+    "correctFeedback": {
+      "excellent": "Uitstekend!",
+      "perfect": "Perfect!",
+      "geweldig": "Geweldig!",
+      "correct": "Correct!",
+      "goedGedaan": "Goed gedaan!"
+    },
+    "incorrectFeedback": {
+      "tryAgain": "Probeer opnieuw",
+      "notQuite": "Niet helemaal",
+      "incorrect": "Incorrect",
+      "wrongAnswer": "Verkeerd antwoord",
+      "keepTrying": "Blijf proberen"
+    }
   },
   "settings": {
     "title": "Settings",
@@ -76,7 +96,23 @@
     "support": "Support"
   },
   "quiz": {
-    "title": "Mock Exam"
+    "title": "Proefexamen",
+    "start": "Start",
+    "question": "Vraag",
+    "of": "van",
+    "timeRemaining": "Resterende tijd",
+    "examRules": "Examenregels",
+    "rule1": "Je moet alle 50 vragen binnen 30 minuten beantwoorden",
+    "rule2": "Elke vraag heeft meerdere antwoordopties - selecteer de juiste",
+    "rule3": "Je kunt niet terug naar vorige vragen zodra je ze hebt beantwoord",
+    "rule4": "Je antwoorden worden pas gecontroleerd wanneer het examen is voltooid",
+    "rule5": "Een minimumscore van {passRate}% is vereist om te slagen",
+    "rule6": "De timer blijft doorgaan, zelfs als je de pagina sluit of vernieuwt",
+    "aiPersonalizedExam": "AI Gepersonaliseerd Examen",
+    "focusedOnWeakAreas": "Gericht op je zwakke punten:",
+    "tailoredToHelp": "Dit examen is afgestemd om je te helpen verbeteren waar je het meest nodig hebt",
+    "loadingQuestions": "Vragen laden...",
+    "back": "Terug"
   },
   "questions": {
     "alcoholDrugs": {
@@ -2327,5 +2363,46 @@
     "mobileMessage": "Installeer op mobiel voor de beste ervaring",
     "installNow": "Nu Installeren",
     "maybeLater": "Misschien Later"
+  },
+  "results": {
+    "mockExamComplete": "Proefexamen Voltooid!",
+    "level": "Niveau",
+    "excellentWork": "Uitstekend Werk!",
+    "keepPracticing": "Blijf Oefenen!",
+    "retakeExam": "Examen Opnieuw Doen",
+    "startMockExam": "Start Proefexamen",
+    "mockExamDashboard": "Proefexamen Dashboard",
+    "dashboard": "Dashboard",
+    "passed": "Geslaagd",
+    "failed": "Gezakt",
+    "score": "Score",
+    "timeUsed": "Tijd Gebruikt",
+    "minutes": "minuten"
+  },
+  "splash": {
+    "title": "Theory Coach AI",
+    "subtitle": "Leer Nederlandse Verkeerstheorie in 24 uur"
+  },
+  "offline": {
+    "backOnline": "Weer Online",
+    "noInternetConnection": "Geen Internetverbinding",
+    "dataWillSync": "Gegevens worden automatisch gesynchroniseerd",
+    "canPracticeOffline": "Je kunt nog steeds offline oefenen"
+  },
+  "recommendations": {
+    "title": "AI Studie Aanbevelingen",
+    "highPriority": "🔥 Hoge Prioriteit",
+    "mediumPriority": "⚡ Gemiddelde Prioriteit",
+    "lowPriority": "✅ Lage Prioriteit",
+    "visualLearner": "Visuele Leerder",
+    "learningStyleDescription": "Je leert 40% sneller met visuele content zoals diagrammen, video's en interactieve voorbeelden",
+    "studyPlan": "Studieplan",
+    "timeNeeded": "Tijd Nodig",
+    "hours": "uren",
+    "readiness": "Gereedheid",
+    "method": "Methode",
+    "resources": "Bronnen",
+    "viewDashboard": "Bekijk Dashboard",
+    "close": "Sluiten"
   }
 }

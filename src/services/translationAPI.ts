@@ -1,4 +1,6 @@
 // Translation API Service with multiple providers
+import { logger } from '../utils/logger';
+
 export interface TranslationProvider {
   name: string;
   translate: (text: string, targetLang: string, sourceLang?: string) => Promise<string>;
@@ -88,7 +90,7 @@ class TranslationAPIService {
       const data = await response.json();
       return data.data.translations[0].translatedText;
     } catch (error) {
-      console.error('Google Translate error:', error);
+      logger.error('Google Translate error:', error);
       throw error;
     }
   }
@@ -112,7 +114,7 @@ class TranslationAPIService {
       const data = await response.json();
       return data.translatedText;
     } catch (error) {
-      console.error('LibreTranslate error:', error);
+      logger.error('LibreTranslate error:', error);
       throw error;
     }
   }
@@ -136,7 +138,7 @@ class TranslationAPIService {
       const data = await response.json();
       return data.translations[0].text;
     } catch (error) {
-      console.error('DeepL error:', error);
+      logger.error('DeepL error:', error);
       throw error;
     }
   }
@@ -153,7 +155,7 @@ class TranslationAPIService {
         throw new Error('MyMemory translation failed');
       }
     } catch (error) {
-      console.error('MyMemory error:', error);
+      logger.error('MyMemory error:', error);
       throw error;
     }
   }
@@ -244,6 +246,9 @@ class TranslationAPIService {
 }
 
 export const translationAPI = new TranslationAPIService();
+
+
+
 
 
 

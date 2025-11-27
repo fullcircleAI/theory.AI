@@ -115,6 +115,15 @@
   background: white;
   border-radius: 50%;
   padding: 10px;
+  overflow: visible;
+}
+
+.mascot-container .mascot-spotlight {
+  width: 100% !important;
+  height: 100% !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .mascot-image {

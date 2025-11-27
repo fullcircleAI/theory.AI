@@ -3,6 +3,7 @@ import { translationAPI } from '../services/translationAPI';
 import { translationMetrics } from '../services/translationMetrics';
 import { translationFeedback } from '../services/translationFeedback';
 import { aiTranslationEnhancer } from '../services/aiTranslationEnhancer';
+import { logger } from '../utils/logger';
 import './TranslationDashboard.css';
 
 export const TranslationDashboard: React.FC = () => {
@@ -34,11 +35,11 @@ export const TranslationDashboard: React.FC = () => {
           currentTranslation.translatedText
         );
         
-        console.log('Translation enhanced:', enhancement);
+        logger.debug('Translation enhanced:', enhancement);
         // Here you would update the translation in your strings.ts file
       }
     } catch (error) {
-      console.error('Enhancement failed:', error);
+      logger.error('Enhancement failed:', error);
     } finally {
       setIsLoading(false);
     }
@@ -55,7 +56,7 @@ export const TranslationDashboard: React.FC = () => {
       comment
     );
     
-    console.log('Feedback submitted:', feedbackId);
+    logger.debug('Feedback submitted:', feedbackId);
     setFeedback(translationFeedback.getAnalytics());
   };
 
@@ -251,6 +252,9 @@ export const TranslationDashboard: React.FC = () => {
     </div>
   );
 };
+
+
+
 
 
 

@@ -467,9 +467,12 @@ body.splash-active {
   overflow: hidden;
 }
 
-/* Smooth page transitions */
+/* Smooth page transitions - only animate once on mount */
 .main-content {
-  animation: fadeIn 0.3s ease-in-out;
+  /* Remove animation to prevent flickering on every render */
+  /* animation: fadeIn 0.3s ease-in-out; */
+  /* Only use will-change when actually animating */
+  /* will-change: opacity, transform; */
 }
 
 @keyframes fadeIn {
@@ -483,19 +486,42 @@ body.splash-active {
   }
 }
 
-/* Button touch feedback for native feel */
+/* Prevent flicker on route changes - optimized */
+.main-content {
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  /* Only use translateZ when needed to prevent unnecessary GPU layer creation */
+  /* transform: translateZ(0); */
+  /* -webkit-transform: translateZ(0); */
+}
+
+/* Button touch feedback for native feel - optimized to prevent flickering */
 button, .test-card, .settings-main-menu-btn, .practice-option-btn, .practice-nav-btn {
-  transition: transform 0.1s ease, opacity 0.1s ease;
+  /* Reduce transition duration to prevent flickering */
+  transition: transform 0.05s ease, opacity 0.05s ease;
+  /* Use will-change only when needed */
+  will-change: auto;
 }
 
 button:active, .test-card:active, .settings-main-menu-btn:active, .practice-option-btn:active, .practice-nav-btn:active {
   transform: scale(0.98);
   opacity: 0.9;
+  /* Reset will-change after interaction */
+  will-change: auto;
 }
 
-/* iOS-style smooth scrolling */
+/* iOS-style smooth scrolling - optimized to prevent flickering */
 .main-content, .settings-page, .tests-page {
   -webkit-overflow-scrolling: touch;
+  /* Disable smooth scroll on initial load to prevent flickering */
+  scroll-behavior: auto;
+  /* Enable smooth scroll only after initial render */
+}
+
+/* Enable smooth scrolling after page load */
+body.loaded .main-content,
+body.loaded .settings-page,
+body.loaded .tests-page {
   scroll-behavior: smooth;
 }
 

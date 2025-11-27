@@ -105,11 +105,49 @@ export const MockExamSelection: React.FC = () => {
           </div>
 
           <div className="tests-content">
+            {/* AI Personalization Info */}
+            {unlockProgress.canUnlock && aiCoach.shouldPersonalizeMockExam() && (
+              <div style={{
+                background: 'linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(37, 99, 235, 0.1) 100%)',
+                border: '2px solid rgba(59, 130, 246, 0.3)',
+                borderRadius: '12px',
+                padding: '1rem',
+                marginBottom: '1.5rem',
+                textAlign: 'center'
+              }}>
+                <div style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  gap: '0.5rem',
+                  marginBottom: '0.5rem'
+                }}>
+                  <h3 style={{ 
+                    margin: 0,
+                    fontSize: '1rem',
+                    fontWeight: 700,
+                    color: '#2563eb'
+                  }}>
+                    AI Personalized Mock Exams
+                  </h3>
+                </div>
+                <p style={{
+                  margin: 0,
+                  fontSize: '0.85rem',
+                  color: '#4b5563',
+                  lineHeight: '1.5'
+                }}>
+                  Your mock exams are automatically personalized based on your weak areas. 
+                  Each exam focuses on topics where you need the most practice, ensuring maximum learning efficiency.
+                </p>
+              </div>
+            )}
 
             <div className="tests-grid">
               {mockExams.map((exam) => {
                 const recentScore = recentScores[exam.id];
                 const isLocked = !unlockProgress.canUnlock;
+                const isPersonalized = !isLocked && aiCoach.shouldPersonalizeMockExam();
                 
                 return (
                   <div
@@ -129,6 +167,28 @@ export const MockExamSelection: React.FC = () => {
                         {isLocked && <div className="lock-icon"></div>}
                       </div>
                       
+                      {isPersonalized && (
+                        <div style={{
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: '0.5rem',
+                          marginBottom: '0.5rem',
+                          padding: '0.4rem 0.6rem',
+                          background: 'linear-gradient(135deg, rgba(59, 130, 246, 0.15) 0%, rgba(37, 99, 235, 0.15) 100%)',
+                          borderRadius: '8px',
+                          border: '1px solid rgba(59, 130, 246, 0.3)'
+                        }}>
+                          <span style={{
+                            fontSize: '0.7rem',
+                            fontWeight: 700,
+                            color: '#2563eb',
+                            textTransform: 'uppercase',
+                            letterSpacing: '0.5px'
+                          }}>
+                            AI Personalized
+                          </span>
+                        </div>
+                      )}
                       
                       <div className="test-meta">
                         <span>{exam.questions} {t_nested('quiz.questionsLabel')}</span>

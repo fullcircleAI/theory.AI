@@ -1,6 +1,8 @@
 // Audio Service - Multilingual TTS Support
 // Clean, simple audio service for questions, answers, and explanations
 
+import { logger } from '../utils/logger';
+
 type Language = 'en' | 'nl' | 'ar';
 
 class AudioService {
@@ -45,7 +47,7 @@ class AudioService {
     utterance.volume = this.volume;
 
     utterance.onerror = (e) => {
-      console.error('Audio error:', e);
+      logger.error('Audio error:', e);
     };
 
     this.currentUtterance = utterance;

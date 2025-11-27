@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from 'react';
+import { useLanguage } from '../contexts/LanguageContext';
+import { Mascot } from './Mascot';
 import './SplashScreen.css';
 
 interface SplashScreenProps {
@@ -6,6 +8,7 @@ interface SplashScreenProps {
 }
 
 export const SplashScreen: React.FC<SplashScreenProps> = ({ onFinish }) => {
+  const { t_nested } = useLanguage();
   const [fadeOut, setFadeOut] = useState(false);
 
   useEffect(() => {
@@ -24,11 +27,9 @@ export const SplashScreen: React.FC<SplashScreenProps> = ({ onFinish }) => {
       <div className="splash-content">
         <div className="splash-circle">
           <div className="mascot-container">
-            <img src="/images/mascot.png" alt="Mascot" className="mascot-image" />
+            <Mascot size={130} mood="excited" />
           </div>
         </div>
-        <h1 className="splash-title">Theory Coach AI</h1>
-        <p className="splash-subtitle">Learn Dutch Driving Theory in 24 hours</p>
       </div>
     </div>
   );

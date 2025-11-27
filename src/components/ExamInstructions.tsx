@@ -1,9 +1,12 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useLanguage } from '../contexts/LanguageContext';
+import { getTranslation } from '../utils/translationHelpers';
 import './TestsPage.css';
 
 export const ExamInstructions: React.FC = () => {
   const navigate = useNavigate();
+  const { t_nested } = useLanguage();
 
   const handleStartExam = () => {
     navigate('/mock-exam');
@@ -192,13 +195,13 @@ export const ExamInstructions: React.FC = () => {
                 className="action-button secondary"
                 onClick={handleBackToDashboard}
               >
-                Back to Dashboard
+                {getTranslation(t_nested, 'practice.goToDashboard', 'Back to Dashboard')}
               </button>
               <button 
                 className="action-button primary"
                 onClick={handleStartExam}
               >
-                Start Practice Exams
+                {getTranslation(t_nested, 'dashboard.startPractice', 'Start Practice Exams')}
               </button>
             </div>
           </div>
