@@ -8,8 +8,8 @@ export const LanguageSelection: React.FC = () => {
   const handleLanguageSelect = (language: Language) => {
     // Set language using the LanguageProvider
     setLanguage(language);
-    // Trigger reload to show app
-    window.location.reload();
+    // Language change will trigger re-render automatically
+    // No need to reload - the context handles the update
   };
 
   return (

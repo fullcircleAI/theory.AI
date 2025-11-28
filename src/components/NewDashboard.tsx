@@ -1,4 +1,5 @@
-import React, { useState, useEffect, useCallback, useMemo, useRef, startTransition } from 'react';
+import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react';
+import { startTransition } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useLanguage } from '../contexts/LanguageContext';
 import { aiCoach, type AIInsight } from '../services/aiCoach';
@@ -89,11 +90,11 @@ export const NewDashboard: React.FC = () => {
   const tNestedRef = useRef(t_nested);
   const getTranslatedTestNameRef = useRef(getTranslatedTestName);
   
-  // Update refs when functions change
+  // Update refs when language changes (functions are stable, but update refs when language changes)
   useEffect(() => {
     tNestedRef.current = t_nested;
     getTranslatedTestNameRef.current = getTranslatedTestName;
-  }, [t_nested, getTranslatedTestName]);
+  }, [currentLanguage]); // Only update when language changes, not when function references change
 
   useEffect(() => {
     // Initialize study time tracker (starts timer when dashboard is entered)
@@ -120,7 +121,7 @@ export const NewDashboard: React.FC = () => {
     
     // Batch all state updates using startTransition to prevent flickering
     // This marks updates as non-urgent, allowing React to batch them smoothly
-    startTransition(() => {
+    const updateState = () => {
       // Load user progress from aiCoach
       const testHistory = aiCoach.getTestHistory();
       // Use actual tracked time (not estimated from questions)
@@ -262,13 +263,26 @@ export const NewDashboard: React.FC = () => {
         }
         return prev;
       });
-    });
+    };
+    
+    // Use startTransition if available, otherwise execute directly
+    try {
+      if (typeof startTransition === 'function') {
+        startTransition(updateState);
+      } else {
+        updateState();
+      }
+    } catch (error) {
+      logger.error('Error in dashboard data loading:', error);
+      // Fallback: execute without transition
+      updateState();
+    }
   }, [currentLanguage]); // Only depend on language changes - functions accessed via refs
 
-  // Memoize translated strings to prevent re-renders
-  const studyTimeLabel = useMemo(() => t_nested('dashboard.studyTime') || 'Study Time', [t_nested]);
-  const timeRemainingLabel = useMemo(() => t_nested('dashboard.timeRemaining') || 'Time Remaining', [t_nested]);
-  const yourProgressLabel = useMemo(() => t_nested('dashboard.yourProgress') || 'Your Progress', [t_nested]);
+  // Memoize translated strings to prevent re-renders - only update when language changes
+  const studyTimeLabel = useMemo(() => t_nested('dashboard.studyTime') || 'Study Time', [currentLanguage, t_nested]);
+  const timeRemainingLabel = useMemo(() => t_nested('dashboard.timeRemaining') || 'Time Remaining', [currentLanguage, t_nested]);
+  const yourProgressLabel = useMemo(() => t_nested('dashboard.yourProgress') || 'Your Progress', [currentLanguage, t_nested]);
 
   const formatStudyTime = useCallback((hours: number): string => {
     const totalSeconds = Math.floor(hours * 3600);
@@ -289,14 +303,20 @@ export const NewDashboard: React.FC = () => {
     const interval = setInterval(() => {
       const newTime = studyTimeTracker.getStudyTimeHours();
       // Use startTransition to mark as non-urgent update
-      startTransition(() => {
+      const updateTime = () => {
         setCurrentStudyTime(prev => {
           const roundedPrev = Math.round(prev * 3600);
           const roundedNew = Math.round(newTime * 3600);
           // Return new value only if changed
           return roundedPrev !== roundedNew ? newTime : prev;
         });
-      });
+      };
+      
+      if (typeof startTransition === 'function') {
+        startTransition(updateTime);
+      } else {
+        updateTime();
+      }
     }, 15000); // 15 seconds to reduce flickering
 
     return () => clearInterval(interval);

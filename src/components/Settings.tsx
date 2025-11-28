@@ -32,7 +32,7 @@ const getFAQs = (t_nested: (key: string) => string): FAQ[] => [
 ];
 
 export const Settings: React.FC = () => {
-  const { t_nested } = useLanguage();
+  const { t_nested, currentLanguage, setLanguage } = useLanguage();
   const faqs = getFAQs(t_nested);
   const [activePage, setActivePage] = useState<'main' | 'account' | 'language' | 'privacy' | 'terms' | 'faq' | 'support'>('main');
   const [isEditing, setIsEditing] = useState(false);
@@ -42,8 +42,15 @@ export const Settings: React.FC = () => {
   const [isSending, setIsSending] = useState(false);
   const [sendSuccess, setSendSuccess] = useState(false);
   const [selectedLanguage, setSelectedLanguage] = useState<string>(() => {
-    return localStorage.getItem('preferredLanguage') || 'en';
+    return currentLanguage || 'en';
   });
+
+  // Sync selectedLanguage with currentLanguage when it changes
+  useEffect(() => {
+    if (currentLanguage) {
+      setSelectedLanguage(currentLanguage);
+    }
+  }, [currentLanguage]);
 
   useEffect(() => {
     // Load username
@@ -212,10 +219,13 @@ export const Settings: React.FC = () => {
   // Language Selection Sub-Page
   const renderLanguagePage = () => {
     const handleLanguageSelect = (language: string) => {
+      // Use setLanguage from context to properly update the app
+      setLanguage(language as 'en' | 'nl' | 'ar');
       setSelectedLanguage(language);
+      // Language is already saved in setLanguage, but ensure localStorage is updated
       localStorage.setItem('preferredLanguage', language);
-      // Show success message
-      alert(`Language changed to ${language === 'en' ? 'English' : language === 'nl' ? 'Dutch' : 'Arabic'}`);
+      // Update immediately - no need to reload
+      // The context will trigger a re-render with new language
     };
 
     return (

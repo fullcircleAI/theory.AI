@@ -88,67 +88,85 @@ class AudioService {
   }
 
   private getVoice(lang: Language): SpeechSynthesisVoice | null {
-    // Ensure voices are loaded
+    // Ensure voices are loaded - wait if needed
     let voices = this.synth.getVoices();
     if (voices.length === 0) {
-      // If voices aren't loaded yet, try to get them again
+      // Wait a bit for voices to load (some browsers load asynchronously)
       voices = this.synth.getVoices();
+      if (voices.length === 0) {
+        // Still no voices, return null and let browser use default
+        return null;
+      }
     }
     
     const langCode = this.getLangCode(lang);
+    const langPrefix = langCode.split('-')[0]; // 'en', 'nl', 'ar'
     
     // Comprehensive list of female voice names by language
     const femaleVoiceNames: Record<Language, string[]> = {
       en: [
         'samantha', 'sarah', 'claire', 'lisa', 'karen', 'victoria', 
-        'susan', 'kate', 'samantha premium', 'siri', 'alex', 'zira',
-        'female', 'woman', 'woman voice'
+        'susan', 'kate', 'samantha premium', 'siri', 'zira',
+        'female', 'woman', 'woman voice', 'alexandra', 'sophia'
       ],
       nl: [
-        'anna', 'nora', 'ellen', 'sophie', 'emma', 'mariska',
-        'female', 'vrouw', 'vrouwenstem'
+        'anna', 'nora', 'ellen', 'sophie', 'emma', 'mariska', 'xander',
+        'female', 'vrouw', 'vrouwenstem', 'nederlandse', 'dutch female',
+        'tessa', 'fiona', 'moira'
       ],
       ar: [
-        'mageda', 'salma', 'hala', 'zeina', 'laila', 'nawal',
-        'female', 'أنثى', 'صوت أنثوي'
+        'mageda', 'salma', 'hala', 'zeina', 'laila', 'nawal', 'mariam',
+        'female', 'أنثى', 'صوت أنثوي', 'arabic female', 'arabic woman',
+        'amira', 'fatima', 'layla', 'noor'
       ]
     };
 
-    // Priority 1: Native female voice (exact language match + female name)
+    // Priority 1: Exact language match + female voice name
     let voice = voices.find(v => {
-      const isNativeLang = v.lang === langCode || v.lang.startsWith(langCode.split('-')[0]);
+      const isExactLang = v.lang === langCode || v.lang.startsWith(langPrefix);
       const nameLower = v.name.toLowerCase();
       const isFemale = femaleVoiceNames[lang].some(femaleName => 
         nameLower.includes(femaleName.toLowerCase())
-      ) || nameLower.includes('female') || nameLower.includes('woman');
+      ) || nameLower.includes('female') || nameLower.includes('woman') || nameLower.includes('vrouw');
       
-      // Also check if voice has gender property (if available)
       const hasFemaleGender = (v as any).gender === 'female';
       
-      return isNativeLang && (isFemale || hasFemaleGender);
+      return isExactLang && (isFemale || hasFemaleGender);
     });
 
-    // Priority 2: Any female voice in the language (broader match)
+    // Priority 2: Language match + any female indicator
     if (!voice) {
       voice = voices.find(v => {
-        const isLang = v.lang.startsWith(langCode.split('-')[0]);
+        const isLang = v.lang.startsWith(langPrefix);
         const nameLower = v.name.toLowerCase();
         return isLang && (
           nameLower.includes('female') || 
           nameLower.includes('woman') ||
+          nameLower.includes('vrouw') ||
+          nameLower.includes('أنثى') ||
           femaleVoiceNames[lang].some(femaleName => nameLower.includes(femaleName.toLowerCase()))
         );
       });
     }
 
-    // Priority 3: Native voice (any gender, but prefer native)
+    // Priority 3: Exact language match (any gender - prefer native)
     if (!voice) {
-      voice = voices.find(v => v.lang === langCode || v.lang.startsWith(langCode.split('-')[0]));
+      voice = voices.find(v => v.lang === langCode || v.lang.startsWith(langPrefix + '-'));
     }
 
     // Priority 4: Any voice in language family
     if (!voice) {
-      voice = voices.find(v => v.lang.startsWith(langCode.split('-')[0]));
+      voice = voices.find(v => v.lang.startsWith(langPrefix));
+    }
+
+    // Priority 5: For Arabic/Dutch, if still no voice, try to find any voice with correct locale
+    if (!voice && (lang === 'ar' || lang === 'nl')) {
+      // Try alternative locale codes
+      const altCodes = lang === 'ar' ? ['ar-EG', 'ar-AE', 'ar'] : ['nl-BE', 'nl'];
+      for (const code of altCodes) {
+        voice = voices.find(v => v.lang.startsWith(code));
+        if (voice) break;
+      }
     }
 
     return voice || null;

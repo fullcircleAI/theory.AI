@@ -696,9 +696,10 @@ export const PracticeTest: React.FC = () => {
     const allTestsCompleted = allTestIds.length > 0 && allTestIds.every(testId => completedTestIds.includes(testId));
     
     // Determine if there's a next test (not the same as current test and not all tests completed)
+    // Always show next test button if available - removed 80% condition
     const hasNextTest = !allTestsCompleted && nextTest.id && nextTest.id !== testId;
 
-    // Smart Coaching Logic: Determine readiness level
+    // Smart Coaching Logic: Determine readiness level (for messaging only, not button visibility)
     const isCritical = percentage < 60;  // Must retry
     const needsWork = percentage >= 60 && percentage < 80;  // Recommended retry
     const hasMastery = percentage >= 80;  // Ready to progress
@@ -746,90 +747,22 @@ export const PracticeTest: React.FC = () => {
                 {/* Context-Aware Button Logic */}
                 
                 {/* Score < 60% (Critical): Retry is Primary */}
-                {isCritical ? (
+                {/* Always show Next Test button as primary if available - removed 80% condition */}
+                {hasNextTest ? (
                   <>
                     <button 
-                      className="practice-nav-btn primary retry-btn critical" 
+                      className="practice-nav-btn primary next-test-btn" 
                       onClick={() => {
                         if (testId !== 'mock-exam') {
                           stopSpeaking();
                         }
-                        setCurrentQuestionIndex(0);
-                        setSelectedAnswer(null);
-                        setIsAnswered(false);
-                        setShowExplanation(false);
-                        setScore(0);
-                        setTestComplete(false);
-                        setQuestionStartTime(Date.now());
+                        navigate(`/practice/${nextTest.id}`);
                       }}
-                      aria-label={getTranslation('practice.retryTest', 'Retry Test')}
+                      aria-label={`Continue to next test: ${nextTest.name}`}
                     >
-                      <span className="btn-text">{getTranslation('practice.retryTest', 'Retry Test')}</span>
-                      <span className="btn-arrow">↻</span>
+                      <span className="btn-text">Next Test: {nextTest.name}</span>
+                      <span className="btn-arrow">→</span>
                     </button>
-                    
-                    {/* Secondary: Next Test if available */}
-                    {hasNextTest && (
-                      <button 
-                        className="practice-nav-btn secondary next-test-btn" 
-                        onClick={() => {
-                          if (testId !== 'mock-exam') {
-                            stopSpeaking();
-                          }
-                          navigate(`/practice/${nextTest.id}`);
-                        }}
-                        aria-label={`Continue to next test: ${nextTest.name}`}
-                      >
-                        <span className="btn-text">Next: {nextTest.name}</span>
-                      </button>
-                    )}
-                    
-                    {/* Secondary: Dashboard */}
-                    <button 
-                      className="practice-nav-btn secondary dashboard-btn" 
-                      onClick={() => {
-                        if (testId !== 'mock-exam') {
-                          stopSpeaking();
-                        }
-                        navigate('/new-dashboard');
-                      }}
-                      aria-label={getTranslation('practice.goToDashboard', 'Go to dashboard')}
-                    >
-                      {getTranslation('practice.goToDashboard', 'Go to Dashboard')}
-                    </button>
-                  </>
-                ) : needsWork ? (
-                  /* Score 60-79% (Needs Work): Next Test is Primary, Retry is Secondary */
-                  <>
-                    {hasNextTest ? (
-                      <button 
-                        className="practice-nav-btn primary next-test-btn" 
-                        onClick={() => {
-                          if (testId !== 'mock-exam') {
-                            stopSpeaking();
-                          }
-                          navigate(`/practice/${nextTest.id}`);
-                        }}
-                        aria-label={`Continue to next test: ${nextTest.name}`}
-                      >
-                        <span className="btn-text">Next Test: {nextTest.name}</span>
-                        <span className="btn-arrow">→</span>
-                      </button>
-                    ) : (
-                      <button 
-                        className="practice-nav-btn primary dashboard-btn" 
-                        onClick={() => {
-                          if (testId !== 'mock-exam') {
-                            stopSpeaking();
-                          }
-                          navigate('/new-dashboard');
-                        }}
-                        aria-label={getTranslation('practice.goToDashboard', 'Go to dashboard')}
-                      >
-                        <span className="btn-text">{getTranslation('practice.goToDashboard', 'Go to Dashboard')}</span>
-                        <span className="btn-arrow">→</span>
-                      </button>
-                    )}
                     
                     {/* Secondary: Retry Test */}
                     <button 
@@ -852,69 +785,55 @@ export const PracticeTest: React.FC = () => {
                     </button>
                     
                     {/* Secondary: Dashboard */}
-                    {hasNextTest && (
-                      <button 
-                        className="practice-nav-btn secondary dashboard-btn" 
-                        onClick={() => {
-                          if (testId !== 'mock-exam') {
-                            stopSpeaking();
-                          }
-                          navigate('/new-dashboard');
-                        }}
-                        aria-label={getTranslation('practice.goToDashboard', 'Go to dashboard')}
-                      >
-                        {getTranslation('practice.goToDashboard', 'Go to Dashboard')}
-                      </button>
-                    )}
+                    <button 
+                      className="practice-nav-btn secondary dashboard-btn" 
+                      onClick={() => {
+                        if (testId !== 'mock-exam') {
+                          stopSpeaking();
+                        }
+                        navigate('/new-dashboard');
+                      }}
+                      aria-label={getTranslation('practice.goToDashboard', 'Go to dashboard')}
+                    >
+                      {getTranslation('practice.goToDashboard', 'Go to Dashboard')}
+                    </button>
                   </>
                 ) : (
-                  /* Score ≥ 80% (Mastery): Next Test is Primary */
                   <>
-                    {hasNextTest ? (
-                      <button 
-                        className="practice-nav-btn primary next-test-btn mastery" 
-                        onClick={() => {
-                          if (testId !== 'mock-exam') {
-                            stopSpeaking();
-                          }
-                          navigate(`/practice/${nextTest.id}`);
-                        }}
-                        aria-label={`Continue to next test: ${nextTest.name}`}
-                      >
-                        <span className="btn-text">Next Test: {nextTest.name}</span>
-                        <span className="btn-arrow">→</span>
-                      </button>
-                    ) : (
-                      <button 
-                        className="practice-nav-btn primary dashboard-btn mastery" 
-                        onClick={() => {
-                          if (testId !== 'mock-exam') {
-                            stopSpeaking();
-                          }
-                          navigate('/new-dashboard');
-                        }}
-                        aria-label={getTranslation('practice.goToDashboard', 'Go to dashboard')}
-                      >
-                        <span className="btn-text">{getTranslation('practice.goToDashboard', 'Go to Dashboard')}</span>
-                        <span className="btn-arrow">→</span>
-                      </button>
-                    )}
+                    {/* No next test available - show Retry as primary */}
+                    <button 
+                      className="practice-nav-btn primary retry-btn" 
+                      onClick={() => {
+                        if (testId !== 'mock-exam') {
+                          stopSpeaking();
+                        }
+                        setCurrentQuestionIndex(0);
+                        setSelectedAnswer(null);
+                        setIsAnswered(false);
+                        setShowExplanation(false);
+                        setScore(0);
+                        setTestComplete(false);
+                        setQuestionStartTime(Date.now());
+                      }}
+                      aria-label={getTranslation('practice.retryTest', 'Retry Test')}
+                    >
+                      <span className="btn-text">{getTranslation('practice.retryTest', 'Retry Test')}</span>
+                      <span className="btn-arrow">↻</span>
+                    </button>
                     
-                    {/* Secondary: Dashboard (only if next test exists) */}
-                    {hasNextTest && (
-                      <button 
-                        className="practice-nav-btn secondary dashboard-btn" 
-                        onClick={() => {
-                          if (testId !== 'mock-exam') {
-                            stopSpeaking();
-                          }
-                          navigate('/new-dashboard');
-                        }}
-                        aria-label={getTranslation('practice.goToDashboard', 'Go to dashboard')}
-                      >
-                        {getTranslation('practice.goToDashboard', 'Go to Dashboard')}
-                      </button>
-                    )}
+                    {/* Secondary: Dashboard */}
+                    <button 
+                      className="practice-nav-btn secondary dashboard-btn" 
+                      onClick={() => {
+                        if (testId !== 'mock-exam') {
+                          stopSpeaking();
+                        }
+                        navigate('/new-dashboard');
+                      }}
+                      aria-label={getTranslation('practice.goToDashboard', 'Go to dashboard')}
+                    >
+                      {getTranslation('practice.goToDashboard', 'Go to Dashboard')}
+                    </button>
                   </>
                 )}
               </div>

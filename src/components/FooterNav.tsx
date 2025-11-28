@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useCallback } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useLanguage } from '../contexts/LanguageContext';
 import { logger } from '../utils/logger';
@@ -51,18 +51,33 @@ const FooterNavComponent: React.FC = () => {
     return location.pathname.startsWith(path);
   };
 
-  const handleClick = (e: React.MouseEvent<HTMLButtonElement> | React.TouchEvent<HTMLButtonElement>, path: string) => {
+  const handleClick = useCallback((e: React.MouseEvent<HTMLButtonElement> | React.TouchEvent<HTMLButtonElement>, path: string) => {
     e.preventDefault();
     e.stopPropagation();
-    logger.debug('Footer navigation:', path);
+    
+    // Prevent double-clicks
+    const target = e.currentTarget;
+    if (target.hasAttribute('data-navigating')) {
+      return;
+    }
+    target.setAttribute('data-navigating', 'true');
+    
+    logger.debug('Footer navigation clicked:', path);
+    
     try {
+      // Navigate immediately - no setTimeout needed
       if (location.pathname !== path) {
-        navigate(path);
+        navigate(path, { replace: false });
       }
+      // Remove attribute after a short delay to allow navigation
+      setTimeout(() => {
+        target.removeAttribute('data-navigating');
+      }, 100);
     } catch (error) {
       logger.error('Navigation error:', error);
+      target.removeAttribute('data-navigating');
     }
-  };
+  }, [navigate, location.pathname]);
 
   return (
     <div className="footer-nav">
@@ -72,8 +87,9 @@ const FooterNavComponent: React.FC = () => {
           type="button"
           className={`footer-nav-btn ${isActive(item.path) ? 'active' : ''}`}
           onClick={(e) => handleClick(e, item.path)}
-          onTouchStart={(e) => {
+          onTouchEnd={(e) => {
             e.preventDefault();
+            e.stopPropagation();
             handleClick(e, item.path);
           }}
           aria-label={item.label}

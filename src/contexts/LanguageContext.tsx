@@ -156,6 +156,11 @@ export const LanguageProvider: React.FC<LanguageProviderProps> = ({ children }) 
     setCurrentLanguage(language);
     // Store in localStorage for persistence
     localStorage.setItem('preferredLanguage', language);
+    // Update HTML attributes immediately for RTL/LTR
+    const html = document.documentElement;
+    const isRTL = language === 'ar';
+    html.setAttribute('dir', isRTL ? 'rtl' : 'ltr');
+    html.setAttribute('lang', language);
   }, []);
 
   // Load saved language preference on mount (only once)
